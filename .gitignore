@@ -7,5 +7,5 @@
 *.synctex.gz
 /Sample
 /Reference
-/DNN_models
+DNN_models/
 run.sh
