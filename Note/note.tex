@@ -133,7 +133,7 @@
 
 		This is because SPANet is trained on both pairing and classification tasks simultaneously. The pairing part introduces some asymmetries between signal and background samples, leading to the AUC that deviates from $0.5$.
 
-		To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. In this case, as expected, the AUC is close to $0.5$ when $f_1 = 0.5$. 
+		To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. As expected, the AUC is close to $0.5$ when $f_1 = 0.5$. 
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.65\textwidth]{CWoLa_SPANet_no_pair.png}
@@ -145,41 +145,62 @@
 
 \section{CWoLa hunting}% (fold)
 \label{sec:cwola_hunting}
+	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For $m_{\text{res}}$, the background distribution is smooth while signal distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier.
 	\subsection{Sample}% (fold)
 	\label{sub:sample_cwola_hunting}
-		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
+		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
 		
-		The CWoLa hunting approach utilizes the signal region and sideband region to create the mixed training sample. The total invariant mass $m_{hh}$ of the di-Higgs system is utilized to determine the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. The signal region is $[800, 1050] \text{ GeV}$ and the sideband region is $[700, 800]\cup [1050, 1100] \text{ GeV}$. This signal and sideband region are chosen such that the corresponding cross-sections are closed.
+		The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ is utilized to determine the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. The signal and sideband regions are summarized in Table~\ref{tab:signal_sideband_range}. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.65\textwidth]{mhh_distribution.png}
-			\caption{The totoal invriant mass $m_{hh}$ distribution of signal and background samples. The signal region is $[800, 1050] \text{ GeV}$ between the red dashed lines. The sideband region is $[700, 800]\cup [1050, 1100] \text{ GeV}$ between the green dashed lines and exclude the signal region.}
+			\subfloat[$m_H = \text{500 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{mhh_distribution-500GeV.png}
+			}
+			\subfloat[$m_H = \text{1000 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{mhh_distribution-1000GeV.png}
+			}
+			\caption{The totoal invriant mass $m_{hh}$ distribution of signal and background samples. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
 			\label{fig:mhh_distribution}
 		\end{figure}
 
+		\begin{table}[htpb]
+			\centering
+			\caption{The signal and sideband regions with different resonant samples. The unit is GeV.}
+			\label{tab:signal_sideband_range}
+			\begin{tabular}{r|cc}
+				$m_H$ & Signal       & Sideband                      \\ \hline
+				500   & $[350, 550]$ & $[250, 350]\cup [550, 700]$   \\
+				1000  & $[800,1050]$ & $[700, 800]\cup [1050, 1100]$
+			\end{tabular}
+		\end{table}
 		Table~\ref{tab:diHiggs_cutflow_table} is the cutflow table of the selection cuts. The number of events used in mixed training samples could be computed from these cross-sections. The training sample size is presented in Table~\ref{tab:training_sample_size_cwola_hunting}.
 		\begin{table}[htpb]
 			\centering
 			\caption{The cross sections for the di-Higgs signal and background processes at different selection cuts.}
 			\label{tab:diHiggs_cutflow_table}
-			\begin{tabular}{l|cc|c|c}
-								& \multicolumn{2}{c|}{Cross section (fb)} &          & $\mathcal{L} = 139 \text{ fb}^{-1}$ \\
-								& Signal           & Background           & $S / B$  & $S/\sqrt{B}$                        \\ \hline
-				Four tag        & 0.081            & 6.03e+03             & 1.34e-05 & 0.0123                              \\ \hline
-				Signal region   & 0.063            & 3.32e+02             & 1.90e-04 & 0.0408                              \\
-				Sideband region & 0.010            & 3.19e+02             & 3.03e-05 & 0.0064                             
+			\begin{tabular}{c|l|cc|c|c}
+									  &                 & \multicolumn{2}{c|}{Cross section (fb)} &          & $\mathcal{L} = 139 \text{ fb}^{-1}$ \\
+				$m_H$ (GeV)           &                 & Signal           & Background           & $S / B$  & $S/\sqrt{B}$                        \\ \hline 
+				\multirow{3}{*}{500}  & Four tag        & 3.64             & 6.03e+03             & 6.03e-04 & 0.553                               \\ \cline{2-6} 
+									  & Signal region   & 3.13             & 2.57e+03             & 1.22e-03 & 0.727                               \\
+									  & Sideband region & 0.35             & 2.36e+03             & 1.50e-04 & 0.086                               \\ \hline \hline
+				\multirow{3}{*}{1000} & Four tag        & 0.081            & 6.03e+03             & 1.34e-05 & 0.0123                              \\ \cline{2-6} 
+									  & Signal region   & 0.063            & 3.32e+02             & 1.90e-04 & 0.0408                              \\
+									  & Sideband region & 0.010            & 3.19e+02             & 3.03e-05 & 0.0064                             
 			\end{tabular}
 		\end{table}
+		
 		\begin{table}[htpb]
 			\centering
 			\caption{The training sample size for the mixed sample. The luminosity is $\mathcal{L} = 78 \text{ fb}^{-1}$ because the generated samples are not enough for now.}
 			\label{tab:training_sample_size_cwola_hunting}
-			
-			\begin{tabular}{c|cc}
-							 & \multicolumn{2}{c}{True label} \\
-				Mixed sample & Signal       & Background      \\ \hline
-				$M_1$            & 5            & 26k             \\
-				$M_2$            & 1            & 25k            
+			\begin{tabular}{c|c|cc}
+									  &              & \multicolumn{2}{c}{True label} \\
+				$m_H$ (GeV)           & Mixed sample & Signal       & Background      \\ \hline
+				\multirow{2}{*}{500}  & $M_1$        & 244          & 200k            \\
+									  & $M_2$        & 28           & 184k            \\ \hline
+				\multirow{2}{*}{1000} & $M_1$        & 5            & 26k             \\
+									  & $M_2$        & 1            & 25k            
 			\end{tabular}
 		\end{table}
 
@@ -193,18 +214,27 @@
 			\centering
 			\caption{The CWoLa DNN training results. The average and standard deviation of 10 training are presented.}
 			\label{tab:cwola_hunting_DNN_results}
-			\begin{tabular}{c|cc}
-				& ACC     & AUC   \\ \hline
-				With signal   & $0.868 \pm 0.024$ & $0.925 \pm 0.023$ \\
-				No signal     & $0.850 \pm 0.033$ & $0.909 \pm 0.026$
-			\end{tabular}      
+			\begin{tabular}{c|c|cc}
+				$m_H$ (GeV)           &             & ACC               & AUC               \\ \hline
+				\multirow{2}{*}{500}  & With signal & $0.708 \pm 0.002$ & $0.770 \pm 0.007$ \\
+									  & No signal   & $0.705 \pm 0.003$ & $0.769 \pm 0.009$ \\ \hline
+				\multirow{2}{*}{1000} & With signal & $0.868 \pm 0.024$ & $0.925 \pm 0.023$ \\
+									  & No signal   & $0.850 \pm 0.033$ & $0.909 \pm 0.026$
+			\end{tabular}
 		\end{table}
 
 		Figure~\ref{fig:signal_score_distribution} shows the signal score distributions. Even though the signal scores are very different for signal and background distributions, the difference probably stems from the $m_{hh}$ distribution.
 	 	\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution.png}
-			\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution.png}
+			\subfloat[$m_H = \text{500 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-500GeV.png}
+				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-500GeV.png}
+			}
+			\\
+			\subfloat[$m_H = \text{1000 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-1000GeV.png}
+				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-1000GeV.png}
+			}
 			\caption{The signal score distributions. We apply the CWoLa DNN on pure samples to obtain the signal score distributions.}
 			\label{fig:signal_score_distribution}
 		\end{figure}
