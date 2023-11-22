@@ -38,7 +38,7 @@ def get_sample_size(y):
 def main():
 
     # Training sample
-    data_path = f'../Sample/DNN/CWoLa_hunting_with_signal.npy'
+    data_path = f'../Sample/DNN/CWoLa_hunting_with_signal-500GeV.npy'
     
     X, y = load_samples(data_path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
@@ -51,7 +51,7 @@ def main():
     min_delta = 0.
     learning_rate = 0.0005
     batch_size = 256
-    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_w_sig/'
+    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_w_sig_500GeV/'
 
     # 建立 DNN
     n_layers = 2
@@ -74,7 +74,7 @@ def main():
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
 
     # Training results
-    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_w_sig/'
+    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_w_sig_500GeV/'
     if not os.path.isdir(best_model_name):
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
@@ -103,7 +103,7 @@ def main():
 
 
     # Testing results on true label sample
-    true_label_path = f'../Sample/DNN/min_dR_1000GeV_test.npy'
+    true_label_path = f'../Sample/DNN/min_dR_500GeV_test.npy'
     X_test, y_test = load_samples(true_label_path, delete_col=(10,11,12,13,15))
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
@@ -132,7 +132,7 @@ def main():
                 'AUC': [AUC],
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
-                'Sample Type': ['With signal'],
+                'Sample Type': ['500 GeV: With signal'],
                 'time': [now],
                 }
     
