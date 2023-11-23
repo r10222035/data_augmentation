@@ -145,12 +145,12 @@
 
 \section{CWoLa hunting}% (fold)
 \label{sec:cwola_hunting}
-	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For $m_{\text{res}}$, the background distribution is smooth while signal distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier.
+	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier.
 	\subsection{Sample}% (fold)
 	\label{sub:sample_cwola_hunting}
 		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
 		
-		The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ is utilized to determine the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. The signal and sideband regions are summarized in Table~\ref{tab:signal_sideband_range}. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
+		The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ is utilized to determine the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. Table~\ref{tab:signal_sideband_range} summarizes the signal and sideband regions. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[$m_H = \text{500 GeV}$]{
@@ -204,15 +204,15 @@
 			\end{tabular}
 		\end{table}
 
-		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and total invariant mass of the di-Higgs system are excluded. For $\text{min-}\Delta R$ pairing, it only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
+		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and the di-Higgs system's total invariant mass are excluded. For $\text{min-}\Delta R$ pairing, it only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
 
 	% subsection sample_cwola_hunting (end)
 	\subsection{Training results}% (fold)
 	\label{sub:training_results}
-		Table \ref{tab:cwola_hunting_DNN_results} presents the DNN classification training results. These numbers are evaluated from the pure samples. The training datasets with and without signal events have similar results. This suggests that the DNN fails to distinguish the signal and background samples but learns the difference between the signal and sideband region. Moreover, the results also imply the input features may correlate to the total invariant mass of the di-Higgs system.
+		Table \ref{tab:cwola_hunting_DNN_results} presents the DNN classification training results. These numbers are evaluated from the pure samples, which consist of 5k signal events and 5k background events. The training datasets with and without signal events have similar results. This suggests that the DNN fails to distinguish the signal and background samples but learns the difference between the signal and sideband region. Moreover, the results also imply the input features may correlate to the total invariant mass of the di-Higgs system.
 		\begin{table}[htpb]
 			\centering
-			\caption{The CWoLa DNN training results. The average and standard deviation of 10 training are presented.}
+			\caption{The CWoLa DNN training results. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
 			\label{tab:cwola_hunting_DNN_results}
 			\begin{tabular}{c|c|cc}
 				$m_H$ (GeV)           &             & ACC               & AUC               \\ \hline
@@ -245,6 +245,37 @@
 			\item The signal fraction is too low. It is hard to learn something about signal events. 
 		\end{itemize}
 	% subsection training_results (end)
+	\subsection{Correlation matrix}% (fold)
+	\label{sub:correlation_matrix}
+		The results in Sec~\ref{sub:training_results} imply that the di-Higgs system's total invariant mass is not independent of other input features. To find the variables that are highly dependent on the total invariant mass, the correlation coefficients are computed among these variables. Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} are correlation coefficients on the $\text{500 GeV}$ and $\text{1000 GeV}$ cases, respectively. 
+
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.9\textwidth]{correlation_coefficients-500GeV.png}
+			\caption{The correlation coefficients among different variables, which are computed from $\text{500 GeV}$ testing sample, which consists of 5k signal and 5k background.}
+			\label{fig:correlation_coefficient_500GeV}
+		\end{figure}
+		
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.9\textwidth]{correlation_coefficients-1000GeV.png}
+			\caption{The correlation coefficients among different variables, which are computed from $\text{1000 GeV}$ testing sample, which consists of 5k signal and 5k background.}
+			\label{fig:correlation_coefficient_1000GeV}
+		\end{figure}
+
+		The results show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly correlated to the total invariant mass. Figure~\ref{fig:pt1_mhh_scatter_plot} shows the scatter plots of the transverse momentum of the leading Higgs candidate and the total invariant mass $m_{\text{hh}}$. These plots also explain why the DNN only trained on background samples can also distinguish the signal and background events, because the background distribution in the signal and sideband regions are different.  
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[$m_H = \text{500 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-500GeV.png}
+			}
+			\subfloat[$m_H = \text{1000 GeV}$]{
+				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-1000GeV.png}
+			}
+			\caption{The scatter plots of the transverse momentum of leading Higgs candidate $p_{\text{T}1}$ and total invariant mass $m_{hh}$ distribution. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
+			\label{fig:pt1_mhh_scatter_plot}
+		\end{figure}
+	% subsection correlation_matrix (end)	
 % section cwola_hunting (end)		
 \end{document} 
 
