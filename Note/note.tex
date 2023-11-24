@@ -84,7 +84,7 @@
 
 \section{CWoLa}% (fold)
 \label{sec:cwola}
-	The Classification Without Labels (CWoLa) is a weakly supervised learning method. The CWoLa approach trains a model to discriminate the mixed samples, which are mixtures of the original signal and background samples. The optimal classifier in the CWoLa approach is also the optimal classifier in the traditional fully-supervised case where all label information is available. This section utilizes the CWoLa approach to train classifiers on di-Higgs samples.
+	The Classification Without Labels (CWoLa) is a weakly supervised learning method. The CWoLa approach trains a model to discriminate the mixed samples, which are mixtures of the original signal and background samples. The optimal classifier in the CWoLa approach is also the optimal classifier in the traditional fully supervised case where all label information is available. This section utilizes the CWoLa approach to train classifiers on di-Higgs samples.
 
 	\subsection{Sample}% (fold)
 	\label{sub:sample}
@@ -204,7 +204,7 @@
 			\end{tabular}
 		\end{table}
 
-		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and the di-Higgs system's total invariant mass are excluded. For $\text{min-}\Delta R$ pairing, it only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
+		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. In the $\text{min-}\Delta R$ method, the four $b$-tagged jets with the highest $p_{\text{T}}$ are used to form the two Higgs boson candidates. The $\text{min-}\Delta R$ method selects the pairing configuration in which the higher-$p_{\text{T}}$ jet pair has the smallest $\Delta R$ separation. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and the di-Higgs system's total invariant mass are excluded. For $\text{min-}\Delta R$ pairing, it only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
 
 	% subsection sample_cwola_hunting (end)
 	\subsection{Training results}% (fold)
@@ -247,7 +247,7 @@
 	% subsection training_results (end)
 	\subsection{Correlation matrix}% (fold)
 	\label{sub:correlation_matrix}
-		The results in Sec~\ref{sub:training_results} imply that the di-Higgs system's total invariant mass is not independent of other input features. To find the variables that are highly dependent on the total invariant mass, the correlation coefficients are computed among these variables. Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} are correlation coefficients on the $\text{500 GeV}$ and $\text{1000 GeV}$ cases, respectively. 
+		The results in Section~\ref{sub:training_results} imply that the di-Higgs system's total invariant mass is not independent of other input features. To find the variables that are highly dependent on the total invariant mass, the correlation coefficients are computed among these variables. Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} are correlation coefficients on the $\text{500 GeV}$ and $\text{1000 GeV}$ cases, respectively. 
 
 		\begin{figure}[htpb]
 			\centering
@@ -277,5 +277,106 @@
 		\end{figure}
 	% subsection correlation_matrix (end)	
 % section cwola_hunting (end)		
+\section{Physical data augmentation}% (fold)
+\label{sec:physical_data_augmentation}
+	The physical augmentations are inspired by Reference~\cite{Dillon:2023zac}, which considers the rotation and smearing augmentations. These augmentations reflect both the symmetries in the physical event and the experimental resolution of the detector.
+	\subsection{Original training data}% (fold)
+	\label{sub:original_training_data}
+		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
+		
+		The training samples consist of 50k signal events and 50k background events and the testing samples consist of 5k signal events and 5k background events.
+
+		The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information is excluded.
+	% subsection original_training_data (end)
+	\subsection{Physical augmentation}% (fold)
+	\label{sub:physical_augmentation}
+		We consider three different physical augmentations.
+
+		\begin{enumerate}
+			\item Azimuthal rotation: The whole final state is rotated by an angle $\phi$ randomly sampled from $[0, 2\pi]$.
+			\item $\eta-\phi$ smearing: The $\left( \eta,\phi \right) $ coordinate of Higgs candidates are resampled according to a Normal distribution centered on the original coordinate and with a standard deviation inversely proportional to the $p_{\text{T}}$
+				\begin{equation}
+					\eta' \sim \mathcal{N}\left(\eta, \frac{\Lambda}{p_{\text{T}}}\right), \quad \phi' \sim \mathcal{N}\left(\phi, \frac{\Lambda}{p_{\text{T}}}\right)
+				\end{equation}
+				where $\eta', \phi'$ are the augmented coordinate, $p_{\text{T}}$ is the transverse momentum of the Higgs candidate, and the smearing scale is set to be $\Lambda = \text{10 GeV}$.
+			\item $p_\text{T}$ smearing: The $p_{\text{T}}$ of Higgs candidates are resampled according to
+				\begin{equation}
+					p_{\text{T}}' \sim \mathcal{N}\left( p_{\text{T}}, f(p_{\text{T}}) \right), \quad f(p_{\text{T}}) = \sqrt{0.052 p_{\text{T}}^2 + 1.502p_{\text{T}}}
+				\end{equation}
+				where $p_{\text{T}}'$ is the augmented transverse momentum, $f\left( p_\text{T} \right) $ is the energy smearing applied by \verb|Delphes| (the $p_{\text{T}}$'s are normalised by $\text{1 GeV}$).
+		\end{enumerate}
+
+		Figure~\ref{fig:eta_phi_smearing_eta_distribution}, \ref{fig:eta_phi_smearing_phi_distribution} and \ref{fig:pt_smearing_pt_distribution} are the distributions before and after the augmentation. For the $\eta-\phi$ smearing, the distributions are similar for both cases. For $p_\text{T}$ smearing, it makes the peak broaden and the transverse momentum distribution looks smoother.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{eta1_distribution_eta_phi_smearing.png}
+			}
+			\subfloat[Sub-leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{eta2_distribution_eta_phi_smearing.png}
+			}
+			\caption{The pseudorapidity distribution before and after the $\eta-\phi$ smearing augmentation. $\eta_1$ and $\eta_2$ are the pseudorapidities of the leading and the sub-leading Higgs candidate, respectively.}
+			\label{fig:eta_phi_smearing_eta_distribution}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{phi1_distribution_eta_phi_smearing.png}
+			}
+			\subfloat[Sub-leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{phi2_distribution_eta_phi_smearing.png}
+			}
+			\caption{The azimuthal angle distribution before and after the $\eta-\phi$ smearing augmentation. $\phi_1$ and $\phi_2$ are the azimuthal angles of the leading and the sub-leading Higgs candidate, respectively.}
+			\label{fig:eta_phi_smearing_phi_distribution}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{pt1_distribution_pt_smearing.png}
+			}
+			\subfloat[Sub-leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{pt2_distribution_pt_smearing.png}
+			}
+			\caption{The transverse momentum distribution before and after the $p_{\text{T}}$ smearing augmentation. $p_{\text{T1}}$ and $p_{\text{T2}}$ are the transverse momentum of the leading and the sub-leading Higgs candidates, respectively.}
+			\label{fig:pt_smearing_pt_distribution}
+		\end{figure}
+
+		For each type of augmentation, we test ``$n$ times augmentation'' with different $n$. The $n$ times augmentation means for one original sample, we generate $n$ augmented samples. Additionally, we test another case that applies all augmentations at the same time.
+	% subsection physical_augmentation (end)
+	\subsection{Training results}% (fold)
+	\label{sub:training_results_physical_augmentation}
+	
+		Table~\ref{tab:original_sample_training_results} presents the DNN classification training results of the original sample. Table~\ref{tab:augmentation_sample_training_results} are the training results of the augmented samples. For each type of augmentation, they all can improve the ACC by about 4\%. The differences among the various augmentation are not significant. The 10-times augmentation has the best results, but the difference between the 5-times and 10-times augmentation is very small. It seems that the performance of this classifier is saturated.
+		\begin{table}[htpb]
+			\centering
+			\caption{The training results of original samples. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:original_sample_training_results}
+			\begin{tabular}{c|c}
+			    & Original \\ \hline
+			ACC & $0.845 \pm 0.015$    \\
+			AUC & $0.917 \pm 0.005$    
+			\end{tabular}
+		\end{table}
+		\begin{table}[htpb]
+			\centering
+			\caption{The training results of augmented samples. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:augmentation_sample_training_results}
+			\begin{tabular}{l|c|cccc}
+									  &     & Rotation          & $\eta-\phi$ smear & $p_{\text{T}}$ smear & All               \\ \hline
+			\multirow{2}{*}{3 times}  & ACC & $0.880 \pm 0.007$ & $0.879 \pm 0.010$ & $0.882 \pm 0.003$    & $0.875 \pm 0.011$ \\
+									  & AUC & $0.950 \pm 0.007$ & $0.949 \pm 0.008$ & $0.951 \pm 0.003$    & $0.942 \pm 0.012$ \\ \hline
+			\multirow{2}{*}{5 times}  & ACC & $0.887 \pm 0.002$ & $0.887 \pm 0.001$ & $0.890 \pm 0.002$    & $0.889 \pm 0.003$ \\
+									  & AUC & $0.955 \pm 0.001$ & $0.955 \pm 0.001$ & $0.957 \pm 0.001$    & $0.956 \pm 0.001$ \\ \hline
+			\multirow{2}{*}{10 times} & ACC & $0.889 \pm 0.001$ & $0.889 \pm 0.002$ & $0.892 \pm 0.002$    & $0.892 \pm 0.002$ \\
+									  & AUC & $0.956 \pm 0.001$ & $0.956 \pm 0.001$ & $0.958 \pm 0.001$    & $0.958 \pm 0.000$
+			\end{tabular}
+		\end{table}	
+		
+	% subsection training_results_physical_augmentation (end)
+
+% section physical_data_augmentation (end)		
+\bibliographystyle{plain}
+\bibliography{reference}
+		
 \end{document} 
 
