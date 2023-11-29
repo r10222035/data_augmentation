@@ -38,9 +38,10 @@ def get_sample_size(y):
 def main():
 
     # Training sample
-    data_path = f'../Sample/DNN/CWoLa_hunting_with_signal-500GeV.npy'
+    data_path = f'../Sample/DNN/CWoLa_hunting_with_signal.npy'
     
-    X, y = load_samples(data_path)
+    d_col = (0,3,4,7)
+    X, y = load_samples(data_path, d_col)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
@@ -51,7 +52,7 @@ def main():
     min_delta = 0.
     learning_rate = 0.0005
     batch_size = 256
-    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_w_sig_500GeV/'
+    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_w_sig_no_higgs_pt_m_1000GeV/'
 
     # 建立 DNN
     n_layers = 2
@@ -74,7 +75,7 @@ def main():
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
 
     # Training results
-    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_w_sig_500GeV/'
+    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_w_sig_no_higgs_pt_m_1000GeV/'
     if not os.path.isdir(best_model_name):
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
@@ -103,13 +104,13 @@ def main():
 
 
     # Testing results on true label sample
-    true_label_path = f'../Sample/DNN/min_dR_500GeV_test.npy'
-    X_test, y_test = load_samples(true_label_path, delete_col=(10,11,12,13,15))
+    true_label_path = f'../Sample/DNN/min_dR_1000GeV_test.npy'
+    X_test, y_test = load_samples(true_label_path, delete_col=(0,3,4,7,10,11,12,13,15))
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
     if true_label_results[1] < 0.5:
         y_test = y_test[:,[1,0]]
-        true_label_results = best_model.evaluate(x=X_test, y=y_test)
+        true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
     # Compute AUC
@@ -132,7 +133,7 @@ def main():
                 'AUC': [AUC],
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
-                'Sample Type': ['500 GeV: With signal'],
+                'Sample Type': ['1000 GeV: With signal, no Higgs pT, m'],
                 'time': [now],
                 }
     
