@@ -145,7 +145,7 @@
 
 \section{CWoLa hunting}% (fold)
 \label{sec:cwola_hunting}
-	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier.
+	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier. This technic is first introduced by Reference~\cite{Collins:2018epr}.
 	\subsection{Sample}% (fold)
 	\label{sub:sample_cwola_hunting}
 		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
@@ -275,7 +275,26 @@
 			\caption{The scatter plots of the transverse momentum of leading Higgs candidate $p_{\text{T}1}$ and total invariant mass $m_{hh}$ distribution. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
 			\label{fig:pt1_mhh_scatter_plot}
 		\end{figure}
-	% subsection correlation_matrix (end)	
+	% subsection correlation_matrix (end)
+	\subsection{Remove highly correlated features}% (fold)
+	\label{sub:remove_highly_correlated_features}
+		 Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly related to the total invariant mass $m_{hh}$. To investigate the impact of these highly correlated features on the discrimination power of CWoLa DNN models, we remove these input features and train the DNN model again.
+
+		\begin{table}[htpb]
+			\centering
+			\caption{The CWoLa DNN training results. The transverse momentum and invariant mass of Higgs candidates are removed from samples. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:cwola_hunting_DNN_results_wo_pt_m}
+			\begin{tabular}{c|c|cc}
+				$m_H$ (GeV)           &             & ACC               & AUC               \\ \hline
+				\multirow{2}{*}{500}  & With signal & $0.526 \pm 0.020$ & $0.536 \pm 0.053$ \\
+									  & No signal   & $0.532 \pm 0.015$ & $0.543 \pm 0.029$ \\ \hline
+				\multirow{2}{*}{1000} & With signal & $0.586 \pm 0.030$ & $0.625 \pm 0.046$ \\
+									  & No signal   & $0.564 \pm 0.024$ & $0.583 \pm 0.042$
+			\end{tabular}
+		\end{table}
+
+		 Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m} summarizes the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. The training datasets with and without signal events still have similar results. Compared to the previous one (Table~\ref{tab:cwola_hunting_DNN_results}) the accuracy values are closer to 0.5. These results suggest that the removed features have a significant contribution to the model's discrimination power, and the remaining parameters are hard to utilize to distinguish the signal and background events.
+	% subsection remove_highly_correlated_features (end)	
 % section cwola_hunting (end)		
 \section{Physical data augmentation}% (fold)
 \label{sec:physical_data_augmentation}
@@ -306,7 +325,7 @@
 				where $p_{\text{T}}'$ is the augmented transverse momentum, $f\left( p_\text{T} \right) $ is the energy smearing applied by \verb|Delphes| (the $p_{\text{T}}$'s are normalised by $\text{1 GeV}$).
 		\end{enumerate}
 
-		Figure~\ref{fig:eta_phi_smearing_eta_distribution}, \ref{fig:eta_phi_smearing_phi_distribution} and \ref{fig:pt_smearing_pt_distribution} are the distributions before and after the augmentation. For the $\eta-\phi$ smearing, the distributions are similar for both cases. For $p_\text{T}$ smearing, it makes the peak broaden and the transverse momentum distribution looks smoother.
+		Figure~\ref{fig:eta_phi_smearing_eta_distribution}, \ref{fig:eta_phi_smearing_phi_distribution} and \ref{fig:pt_smearing_pt_distribution} are the distributions before and after the augmentation. For the $\eta-\phi$ smearing, the distributions are similar for both cases. For $p_\text{T}$ smearing, the peak broadens and the transverse momentum distribution looks smoother.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading Higgs]{
@@ -346,7 +365,7 @@
 	\subsection{Training results}% (fold)
 	\label{sub:training_results_physical_augmentation}
 	
-		Table~\ref{tab:original_sample_training_results} presents the DNN classification training results of the original sample. Table~\ref{tab:augmentation_sample_training_results} are the training results of the augmented samples. For each type of augmentation, they all can improve the ACC by about 4\%. The differences among the various augmentation are not significant. The 10-times augmentation has the best results, but the difference between the 5-times and 10-times augmentation is very small. It seems that the performance of this classifier is saturated.
+		Table~\ref{tab:original_sample_training_results} presents the DNN classification training results of the original sample. Table~\ref{tab:augmentation_sample_training_results} are the training results of the augmented samples. For each type of augmentation, they all can improve the ACC by about 4\%. The differences among the various augmentation are not significant. The 10-times augmentation has the best results, but the difference between the 5-times and 10-times augmentation is tiny. It seems that the performance of this classifier is saturated.
 		\begin{table}[htpb]
 			\centering
 			\caption{The training results of original samples. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
