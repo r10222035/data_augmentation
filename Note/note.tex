@@ -378,21 +378,39 @@
 		\end{table}
 		\begin{table}[htpb]
 			\centering
-			\caption{The training results of augmented samples. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\caption{The training results of augmented samples. ``+ 3 times'' means the traing sample consists of original sample and 3 times augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
 			\label{tab:augmentation_sample_training_results}
-			\begin{tabular}{l|c|cccc}
-									  &     & Rotation          & $\eta-\phi$ smear & $p_{\text{T}}$ smear & All               \\ \hline
-			\multirow{2}{*}{3 times}  & ACC & $0.880 \pm 0.007$ & $0.879 \pm 0.010$ & $0.882 \pm 0.003$    & $0.875 \pm 0.011$ \\
-									  & AUC & $0.950 \pm 0.007$ & $0.949 \pm 0.008$ & $0.951 \pm 0.003$    & $0.942 \pm 0.012$ \\ \hline
-			\multirow{2}{*}{5 times}  & ACC & $0.887 \pm 0.002$ & $0.887 \pm 0.001$ & $0.890 \pm 0.002$    & $0.889 \pm 0.003$ \\
-									  & AUC & $0.955 \pm 0.001$ & $0.955 \pm 0.001$ & $0.957 \pm 0.001$    & $0.956 \pm 0.001$ \\ \hline
-			\multirow{2}{*}{10 times} & ACC & $0.889 \pm 0.001$ & $0.889 \pm 0.002$ & $0.892 \pm 0.002$    & $0.892 \pm 0.002$ \\
-									  & AUC & $0.956 \pm 0.001$ & $0.956 \pm 0.001$ & $0.958 \pm 0.001$    & $0.958 \pm 0.000$
+			\begin{tabular}{c|c|cccc}
+				Sample                      &     & Rotation          & $\eta-\phi$ smear & $p_{\text{T}}$ smear & All               \\ \hline
+				\multirow{2}{*}{+ 3 times}  & ACC & $0.880 \pm 0.007$ & $0.879 \pm 0.010$ & $0.882 \pm 0.003$    & $0.875 \pm 0.011$ \\
+											& AUC & $0.950 \pm 0.007$ & $0.949 \pm 0.008$ & $0.951 \pm 0.003$    & $0.942 \pm 0.012$ \\ \hline
+				\multirow{2}{*}{+ 5 times}  & ACC & $0.887 \pm 0.002$ & $0.887 \pm 0.001$ & $0.890 \pm 0.002$    & $0.889 \pm 0.003$ \\
+											& AUC & $0.955 \pm 0.001$ & $0.955 \pm 0.001$ & $0.957 \pm 0.001$    & $0.956 \pm 0.001$ \\ \hline
+				\multirow{2}{*}{+ 10 times} & ACC & $0.889 \pm 0.001$ & $0.889 \pm 0.002$ & $0.892 \pm 0.002$    & $0.892 \pm 0.002$ \\
+											& AUC & $0.956 \pm 0.001$ & $0.956 \pm 0.001$ & $0.958 \pm 0.001$    & $0.958 \pm 0.000$
 			\end{tabular}
 		\end{table}	
 		
+		
 	% subsection training_results_physical_augmentation (end)
 
+	\subsection{Deeper model}% (fold)
+	\label{sub:deeper_model}
+		In Section~\ref{sub:training_results_physical_augmentation}, the DNN model consists of 2 hidden layers, each containing 64 hidden nodes. To explore the impact of the model structure, the deeper DNN model is trained. We investigate the performance of the DNN model with 5 hidden layers .
+
+		\begin{table}[htpb]
+			\centering
+			\caption{The training results of deeper DNN model. ``+ 3 times'' means the traing sample consists of original sample and 3 times augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:augmentation_training_results_deeper_model}
+			\begin{tabular}{l|c|cccc}
+			Sample                            &     & Original          & + 3 times         & + 5 times         & + 10 times        \\ \hline
+			\multirow{2}{*}{All augmentation} & ACC & $0.864 \pm 0.005$ & $0.890 \pm 0.002$ & $0.890 \pm 0.002$ & $0.884 \pm 0.005$ \\
+											  & AUC & $0.928 \pm 0.005$ & $0.957 \pm 0.001$ & $0.957 \pm 0.001$ & $0.949 \pm 0.005$
+			\end{tabular}
+		\end{table}
+
+		Table~\ref{tab:augmentation_training_results_deeper_model} are the training results with deeper DNN model. Models are only trained on ``All augmentation'' sample, because from Table~\ref{tab:augmentation_sample_training_results} we found that four augmentation methods yielded similar results. The results show that the augmented sample can improve ACC to 89\%, even from ``+ 3 times'' case and this accuracy value is similar to the previous test. These findings suggest that the classifier may have reached a saturation point and point out the difficulty of further improving accuracy on this test sample. 
+	% subsection deeper_model (end)	
 % section physical_data_augmentation (end)		
 \bibliographystyle{plain}
 \bibliography{reference}
