@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 # python train_DNN_physical_augmentation.py <train_file> <model_name> <sample_type>
- 
+# python train_DNN_physical_augmentation.py ../Sample/DNN/physical_augmentation/min_dR_500GeV_rot_3.npy deep_500GeV_rot_3 "500GeV: Rotation 3"
 import os
 from random import sample
 import sys
@@ -11,9 +11,7 @@ import datetime
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from tqdm import tqdm
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
@@ -58,7 +56,7 @@ def main():
     save_model_name = f'./DNN_models/DNN_last_model_{model_name}/'
 
     # 建立 DNN
-    n_layers = 2
+    n_layers = 5
     num_hidden = 64
 
     model = Sequential()
@@ -116,6 +114,7 @@ def main():
                 'ACC': [results[1]],
                 'AUC': [AUC],
                 'Sample Type': [sample_type],
+                'Model Name': [model_name],
                 'time': [now],
                 }
     
