@@ -131,7 +131,7 @@
 
 		When $f_1 = 0.5$ the mixed sample $M_1$ and $M_2$ have identical distributions, so the classifier can not learn anything in this case. In the case of DNN, the AUC is $0.5$, as expected. However, for SPANet, the AUC is more than $0.7$.
 
-		This is because SPANet is trained on both pairing and classification tasks simultaneously. The pairing part introduces some asymmetries between signal and background samples, leading to the AUC that deviates from $0.5$.
+		This is because SPANet is trained on both pairing and classification tasks simultaneously. The pairing part introduces asymmetries between signal and background samples, leading to the AUC that deviates from $0.5$.
 
 		To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. As expected, the AUC is close to $0.5$ when $f_1 = 0.5$. 
 		\begin{figure}[htpb]
@@ -312,7 +312,7 @@
 		We consider three different physical augmentations.
 
 		\begin{enumerate}
-			\item Azimuthal rotation: The whole final state is rotated by an angle $\phi$ randomly sampled from $[0, 2\pi]$.
+			\item Azimuthal rotation: The final state is rotated by an angle $\phi$ randomly sampled from $[0, 2\pi]$.
 			\item $\eta-\phi$ smearing: The $\left( \eta,\phi \right) $ coordinate of Higgs candidates are resampled according to a Normal distribution centered on the original coordinate and with a standard deviation inversely proportional to the $p_{\text{T}}$
 				\begin{equation}
 					\eta' \sim \mathcal{N}\left(\eta, \frac{\Lambda}{p_{\text{T}}}\right), \quad \phi' \sim \mathcal{N}\left(\phi, \frac{\Lambda}{p_{\text{T}}}\right)
@@ -378,7 +378,7 @@
 		\end{table}
 		\begin{table}[htpb]
 			\centering
-			\caption{The training results of augmented samples. ``+ 3 times'' means the traing sample consists of original sample and 3 times augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\caption{The training results of augmented samples. ``+ 3 times'' means the training sample consists of the original sample and 3 times the augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
 			\label{tab:augmentation_sample_training_results}
 			\begin{tabular}{c|c|cccc}
 				Sample                      &     & Rotation          & $\eta-\phi$ smear & $p_{\text{T}}$ smear & All               \\ \hline
@@ -396,11 +396,11 @@
 
 	\subsection{Deeper model}% (fold)
 	\label{sub:deeper_model}
-		In Section~\ref{sub:training_results_physical_augmentation}, the DNN model consists of 2 hidden layers, each containing 64 hidden nodes. To explore the impact of the model structure, the deeper DNN model is trained. We investigate the performance of the DNN model with 5 hidden layers .
+		In Section~\ref{sub:training_results_physical_augmentation}, the DNN model consists of 2 hidden layers, each containing 64 hidden nodes. To explore the impact of the model structure, the deeper DNN model is trained. We investigate the performance of the DNN model with 5 hidden layers.
 
 		\begin{table}[htpb]
 			\centering
-			\caption{The training results of deeper DNN model. ``+ 3 times'' means the traing sample consists of original sample and 3 times augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\caption{The training results of deeper DNN model. ``+ 3 times'' means the training sample consists of the original sample and 3 times the augmented sample. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
 			\label{tab:augmentation_training_results_deeper_model}
 			\begin{tabular}{l|c|cccc}
 			Sample                            &     & Original          & + 3 times         & + 5 times         & + 10 times        \\ \hline
@@ -409,9 +409,109 @@
 			\end{tabular}
 		\end{table}
 
-		Table~\ref{tab:augmentation_training_results_deeper_model} are the training results with deeper DNN model. Models are only trained on ``All augmentation'' sample, because from Table~\ref{tab:augmentation_sample_training_results} we found that four augmentation methods yielded similar results. The results show that the augmented sample can improve ACC to 89\%, even from ``+ 3 times'' case and this accuracy value is similar to the previous test. These findings suggest that the classifier may have reached a saturation point and point out the difficulty of further improving accuracy on this test sample. 
+		Table~\ref{tab:augmentation_training_results_deeper_model} are the training results with a deeper DNN model. Models are only trained on the ``All augmentation'' sample because from Table~\ref{tab:augmentation_sample_training_results} we found that four augmentation methods yielded similar results. The results show that the augmented sample can improve ACC to 89\%, even from the ``+ 3 times'' case and this accuracy value is similar to the previous test. These findings suggest that the classifier may have reached a saturation point and point out the difficulty of further improving accuracy on this test sample. 
 	% subsection deeper_model (end)	
-% section physical_data_augmentation (end)		
+% section physical_data_augmentation (end)
+\section{Hidden valley model}% (fold)
+\label{sec:hidden_valley_model}
+	\subsection{Sample generation}% (fold)
+	\label{sub:sample_generation}
+		The signal process is $f \overline{f} \to Z_V$, where $Z_V$ is the massive gauge boson linking SM and the dark sector. The hidden $Z_V$ boson would decay to a pair of dark quark $q_V \overline{q}_V$, which would lead to two jets in the detector. The signal sample is generated by \verb|Pythia| and the detector simulation is done by \verb|Delphes|. For jet reconstruction, the $\text{anti-}k_t$ algorithm is utilized with parameter $R = 0.8$. 
+
+		The background sample is the SM di-jet sample. This process is generated at $\sqrt{s} = \text{13 TeV}$. Following are the \verb|MadGraph| scripts for generating background samples:	
+		\begin{verbatim}
+			generate p p > j j
+			output ppjj
+			launch ppjj
+
+			shower=Pythia8
+			detector=Delphes
+			analysis=OFF
+			madspin=OFF
+			done
+
+			Cards/delphes_card_CMS.dat
+
+			set run_card nevents 10000
+			set run_card ebeam1 6500.0
+			set run_card ebeam2 6500.0
+
+			set run_card ptj 700
+			set run_card etaj 2.2
+			set run_card mmjj 3000
+
+			done	
+		\end{verbatim}
+	% subsection sample_generation (end)
+	\subsection{Problem for generating signal sample}% (fold)
+	\label{sub:problem_for_generating_signal_sample}
+		Error messages:
+		\begin{verbatim}
+			PYTHIA Error: input string not found in settings databases::
+			  HiddenValley:separateFlav    = on                ! Consider different flavours
+
+			PYTHIA Error: input particle not found in Particle Data Table:
+			  4900102:m0                   = 10.3306
+
+			...
+		\end{verbatim}
+
+		Solution: This problem arises from the \verb|Pythia| version. At first, \verb|Pythia 8.306| is used to generate signal samples. Some features are not included in this version. We should use \verb|Pythia 8.307| at least. More details between 8.306 and 8.307 can be found in this \href{https://pythia.org/history/}{page}.
+	% subsection problem_for_generating_signal_sample (end)	
+	\subsection{Sample selection}% (fold)
+	\label{sub:sample_selection}
+		The selection cuts after the \verb|Delphes| simulation:
+		\begin{itemize}
+			\item $n_j$ cut: The number of jets should be greater than or equal to 2.
+			\item $p_{\text{T}}$ cut: The transverse momentum of two highest $p_{\text{T}}$ jets should greater $\text{750 GeV}$.
+			\item $\eta$ cut: The $\eta$ range of two highest  $p_{\text{T}}$ jets are require $\abs{\eta} < 2$.
+			\item Signal region: Total invariant mass of two leading jets $m_{jj}$ belonging to $[4700,5500]$. 
+			\item Sideband region: Total invariant mass of two leading jets $m_{jj}$ belonging to $[4300,4700] \cup [5500,5900]$.
+		\end{itemize}
+
+		Table~\ref{tab:HVmodel_cutflow_number} is the cutflow number at different selection cuts. Figure~\ref{fig:HVmodel_pt_distribution} is transverse momentum distribution after $n_j$ cut. Figure~\ref{fig:HVmodel_mjj_distribution} is the $m_{jj}$ distribution after the $\eta$ cut.
+		\begin{table}[htpb]
+			\centering
+			\caption{The number of passing events and passing rates for signal and background processes at different selection cuts.}
+			\label{tab:HVmodel_cutflow_number}
+			\begin{tabular}{l|rr|rr}
+			Cut                & Signal & pass rate & Background & pass rate \\ \hline
+			Total              & 10000  & 1         & 100000     & 1         \\
+			$n_j$ cut          & 10000  & 1.00      & 99963      & 1.00      \\
+			$p_{\text{T}}$ cut & 9890   & 0.99      & 57832      & 0.58      \\
+			$\eta$ cut         & 8975   & 0.90      & 55523      & 0.56      \\ \hline
+			SR region          & 5497   & 0.55      & 1991       & 0.02      \\
+			SB region          & 1667   & 0.17      & 3090       & 0.03     
+			\end{tabular}
+		\end{table}
+
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Signal]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-sig.png}
+			}
+			\subfloat[Background]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-bkg.png}
+			}
+			\caption{The transverse momentum distribution of leading and sub-leading jets. The red dashed lines are the $p_{\text{T}}$ cut.}
+			\label{fig:HVmodel_pt_distribution}
+		\end{figure}
+
+		\begin{figure}[htpb]
+			\centering
+			
+			\subfloat[My plot]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_mjj_distribution.png}
+			}
+			\subfloat[Zong-En's plot]{
+				\includegraphics[width=0.50\textwidth]{HVmodel_mjj_distribution-Zong-En.png}
+			}
+			\caption{The totoal invriant mass $m_{jj}$ distribution of signal and background samples. In my plot, the signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
+			\label{fig:HVmodel_mjj_distribution}
+		\end{figure}
+	% subsection sample_selection (end)	
+% section hidden_valley_model (end)		
+
 \bibliographystyle{plain}
 \bibliography{reference}
 		
