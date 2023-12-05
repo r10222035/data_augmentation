@@ -1,0 +1,21 @@
+generate p p > j j
+output ppjj
+launch ppjj
+
+shower=Pythia8
+detector=Delphes
+analysis=OFF
+madspin=OFF
+done
+
+Cards/delphes_card_CMS.txt
+
+set run_card nevents 10000
+set run_card ebeam1 6500.0
+set run_card ebeam2 6500.0
+
+set run_card ptj 700
+set run_card etaj 2.2
+set run_card mmjj 3000
+
+done
