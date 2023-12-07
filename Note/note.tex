@@ -159,7 +159,7 @@
 			\subfloat[$m_H = \text{1000 GeV}$]{
 				\includegraphics[width=0.45\textwidth]{mhh_distribution-1000GeV.png}
 			}
-			\caption{The totoal invriant mass $m_{hh}$ distribution of signal and background samples. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
+			\caption{The total invariant mass $m_{hh}$ distribution of signal and background samples. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
 			\label{fig:mhh_distribution}
 		\end{figure}
 
@@ -295,6 +295,16 @@
 
 		 Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m} summarizes the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. The training datasets with and without signal events still have similar results. Compared to the previous one (Table~\ref{tab:cwola_hunting_DNN_results}) the accuracy values are closer to 0.5. These results suggest that the removed features have a significant contribution to the model's discrimination power, and the remaining parameters are hard to utilize to distinguish the signal and background events.
 	% subsection remove_highly_correlated_features (end)	
+	\subsection{Transverse momentum cut testing}% (fold)
+	\label{sub:pt_cut_testing}
+		In Figure~\ref{fig:mhh_distribution}, the distribution of the background sample exhibits a gradual termination around $\text{150 GeV}$. To investigate whether this termination is a result of the ``four-tag cut'', which requires $p_{\text{T}} > \text{40 GeV}$, total invariant mass distributions with different $p_{\text{T}}$ cuts are plotted in Figure~\ref{fig:mhh_distribution_bkg_pt}. As the transverse momentum requirement increases from $\text{40 GeV}$ to $\text{70 GeV}$, the termination point also shifts to larger values. Moreover, the termination remains gradual rather than an abrupt cut-off, suggesting that the gradual termination indeed results from the transverse momentum cut.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.5\textwidth]{m4j_distribution_background_various_pt_cut.png}
+			\caption{The total invariant mass $m_{\text{4j}}$ distribution of background samples. The transverse momentum requirement is varied from $\text{40 GeV}$ to $\text{70 GeV}$.}
+			\label{fig:mhh_distribution_bkg_pt}
+		\end{figure}
+	% subsection pt_cut_testing (end)
 % section cwola_hunting (end)		
 \section{Physical data augmentation}% (fold)
 \label{sec:physical_data_augmentation}
