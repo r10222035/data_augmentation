@@ -305,6 +305,62 @@
 			\label{fig:mhh_distribution_bkg_pt}
 		\end{figure}
 	% subsection pt_cut_testing (end)
+	\subsection{Enlarge the signal sample size}% (fold)
+	\label{sub:enlarge_the_signal_sample_size}
+		Another issue arises from the low signal fraction (Table~\ref{tab:training_sample_size_cwola_hunting}), making DNN difficult to extract meaningful information about signal events. To investigate the impact of signal sample size, we increase the signal size manually and retrain the DNN model. The training sample sizes are summarized in Table~\ref{tab:training_sample_size_cwola_hunting_enlarge_signal_size}.
+
+		\begin{table}[htpb]
+			\centering
+			\caption{The training sample size for the mixed sample. Various signal sizes are considered, and the background sizes are fixed for all cases. ``1 times'' represents the previous ``With signal'' case and ``0 times'' represents the previous ``No signal'' case.}
+			\label{tab:training_sample_size_cwola_hunting_enlarge_signal_size}
+			\begin{tabular}{c|c|cccc|c}
+									  &              & \multicolumn{4}{c|}{Signal}              & Background \\ \hline
+				$m_H$ (GeV)           & Mixed sample & 1 times & 0 times & 10 times & 100 times & All        \\ \hline
+				\multirow{2}{*}{500}  & $M_1$        & 244     & 0       & 2438     & 24380     & 200k       \\
+									  & $M_2$        & 28      & 0       & 276      & 2760      & 184k       \\ \hline
+				\multirow{2}{*}{1000} & $M_1$        & 5       & 0       & 49       & 492       & 26k        \\
+									  & $M_2$        & 1       & 0       & 8        & 75        & 25k       
+			\end{tabular}
+		\end{table}
+
+		\begin{table}[htpb]
+			\centering
+			\caption{The CWoLa DNN training results. The transverse momentum and invariant mass of Higgs candidates are removed from samples. 1 time and 0 times are the with signal and no signal case in Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m}. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size}
+			\begin{tabular}{c|c|cc}
+				$m_H$ (GeV)           & times & ACC               & AUC               \\ \hline
+				\multirow{4}{*}{500}  & 1     & $0.526 \pm 0.020$ & $0.536 \pm 0.053$ \\
+									  & 10    & $0.531 \pm 0.027$ & $0.533 \pm 0.045$ \\
+									  & 100   & $0.634 \pm 0.014$ & $0.751 \pm 0.030$ \\
+									  & 0     & $0.532 \pm 0.015$ & $0.543 \pm 0.029$ \\ \hline
+				\multirow{4}{*}{1000} & 1     & $0.586 \pm 0.030$ & $0.625 \pm 0.046$ \\
+									  & 10    & $0.626 \pm 0.027$ & $0.678 \pm 0.040$ \\
+									  & 100   & $0.621 \pm 0.012$ & $0.670 \pm 0.023$ \\
+									  & 0     & $0.564 \pm 0.024$ & $0.583 \pm 0.042$
+			\end{tabular}
+		\end{table}
+
+		Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size} provides the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. For the $\text{500 GeV}$ case, the ``0 times,'', ``1 times,'' and ``10 times'' samples yield similar results, while ``100 times'' sample exhibits better performance. This suggests that the CWoLa DNN can extract meaningful information from the ``100 times'' sample. In the case of $\text{1000 GeV}$, we can obtain better results when the signal sample size increases. The performance of 10 times and 100 times is similar. It seems that the training performance is saturated. 
+
+		To further understand the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, additional samples within this size range are generated, and the DNN is trained on these samples.
+
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{ACC_vs_signal_sample_size-500GeV.pdf}
+			\caption{The accuracy of CWoLa DNN training as a function of the signal size. The unit of sample size is the size of the ``1 times'' case. The error bar is the standard deviation of 10 training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_500GeV}
+		\end{figure}
+
+		Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_500GeV} is the training performance against the signal sample size. In this region, the performance increases when the signal size is increased. 120 times and 150 times samples are also generated and used in training. The accuracy is saturated at around 63\%.
+
+		Similarly, for the $\text{1000 GeV}$ case, the DNN is trained on samples with sizes ranging from 1 to 10 times. Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_1000GeV} is the training performance against the signal sample size. The performance is similar for all cases. The training accuracy is saturated at around 62\%.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{ACC_vs_signal_sample_size-1000GeV.pdf}
+			\caption{The performance of CWoLa DNN training as a function of the signal size. The unit of sample size is the size of the ``1 times'' case. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_1000GeV}
+		\end{figure}
+	% subsection enlarge_the_signal_sample_size (end)
 % section cwola_hunting (end)		
 \section{Physical data augmentation}% (fold)
 \label{sec:physical_data_augmentation}
@@ -458,7 +514,7 @@
 		Error messages:
 		\begin{verbatim}
 			PYTHIA Error: input string not found in settings databases::
-			  HiddenValley:separateFlav    = on                ! Consider different flavours
+			  HiddenValley:separateFlav    = on      ! Consider different flavours
 
 			PYTHIA Error: input particle not found in Particle Data Table:
 			  4900102:m0                   = 10.3306
