@@ -120,10 +120,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[DNN]{
-				\includegraphics[width=0.45\textwidth]{CWoLa_DNN.png}
+				\includegraphics[width=0.45\textwidth]{CWoLa_DNN.pdf}
 			}
 			\subfloat[SPANet]{
-				\includegraphics[width=0.45\textwidth]{CWoLa_SPANet.png}
+				\includegraphics[width=0.45\textwidth]{CWoLa_SPANet.pdf}
 			}
 			\caption{The AUC of CWoLa training as a function of the signal fraction $f_1$. For simplicity, we set signal fraction $f_2$ equal to $1 - f_1$. The horizontal dashed line indicates the fully-supervised AUC.}
 			\label{fig:CWoLa_training_result}
@@ -136,7 +136,7 @@
 		To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. As expected, the AUC is close to $0.5$ when $f_1 = 0.5$. 
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.65\textwidth]{CWoLa_SPANet_no_pair.png}
+			\includegraphics[width=0.65\textwidth]{CWoLa_SPANet_no_pair.pdf}
 			\caption{The AUC of CWoLa SPANet training as a function of the signal fraction $f_1$. For simplicity, we set signal fraction $f_2$ equal to $1 - f_1$. Here, SPANet is trained on the classification task only.}
 			\label{fig:CWoLa_SPANet_without_pairing}
 		\end{figure}	
@@ -154,10 +154,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[$m_H = \text{500 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{mhh_distribution-500GeV.png}
+				\includegraphics[width=0.45\textwidth]{mhh_distribution-500GeV.pdf}
 			}
 			\subfloat[$m_H = \text{1000 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{mhh_distribution-1000GeV.png}
+				\includegraphics[width=0.45\textwidth]{mhh_distribution-1000GeV.pdf}
 			}
 			\caption{The total invariant mass $m_{hh}$ distribution of signal and background samples. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
 			\label{fig:mhh_distribution}
@@ -227,13 +227,13 @@
 	 	\begin{figure}[htpb]
 			\centering
 			\subfloat[$m_H = \text{500 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-500GeV.png}
-				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-500GeV.png}
+				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-500GeV.pdf}
+				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-500GeV.pdf}
 			}
 			\\
 			\subfloat[$m_H = \text{1000 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-1000GeV.png}
-				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-1000GeV.png}
+				\includegraphics[width=0.45\textwidth]{DNN_w_sig_signal_score_distribution-1000GeV.pdf}
+				\includegraphics[width=0.45\textwidth]{DNN_wo_sig_signal_score_distribution-1000GeV.pdf}
 			}
 			\caption{The signal score distributions. We apply the CWoLa DNN on pure samples to obtain the signal score distributions.}
 			\label{fig:signal_score_distribution}
@@ -251,14 +251,14 @@
 
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.9\textwidth]{correlation_coefficients-500GeV.png}
+			\includegraphics[width=0.9\textwidth]{correlation_coefficients-500GeV.pdf}
 			\caption{The correlation coefficients among different variables, which are computed from $\text{500 GeV}$ testing sample, which consists of 5k signal and 5k background.}
 			\label{fig:correlation_coefficient_500GeV}
 		\end{figure}
 		
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.9\textwidth]{correlation_coefficients-1000GeV.png}
+			\includegraphics[width=0.9\textwidth]{correlation_coefficients-1000GeV.pdf}
 			\caption{The correlation coefficients among different variables, which are computed from $\text{1000 GeV}$ testing sample, which consists of 5k signal and 5k background.}
 			\label{fig:correlation_coefficient_1000GeV}
 		\end{figure}
@@ -267,10 +267,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[$m_H = \text{500 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-500GeV.png}
+				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-500GeV.pdf}
 			}
 			\subfloat[$m_H = \text{1000 GeV}$]{
-				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-1000GeV.png}
+				\includegraphics[width=0.45\textwidth]{scatter_plot_mhh_pt1-1000GeV.pdf}
 			}
 			\caption{The scatter plots of the transverse momentum of leading Higgs candidate $p_{\text{T}1}$ and total invariant mass $m_{hh}$ distribution. The signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
 			\label{fig:pt1_mhh_scatter_plot}
@@ -300,7 +300,7 @@
 		In Figure~\ref{fig:mhh_distribution}, the distribution of the background sample exhibits a gradual termination around $\text{150 GeV}$. To investigate whether this termination is a result of the ``four-tag cut'', which requires $p_{\text{T}} > \text{40 GeV}$, total invariant mass distributions with different $p_{\text{T}}$ cuts are plotted in Figure~\ref{fig:mhh_distribution_bkg_pt}. As the transverse momentum requirement increases from $\text{40 GeV}$ to $\text{70 GeV}$, the termination point also shifts to larger values. Moreover, the termination remains gradual rather than an abrupt cut-off, suggesting that the gradual termination indeed results from the transverse momentum cut.
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.5\textwidth]{m4j_distribution_background_various_pt_cut.png}
+			\includegraphics[width=0.5\textwidth]{m4j_distribution_background_various_pt_cut.pdf}
 			\caption{The total invariant mass $m_{\text{4j}}$ distribution of background samples. The transverse momentum requirement is varied from $\text{40 GeV}$ to $\text{70 GeV}$.}
 			\label{fig:mhh_distribution_bkg_pt}
 		\end{figure}
@@ -395,10 +395,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{eta1_distribution_eta_phi_smearing.png}
+				\includegraphics[width=0.45\textwidth]{eta1_distribution_eta_phi_smearing.pdf}
 			}
 			\subfloat[Sub-leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{eta2_distribution_eta_phi_smearing.png}
+				\includegraphics[width=0.45\textwidth]{eta2_distribution_eta_phi_smearing.pdf}
 			}
 			\caption{The pseudorapidity distribution before and after the $\eta-\phi$ smearing augmentation. $\eta_1$ and $\eta_2$ are the pseudorapidities of the leading and the sub-leading Higgs candidate, respectively.}
 			\label{fig:eta_phi_smearing_eta_distribution}
@@ -406,10 +406,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{phi1_distribution_eta_phi_smearing.png}
+				\includegraphics[width=0.45\textwidth]{phi1_distribution_eta_phi_smearing.pdf}
 			}
 			\subfloat[Sub-leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{phi2_distribution_eta_phi_smearing.png}
+				\includegraphics[width=0.45\textwidth]{phi2_distribution_eta_phi_smearing.pdf}
 			}
 			\caption{The azimuthal angle distribution before and after the $\eta-\phi$ smearing augmentation. $\phi_1$ and $\phi_2$ are the azimuthal angles of the leading and the sub-leading Higgs candidate, respectively.}
 			\label{fig:eta_phi_smearing_phi_distribution}
@@ -417,10 +417,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{pt1_distribution_pt_smearing.png}
+				\includegraphics[width=0.45\textwidth]{pt1_distribution_pt_smearing.pdf}
 			}
 			\subfloat[Sub-leading Higgs]{
-				\includegraphics[width=0.45\textwidth]{pt2_distribution_pt_smearing.png}
+				\includegraphics[width=0.45\textwidth]{pt2_distribution_pt_smearing.pdf}
 			}
 			\caption{The transverse momentum distribution before and after the $p_{\text{T}}$ smearing augmentation. $p_{\text{T1}}$ and $p_{\text{T2}}$ are the transverse momentum of the leading and the sub-leading Higgs candidates, respectively.}
 			\label{fig:pt_smearing_pt_distribution}
@@ -554,10 +554,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Signal]{
-				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-sig.png}
+				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-sig.pdf}
 			}
 			\subfloat[Background]{
-				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-bkg.png}
+				\includegraphics[width=0.45\textwidth]{HVmodel_pt_distribution-bkg.pdf}
 			}
 			\caption{The transverse momentum distribution of leading and sub-leading jets. The red dashed lines are the $p_{\text{T}}$ cut.}
 			\label{fig:HVmodel_pt_distribution}
@@ -567,7 +567,7 @@
 			\centering
 			
 			\subfloat[My plot]{
-				\includegraphics[width=0.45\textwidth]{HVmodel_mjj_distribution.png}
+				\includegraphics[width=0.45\textwidth]{HVmodel_mjj_distribution.pdf}
 			}
 			\subfloat[Zong-En's plot]{
 				\includegraphics[width=0.50\textwidth]{HVmodel_mjj_distribution-Zong-En.png}
