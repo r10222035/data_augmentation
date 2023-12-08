@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python train_CWoLa_hunting.py
+# python train_CWoLa_hunting.py <train_file> <true_file> <model_name> <sample_type>
+# python train_CWoLa_hunting.py ../Sample/DNN/CWoLa_hunting_10times_signal-500GeV.npy ../Sample/DNN/min_dR_500GeV_test.npy 10times_sig_no_higgs_pt_m_500GeV "500 GeV: 10 times signal, no Higgs pT, m"
 
 import os
+from random import sample
 import sys
 import shutil
 import datetime
@@ -38,7 +40,10 @@ def get_sample_size(y):
 def main():
 
     # Training sample
-    data_path = f'../Sample/DNN/CWoLa_hunting_with_signal.npy'
+    data_path = sys.argv[1]
+    true_label_path = sys.argv[2]
+    model_name = sys.argv[3]
+    sample_type = sys.argv[4]
     
     d_col = (0,3,4,7)
     X, y = load_samples(data_path, d_col)
@@ -52,7 +57,7 @@ def main():
     min_delta = 0.
     learning_rate = 0.0005
     batch_size = 256
-    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_w_sig_no_higgs_pt_m_1000GeV/'
+    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_{model_name}/'
 
     # 建立 DNN
     n_layers = 2
@@ -75,7 +80,7 @@ def main():
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
 
     # Training results
-    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_w_sig_no_higgs_pt_m_1000GeV/'
+    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_{model_name}/'
     if not os.path.isdir(best_model_name):
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
@@ -104,7 +109,6 @@ def main():
 
 
     # Testing results on true label sample
-    true_label_path = f'../Sample/DNN/min_dR_1000GeV_test.npy'
     X_test, y_test = load_samples(true_label_path, delete_col=(0,3,4,7,10,11,12,13,15))
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
@@ -133,7 +137,7 @@ def main():
                 'AUC': [AUC],
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
-                'Sample Type': ['1000 GeV: With signal, no Higgs pT, m'],
+                'Sample Type': [sample_type],
                 'time': [now],
                 }
     
