@@ -51,10 +51,11 @@ def main():
     min_delta = 0.
     learning_rate = 0.0005
     batch_size = 256
-    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_wo_sig_no_higgs_pt_m_1000GeV/'
+    model_name = 'deep_wo_sig_no_higgs_pt_m_1000GeV'
+    save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_{model_name}/'
 
     # 建立 DNN
-    n_layers = 2
+    n_layers = 4
     num_hidden = 64
 
     model = Sequential()
@@ -74,7 +75,7 @@ def main():
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
 
     # Training results
-    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_wo_sig_no_higgs_pt_m_1000GeV/'
+    best_model_name = f'./DNN_models/DNN_best_model_CWoLa_hunting_{model_name}/'
     if not os.path.isdir(best_model_name):
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
@@ -134,6 +135,7 @@ def main():
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
                 'Sample Type': ['1000 GeV: No signal, no Higgs pT, m'],
+                'Model Name': [model_name],
                 'time': [now],
                 }
     

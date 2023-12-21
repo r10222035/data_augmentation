@@ -60,7 +60,7 @@ def main():
     save_model_name = f'./DNN_models/DNN_last_model_CWoLa_hunting_{model_name}/'
 
     # 建立 DNN
-    n_layers = 2
+    n_layers = 4
     num_hidden = 64
 
     model = Sequential()
@@ -138,6 +138,7 @@ def main():
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
                 'Sample Type': [sample_type],
+                'Model Name': [model_name],
                 'time': [now],
                 }
     
