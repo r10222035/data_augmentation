@@ -9,5 +9,5 @@
 *.blg
 Sample/
 /Reference
-DNN_models/
+*_models/
 *.sh
