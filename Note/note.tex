@@ -360,7 +360,33 @@
 			\caption{The performance of CWoLa DNN training as a function of the signal size. The unit of sample size is the size of the ``1 times'' case. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_1000GeV}
 		\end{figure}
+
 	% subsection enlarge_the_signal_sample_size (end)
+	\subsection{Training with deeper model}% (fold)
+	\label{sub:training_with_deeper_model}
+		In Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_1000GeV}, the performance of CWoLa DNN is quickly saturated. To investigate the impact of the model structure, the deeper DNN model is trained. In Section~\ref{sub:enlarge_the_signal_sample_size}, DNN consists of 2 hidden layers, while in this section we train the DNN with 4 hidden layers.
+
+		The DNN is trained on signal sample size ranging from 1 to 500 times. Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size_deeper_model} and Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV} are the training results. The performance is generally better than the previous results, even for the without signal case. It seems that the previous model structure is too simple and it limits the training performance. For the signal size within 1 times to 300 times, the performance increases when the signal size is increased. After this region, the accuracy does not significantly improve. The accuracy is saturated at around 67\%, but this value is still better than the previous ones.
+
+		\begin{table}[htpb]
+			\centering
+			\caption{The CWoLa DNN training results. The transverse momentum and invariant mass of Higgs candidates are removed from samples. 1 time and 0 times are the with signal and no signal case in Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m}. ACC is the best accuracy and AUC is the area under the ROC curve. The average and standard deviation of 10 training are presented.}
+			\label{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size_deeper_model}
+			\begin{tabular}{c|c|cc}
+				$m_H$ (GeV)           & times & ACC               & AUC               \\ \hline
+				\multirow{4}{*}{1000} & 1     & $0.613 \pm 0.017$ & $0.649 \pm 0.021$ \\
+									  & 10    & $0.622 \pm 0.018$ & $0.673 \pm 0.033$ \\
+									  & 100   & $0.639 \pm 0.022$ & $0.695 \pm 0.034$ \\
+									  & 0     & $0.602 \pm 0.022$ & $0.643 \pm 0.042$
+			\end{tabular}
+		\end{table}
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{ACC_vs_signal_sample_size_deeper_model-1000GeV.pdf}
+			\caption{The performance of CWoLa DNN training as a function of the signal size. The unit of sample size is the size of the ``1 times'' case. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV}
+		\end{figure}
+	% subsection training_with_deeper_model (end)	
 % section cwola_hunting (end)		
 \section{Physical data augmentation}% (fold)
 \label{sec:physical_data_augmentation}
@@ -391,7 +417,7 @@
 				where $p_{\text{T}}'$ is the augmented transverse momentum, $f\left( p_\text{T} \right) $ is the energy smearing applied by \verb|Delphes| (the $p_{\text{T}}$'s are normalised by $\text{1 GeV}$).
 		\end{enumerate}
 
-		Figure~\ref{fig:eta_phi_smearing_eta_distribution}, \ref{fig:eta_phi_smearing_phi_distribution} and \ref{fig:pt_smearing_pt_distribution} are the distributions before and after the augmentation. For the $\eta-\phi$ smearing, the distributions are similar for both cases. For $p_\text{T}$ smearing, the peak broadens and the transverse momentum distribution looks smoother.
+		Figure~\ref{fig:eta_phi_smearing_eta_distribution}, \ref{fig:eta_phi_smearing_phi_distribution} and \ref{fig:pt_smearing_pt_distribution} are the distributions before and after the augmentation. The distributions for the $\eta-\phi$ smearing are similar for both cases. For $p_\text{T}$ smearing, the peak broadens and the transverse momentum distribution looks smoother.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading Higgs]{
