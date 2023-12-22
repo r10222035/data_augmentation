@@ -650,7 +650,7 @@
 								& \multicolumn{2}{c}{True label} \\
 				Mixed sample    & Signal       & Background      \\ \hline
 				Signal region   & 138          & 19k             \\
-				Sideband region & 40           & 29k            
+				Sideband region & 40           & 29k
 			\end{tabular}
 		\end{table}	
 	% subsection training_datasets (end)
@@ -664,10 +664,20 @@
 			\label{fig:cnn_model_structure}
 		\end{figure}
 	% subsection training_cnn (end)	
-% section hidden_valley_model (end)		
+	\subsection{Hidden valley model training results}% (fold)
+	\label{sub:hidden_valley_model_training_results}
+		The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. For the case with a sensitivity $S / \sqrt{B} \le  5$, the CNN can not learn useful information, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
+
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN.pdf}
+			\caption{The performance of CWoLa CNN training as a function of the sensitivity. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. For sensitivity less than 5, the error bar is too small to see.}
+			\label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV}
+		\end{figure}	
+	% subsection hidden_valley_model_training_results (end)	
+% section hidden_valley_model (end)
 
 \bibliographystyle{plain}
 \bibliography{reference}
 		
 \end{document} 
-
