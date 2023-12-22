@@ -4,7 +4,6 @@
 # python train_CWoLa_hunting.py ../Sample/DNN/CWoLa_hunting_10times_signal-500GeV.npy ../Sample/DNN/min_dR_500GeV_test.npy 10times_sig_no_higgs_pt_m_500GeV "500 GeV: 10 times signal, no Higgs pT, m"
 
 import os
-from random import sample
 import sys
 import shutil
 import datetime
