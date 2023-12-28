@@ -7,7 +7,6 @@
 *.synctex.gz
 *.bbl
 *.blg
-Sample/
 /Reference
 *_models/
 *.sh
