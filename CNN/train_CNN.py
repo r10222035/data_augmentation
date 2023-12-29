@@ -18,11 +18,14 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 
-def load_samples(path):
+def load_samples(path, change_order=True):
 
     root, _ = os.path.splitext(path)
 
-    X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)   
+    if change_order:
+        X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)   
+    else:
+        X = np.load(f'{root}-data.npy')
     Y = np.eye(2)[np.load(f'{root}-label.npy')]
     
     return X, Y
@@ -68,7 +71,7 @@ def main():
 
     print(f'Read data from {data_path}')
 
-    X, y = load_samples(data_path)
+    X, y = load_samples(data_path, False)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
