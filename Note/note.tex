@@ -263,7 +263,7 @@
 			\label{fig:correlation_coefficient_1000GeV}
 		\end{figure}
 
-		The results show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly correlated to the total invariant mass. Figure~\ref{fig:pt1_mhh_scatter_plot} shows the scatter plots of the transverse momentum of the leading Higgs candidate and the total invariant mass $m_{\text{hh}}$. These plots also explain why the DNN only trained on background samples can also distinguish the signal and background events, because the background distribution in the signal and sideband regions are different.  
+		The results show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly correlated to the total invariant mass. Figure~\ref{fig:pt1_mhh_scatter_plot} shows the scatter plots of the transverse momentum of the leading Higgs candidate and the total invariant mass $m_{\text{hh}}$. These plots also explain why the DNN only trained on background samples can distinguish the signal and background events, because the background distribution in the signal and sideband regions are different.  
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[$m_H = \text{500 GeV}$]{
@@ -619,12 +619,12 @@
 	% subsection sample_selection (end)	
 	\subsection{Jet image}% (fold)
 	\label{sub:jet_image}
-		For the event passing the selection cuts described in Section~\ref{sub:sample_selection}, we can construct the jet image from it. The jet image is constructed for each jet separately, so for each event, we would obtain two jet images. They are treated as two channels of a picture. The jet image is constructed by the following steps:
+		For the event passing the selection cuts described in Section~\ref{sub:sample_selection}, we can construct the jet image from it. The jet image is constructed for each jet separately, so for each event, we would obtain two jet images. They are treated as two channels of a picture. The following steps construct the jet image:
 		\begin{enumerate}
 			\item Centralization: Compute the $p_{\text{T}}$ weighted center in $\left( \eta,\phi \right) $ coordinates, then shift this point to origin.
 			\item Rotation: Rotate the highest intensity axis to the $\eta$ axis.
 			\item Flipping:	Flip the highest intensity quadrant to the first quadrant.
-			\item Pixelating in $\Delta\eta = \Delta\phi = 2$ box, with $75\times 75$ pixels.
+			\item Pixelating in $\eta \in [-1,1],\ \phi \in [-1,1]$ box, with $75\times 75$ pixels.
 		\end{enumerate}
 
 		Figure~\ref{fig:HVmodel_jet_image_one_event} is the jet images of a single event. Figure~\ref{fig:HVmodel_jet_image_average} is the average jet image. 
@@ -654,7 +654,7 @@
 	% subsection jet_image (end)
 	\subsection{Training datasets}% (fold)
 	\label{sub:training_datasets}
-		The total cross-section of the background events is $6837 \text{ fb}$. From Table~\ref{tab:HVmodel_cutflow_number}, we can compute the corresponding cross-sections of signal and sideband regions are $136.1 \text{ fb}$ and $211.2 \text{ fb}$, respectively. Thus, the numbers of events in signal and sideband region are $19k$ and $29k$ at luminosity $\mathcal{L} = 139 \text{ fb}^{-1}$.
+		The total cross-section of the background events is $6837 \text{ fb}$. From Table~\ref{tab:HVmodel_cutflow_number}, we can compute the corresponding cross-sections of signal and sideband regions are $136.1 \text{ fb}$ and $211.2 \text{ fb}$, respectively. Thus, the numbers of events in signal and sideband region are 19k and 29k at luminosity $\mathcal{L} = 139 \text{ fb}^{-1}$.
 
 		The training sample sizes are summarized in Table~\ref{tab:training_sample_size_cwola_hunting_hv}.
 		\begin{table}[htpb]
@@ -679,9 +679,9 @@
 			\label{fig:cnn_model_structure}
 		\end{figure}
 	% subsection training_cnn (end)	
-	\subsection{Hidden valley model training results}% (fold)
+	\subsection{Hidden Valley model training results}% (fold)
 	\label{sub:hidden_valley_model_training_results}
-		The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_cnn_acc} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. For the case with a sensitivity $S / \sqrt{B} \le  5$, the CNN can not learn useful information, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
+		The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_cnn_acc} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. The CNN cannot learn useful information for the case with a sensitivity $S / \sqrt{B} \le  5$, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
 
 		\begin{figure}[htpb]
 			\centering
@@ -689,7 +689,85 @@
 			\caption{The performance of CWoLa CNN training as a function of the sensitivity. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. For sensitivity less than 5, the error bar is too small to see.}
 			\label{fig:cwola_hunting_cnn_acc}
 		\end{figure}	
-	% subsection hidden_valley_model_training_results (end)	
+	% subsection hidden_valley_model_training_results (end)
+	\subsection{Data process procedure}% (fold)
+	\label{sub:data_process_procedure}
+		\begin{enumerate}
+			\item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
+			\item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. The file contains the information listed below 
+				\begin{itemize}
+					\item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
+					\item Total invariant mass $m_{jj}$.
+					\item Type of event: 1 for signal, 0 for background.	
+				\end{itemize}
+			\item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:training_datasets}, we can compute the size of datasets.	
+			\item Apply data augmentation in \verb|HDF5| format. Following Section~\ref{sub:data_augmentation}.
+			\item Generate the jet image from \verb|HDF5| data.
+		\end{enumerate}
+		Note the preprocessing is done in step 5. If we do the preprocessing many times, then the rounding errors would break the jet image.
+	% subsection data_process_procedure (end)	
+	\subsection{Data augmentation}% (fold)
+	\label{sub:data_augmentation}
+		To reduce the threshold, the data augmentation technique is tested. Similar to the Section~\ref{sub:physical_augmentation}, we apply the $\eta-\phi$ smearing on our training sample. Specifically, the $\left( \eta,\phi \right) $ coordinate of jet constituents are resampled according to a Normal distribution centered on the original coordinate and with a standard deviation inversely proportional to the $p_{\text{T}}$
+				\begin{equation}
+					\eta' \sim \mathcal{N}\left(\eta, \frac{\Lambda}{p_{\text{T}}}\right), \quad \phi' \sim \mathcal{N}\left(\phi, \frac{\Lambda}{p_{\text{T}}}\right)
+				\end{equation}
+				where $\eta', \phi'$ are the augmented coordinate, $p_{\text{T}}$ is the transverse momentum of the jet constituent, and the smearing scale is set to be $\Lambda = \text{100 MeV}$.
+
+		Figure~\ref{fig:eta_phi_smearing_jet_constituent_jet_image} and \ref{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image} are the jet image before and after the augmentation. The jet images look similar before and after the augmentation, but not the same.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Before augmentation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_original.pdf}
+			} \\
+			\subfloat[After augmentation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_eta_phi_smearing.pdf}
+			}
+			\caption{The jet images before and after the $\eta-\phi$ smearing augmentation.}
+			\label{fig:eta_phi_smearing_jet_constituent_jet_image}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Before augmentation]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_original.pdf}
+			}
+			\subfloat[After augmentation]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
+			}
+			\caption{The average jet images before and after the $\eta-\phi$ smearing augmentation.}
+			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
+		\end{figure}
+		
+		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. For the ``+1 times'' curve, the ACC is better than previous results (Figure~\ref{fig:cwola_hunting_cnn_acc}) for all sensitivities. It seems that the data augmentation technique can suppress the threshold and improve the training performance.
+
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN_aug_1.pdf}
+			\caption{The performance of CWoLa CNN training as a function of the sensitivity. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_cnn_acc_data_augmetation}
+		\end{figure}
+
+		 Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation_3_times} presents the training results with larger samples. For the ``+3 times'' curve, there is a strange result, the ACC is worse than the ``+1 times'' case for sensitivities $S / \sqrt{B} \ge 3$. There are some problems in the training procedure, e.g. overfitting.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN_aug_1_3.pdf}
+			\caption{The performance of CWoLa CNN training as a function of the sensitivity. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_cnn_acc_data_augmetation_3_times}
+		\end{figure}
+
+		 Figure~\ref{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_aug_1_3} shows the average jet image for different augmentation times.
+		 \begin{figure}[htpb]
+			\centering
+			\subfloat[+1 times]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
+			}
+			\subfloat[+3 times]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_3.pdf}
+			}
+			\caption{The average jet images of the $\eta-\phi$ smearing augmentation with different times.}
+			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_aug_1_3}
+		\end{figure}
+	% subsection data_augmentation (end)	
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
