@@ -6,17 +6,16 @@
 import os
 import sys
 import shutil
-os.environ['CUDA_VISIBLE_DEVICES']='0'
-
-# import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
 import datetime
+
+import numpy as np
 import pandas as pd
-# from tqdm import tqdm
+import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, roc_curve
+
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 def load_samples(path, change_order=True):
 
@@ -63,6 +62,34 @@ class CNN(tf.keras.Model):
         latent_ptqk = self.ptqk(inputs)
         
         return self._output(latent_ptqk)
+
+def get_tpr_from_fpr(passing_rate, fpr, tpr):
+    n_th = (fpr < passing_rate).sum()
+    return tpr[n_th]
+   
+def get_sensitivity_scale_factor(model_name, background_efficiencies):
+    true_label_path = f'../Sample/HVmodel/data/mix_sample_testing.npy'
+    X_test, y_test = load_samples(true_label_path)
+
+    loaded_model = tf.keras.models.load_model(model_name)
+    true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
+
+    if true_label_results[1] < 0.5:
+        y_test = y_test[:,[1,0]]
+        
+    # Compute False positive rate, True positive rate
+    predictions = loaded_model.predict(X_test)
+
+    labels = np.argmax(y_test, axis=1)
+    y_prob = np.array(predictions)
+
+    fpr, tpr, _ = roc_curve(labels==1, y_prob[:,1])
+
+    signal_efficiencies = []
+    for bkg_eff in background_efficiencies:
+        signal_efficiencies.append(get_tpr_from_fpr(bkg_eff, fpr, tpr))
+
+    return np.array(signal_efficiencies) / np.array(background_efficiencies)**0.5
 
 def main():
     data_path = sys.argv[1]
@@ -147,6 +174,9 @@ def main():
     i = 1
     true_label_AUC = roc_auc_score(y_test==i,  y_prob[:,i])
 
+    background_efficiencies = [0.1, 0.01, 0.001]
+    scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies)
+
     # Write results
     now = datetime.datetime.now()
     file_name = 'CWoLa_Hunting_Hidden_Valley_training_results.csv'
@@ -159,6 +189,9 @@ def main():
                 'AUC-true': [true_label_AUC],
                 'Sample Type': [sample_type],
                 'Model Name': [model_name],
+                'TPR/FPR^0.5: FPR=0.1': [scale_factors[0]],
+                'TPR/FPR^0.5: FPR=0.01': [scale_factors[1]],
+                'TPR/FPR^0.5: FPR=0.001': [scale_factors[2]],
                 'time': [now],
                 }
     
