@@ -92,19 +92,20 @@ def get_pt_eta_phi(constituents):
     return pts, etas, phis
 
 def from_root_to_h5(tree, output_path, nevent, signal):
+    # Select events and save the jets information to h5 file
+
     # Hidden Valley model selection
     # 1. 2 jets
     # 2. pT > 750 GeV
     # 3. |eta| < 2.0
     # 4. 4300 < Mjj < 5900 GeV
 
-    MAX_JETS = 300
-
-    event_index = 0
     with h5py.File(output_path, 'w') as f_out:
 
+        MAX_JETS = 300
         create_dataset(f_out, nevent, MAX_JETS)
 
+        event_index = 0
         for event_id, event in tqdm(enumerate(tree)):
 
             if event.Jet_size < 2:

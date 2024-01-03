@@ -20,6 +20,8 @@ def std_phi(phi):
 
 def quadrant_max_vectorized(eta, phi, pt):
         # 建立條件列表
+        # eta, phi shape: (n_events, n_constituents)
+        # pt_quadrants shape: (n_events, 4)
         conditions = [
             (eta > 0) & (phi > 0),
             (eta > 0) & (phi < 0),
@@ -43,6 +45,7 @@ def preprocess(pts, etas, phis):
     phis = std_phi(phis)
 
     # compute pt weighted center
+    # eta_central shape: (n_events, 1)
     eta_central = ((pts * etas).sum(axis=1) / pts.sum(axis=1))[:,None]
     phi_central = ((pts * phis).sum(axis=1) / pts.sum(axis=1))[:,None]
 
@@ -51,7 +54,7 @@ def preprocess(pts, etas, phis):
     s_phiphi = (pts * (phis - phi_central)**2).sum(axis=1) / pts.sum(axis=1)
     s_etaphi = (pts * (etas - eta_central) * (phis - phi_central)).sum(axis=1) / pts.sum(axis=1)
 
-    angle = -np.arctan((-s_etaeta + s_phiphi + np.sqrt((s_etaeta - s_phiphi)**2 + 4. * s_etaphi**2))/(2. * s_etaphi))[:,None]
+    angle = -np.arctan2(-s_etaeta + s_phiphi + np.sqrt((s_etaeta - s_phiphi)**2 + 4. * s_etaphi**2), 2.*s_etaphi)[:,None]
 
     eta_shift, phi_shift = etas - eta_central, std_phi(phis - phi_central)
     eta_rotat, phi_rotat = eta_shift * np.cos(angle) - phi_shift * np.sin(angle), phi_shift * np.cos(angle) + eta_shift * np.sin(angle)
@@ -67,6 +70,7 @@ def preprocess(pts, etas, phis):
     return pts, eta_news, phi_news
 
 def from_h5_to_npy(h5_path, output_path):
+    # Generate the jet image from h5 file and save it to npy file
 
     with h5py.File(h5_path, 'r') as f:
 
@@ -84,6 +88,7 @@ def from_h5_to_npy(h5_path, output_path):
         bins_phi = np.linspace(-1.0, 1.0, 76)
 
         # 計算每個數據點在直方圖中的位置
+        # shape: (nevent, MAX_JETS)
         bin_idx_eta0 = np.digitize(eta1, bins_eta) - 1
         bin_idx_phi0 = np.digitize(phi1, bins_phi) - 1
         bin_idx_eta1 = np.digitize(eta2, bins_eta) - 1
@@ -99,8 +104,10 @@ def from_h5_to_npy(h5_path, output_path):
         hpT1 = hpT1[:,:75,:75]
   
         # 將結果堆疊起來
+        # data shpae: (nevent, 75, 75, 2)
+        # label shape: (nevent,)
         data = np.stack([hpT0, hpT1], axis=-1)
-        label = f['EVENT/signal'][...]
+        label = f['EVENT/signal'][:]
 
     # shuffle
     ind_list = list(range(len(label)))
