@@ -17,7 +17,7 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
-def load_samples(path, change_order=True):
+def load_samples(path, change_order=False):
 
     root, _ = os.path.splitext(path)
 
@@ -68,7 +68,7 @@ def get_tpr_from_fpr(passing_rate, fpr, tpr):
     return tpr[n_th]
    
 def get_sensitivity_scale_factor(model_name, background_efficiencies):
-    true_label_path = f'../Sample/HVmodel/data/mix_sample_testing.npy'
+    true_label_path = f'../Sample/HVmodel/data/new/mix_sample_testing.npy'
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
@@ -98,7 +98,7 @@ def main():
 
     print(f'Read data from {data_path}')
 
-    X, y = load_samples(data_path, False)
+    X, y = load_samples(data_path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
@@ -155,7 +155,7 @@ def main():
 
     
     # Testing results on true label sample
-    true_label_path = f'../Sample/HVmodel/data/mix_sample_testing.npy'
+    true_label_path = f'../Sample/HVmodel/data/new/mix_sample_testing.npy'
     X_test, y_test = load_samples(true_label_path)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
