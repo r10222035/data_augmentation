@@ -652,8 +652,8 @@
 			\label{fig:HVmodel_jet_image_average}
 		\end{figure}
 	% subsection jet_image (end)
-	\subsection{Training datasets}% (fold)
-	\label{sub:training_datasets}
+	\subsection{Datasets}% (fold)
+	\label{sub:datasets}
 		The total cross-section of the background events is $6837 \text{ fb}$. From Table~\ref{tab:HVmodel_cutflow_number}, we can compute the corresponding cross-sections of signal and sideband regions are $136.1 \text{ fb}$ and $211.2 \text{ fb}$, respectively. Thus, the numbers of events in signal and sideband region are 19k and 29k at luminosity $\mathcal{L} = 139 \text{ fb}^{-1}$.
 
 		The training sample sizes are summarized in Table~\ref{tab:training_sample_size_cwola_hunting_hv}.
@@ -668,7 +668,9 @@
 				Sideband region & 40           & 29k
 			\end{tabular}
 		\end{table}	
-	% subsection training_datasets (end)
+
+		The pure testing sample consists of 10k signal events and 10k background events, which are selected from the signal region.
+	% subsection datasets (end)	
 	\subsection{Training CNN}% (fold)
 	\label{sub:training_cnn}
 		The CNN model structure is summarized in Figure~\ref{fig:cnn_model_structure}. The internal node uses the rectified leaner unit (ReLU) as the activation function. The loss function is Categorical cross-entropy, and we use the Adam optimizer to optimize the loss function.
@@ -681,7 +683,7 @@
 	% subsection training_cnn (end)	
 	\subsection{Hidden Valley model training results}% (fold)
 	\label{sub:hidden_valley_model_training_results}
-		The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_cnn_acc} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. The CNN cannot learn useful information for the case with a sensitivity $S / \sqrt{B} \le  5$, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
+		The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_cnn_acc} presents the training results. These numbers are evaluated from the pure samples. The CNN cannot learn useful information for the case with a sensitivity $S / \sqrt{B} \le  5$, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
 
 		\begin{figure}[htpb]
 			\centering
@@ -700,7 +702,7 @@
 					\item Total invariant mass $m_{jj}$.
 					\item Type of event: 1 for signal, 0 for background.	
 				\end{itemize}
-			\item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:training_datasets}, we can compute the size of datasets.	
+			\item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:datasets}, we can compute the size of datasets.	
 			\item Apply data augmentation in \verb|HDF5| format. Following Section~\ref{sub:data_augmentation}.
 			\item Generate the jet image from \verb|HDF5| data.
 		\end{enumerate}
@@ -770,22 +772,22 @@
 	% subsection data_augmentation (end)	
 	\subsection{Enlarge the training sample size}% (fold)
 	\label{sub:enlarge_the_training_sample_size}
-		To validate the correctness of the data augmentation results, we generated larger samples by scaling the luminosity. To compare the results with ``+1 times'' augmentation, we scale the luminosity to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$. It is important to note that the number of signal events is not equal for ``+1 times'' and ``$\times 2$ luminosity'' at the same sensitivity because the number of signal events is computed from $S / \sqrt{B}$ for a given $B$, resulting in the number of ``+1 times'' sample is greater by a factor of $\sqrt{2}$. Table~\ref{tab:training_sample_size_cwola_hunting_hv_aug_1_x2_luminosity} is an example. For a fair comparison, where the sizes of signal and background events are the same, we should compare the ``+1 times'' results with the point on the ``$\times 2$ luminosity'' curve corresponding to $\sqrt{2}$ times the sensitivity.
+		To validate the correctness of the data augmentation results, we generated larger samples by scaling the luminosity. To compare the results with ``+1 times'' augmentation, we scale the luminosity to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$. It is important to note that the number of signal events is not equal for ``+1 times'' and ``luminosity $\times 2$'' at the same sensitivity because the number of signal events is computed from $S / \sqrt{B}$ for a given $B$, resulting in the number of ``+1 times'' signal sample is greater by a factor of $\sqrt{2}$. Table~\ref{tab:training_sample_size_cwola_hunting_hv_aug_1_x2_luminosity} is an example. For a fair comparison, where the sizes of signal and background events are the same, we should compare the ``+1 times'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity.
 
 		\begin{table}[htpb]
 			\centering
-			\caption{The training sample size for the original, ``+1 times'' and ``$\times 2$ luminosity'' mixed sample. We set sensitivity $S / \sqrt{B} = 1$ in the signal region and evaluate the number of events in the signal region.}
+			\caption{The training sample size for the original, ``+1 times'' and ``luminosity $\times 2$'' mixed sample. We set sensitivity $S / \sqrt{B} = 1$ in the signal region and evaluate the number of events in the signal region.}
 			\label{tab:training_sample_size_cwola_hunting_hv_aug_1_x2_luminosity}
 			
 			\begin{tabular}{c|cc|cc|cc}
-								& \multicolumn{2}{c|}{Original}& \multicolumn{2}{c|}{+1 times}& \multicolumn{2}{c}{$\times 2$ luminosity} \\
+								& \multicolumn{2}{c|}{Original}& \multicolumn{2}{c|}{+1 times}& \multicolumn{2}{c}{luminosity $\times 2$} \\
 				Mixed sample    & Signal      & Background     & Signal      & Background     & Signal            & Background            \\ \hline
-				Signal region   & 138         & 19k            & 276         & 38k            & 195               & 38k                   \\
-				Sideband region & 40          & 29k            & 80          & 58k            & 57                & 58k                  
+				Signal region   & 138         & 19k            & 276         & 38k            & 194               & 38k                   \\
+				Sideband region & 40          & 29k            & 80          & 58k            & 56                & 58k                  
 			\end{tabular}
 		\end{table}
 		
-		Figure~\ref{fig:cwola_hunting_cnn_acc_x2_luminosity} presents the training results with larger samples. The results of ``$\times 2$ luminosity'' is better than the original sample, but still worse than the ``+1 times'' case. Even considering the $\sqrt{2}$ scale factor, the corresponding points' performance is still worse. There may be something wrong with the data processing or training codes.
+		Figure~\ref{fig:cwola_hunting_cnn_acc_x2_luminosity} presents the training results with larger samples. The results of ``luminosity $\times 2$'' is better than the original sample, but still worse than the ``+1 times'' case. Even considering the $\sqrt{2}$ scale factor, the corresponding points' performance is still worse. There may be something wrong with the data processing or training codes.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN_aug_1_x2.pdf}
@@ -793,6 +795,60 @@
 			\label{fig:cwola_hunting_cnn_acc_x2_luminosity}
 		\end{figure}
 	% subsection enlarge_the_training_sample_size (end)
+	\subsection{Check the codes and make more plots}% (fold)
+	\label{sub:check_the_codes_and_make_more_plots}
+		The data process steps from 2 to 5 (Section~\ref{sub:data_process_procedure}) have been checked and samples are processed again.
+
+		Figure~\ref{fig:jet_constituent_pt_distribution} is the $p_\text{T}$ distribution of the jet constituents. The distributions of leading and sub-leading jet constituents are similar.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{hv_model_pt_distribution.pdf}
+			\caption{The transverse momentum distribution of jet constituents.}
+			\label{fig:jet_constituent_pt_distribution}
+		\end{figure}
+
+		Figure~\ref{fig:jet_constituent_eta_distribution} and \ref{fig:jet_constituent_phi_distribution} are the $\eta, \phi$ distributions before and after the augmentation. Because the smearing scale is small, the distributions look almost the same for both cases.
+
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{hv_model_eta1_distribution_eta_phi_smearing.pdf}
+			}
+			\subfloat[Sub-leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{hv_model_eta2_distribution_eta_phi_smearing.pdf}
+			}
+			\caption{The pseudorapidity distribution before and after the $\eta-\phi$ smearing augmentation. $\eta_1$ and $\eta_2$ are the pseudorapidities of the leading and the sub-leading jet constituents, respectively.}
+			\label{fig:jet_constituent_eta_distribution}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{hv_model_phi1_distribution_eta_phi_smearing.pdf}
+			}
+			\subfloat[Sub-leading Higgs]{
+				\includegraphics[width=0.45\textwidth]{hv_model_phi2_distribution_eta_phi_smearing.pdf}
+			}
+			\caption{The azimuthal angle distribution before and after the $\eta-\phi$ smearing augmentation. $\phi_1$ and $\phi_2$ are the azimuthal angles of the leading and the sub-leading jet constituents, respectively.}
+			\label{fig:jet_constituent_phi_distribution}
+		\end{figure}
+
+		Figure~\ref{fig:jet_constituent_average_jet_image_aug_1_x2} shows the average jet image for various cases.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_original.pdf}
+			}
+			\subfloat[+1 times augmentation]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
+			}
+			\subfloat[Luminosity $\times 2$]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_x2.pdf}
+			}
+
+			\caption{The average jet images of different cases.}
+			\label{fig:jet_constituent_average_jet_image_aug_1_x2}
+		\end{figure}
+	% subsection check_the_codes_and_make_more_plots (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
