@@ -555,7 +555,7 @@
 		Error messages:
 		\begin{verbatim}
 			PYTHIA Error: input string not found in settings databases::
-			  HiddenValley:separateFlav    = on      ! Consider different flavours
+			  HiddenValley:separateFlav    = on ! Consider different flavours
 
 			PYTHIA Error: input particle not found in Particle Data Table:
 			  4900102:m0                   = 10.3306
@@ -619,7 +619,7 @@
 	% subsection sample_selection (end)	
 	\subsection{Jet image}% (fold)
 	\label{sub:jet_image}
-		For the event passing the selection cuts described in Section~\ref{sub:sample_selection}, we can construct the jet image from it. The jet image is constructed for each jet separately, so for each event, we would obtain two jet images. They are treated as two channels of a picture. The following steps construct the jet image:
+		We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately, so for each event, we would obtain two jet images. They are treated as two channels of a picture. The following steps construct the jet image:
 		\begin{enumerate}
 			\item Centralization: Compute the $p_{\text{T}}$ weighted center in $\left( \eta,\phi \right) $ coordinates, then shift this point to origin.
 			\item Rotation: Rotate the highest intensity axis to the $\eta$ axis.
@@ -740,7 +740,7 @@
 			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
 		\end{figure}
 		
-		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples, which consist of 10k signal events and 10k background events. The ACC is better than previous results for the ``+1 times'' curve (Figure~\ref{fig:cwola_hunting_cnn_acc}) for all sensitivities. It seems that the data augmentation technique can suppress the threshold and improve the training performance.
+		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. It seems that the data augmentation technique can suppress the threshold and improve the training performance.
 
 		\begin{figure}[htpb]
 			\centering
@@ -817,7 +817,7 @@
 			\subfloat[Sub-leading Higgs]{
 				\includegraphics[width=0.45\textwidth]{hv_model_eta2_distribution_eta_phi_smearing.pdf}
 			}
-			\caption{The pseudorapidity distribution before and after the $\eta-\phi$ smearing augmentation. $\eta_1$ and $\eta_2$ are the pseudorapidities of the leading and the sub-leading jet constituents, respectively.}
+			\caption{The pseudorapidity distribution before and after the $\eta-\phi$ smearing augmentation. $\eta_1$ and $\eta_2$ are the pseudorapidities of the leading and sub-leading jet constituents.}
 			\label{fig:jet_constituent_eta_distribution}
 		\end{figure}
 		\begin{figure}[htpb]
@@ -828,7 +828,7 @@
 			\subfloat[Sub-leading Higgs]{
 				\includegraphics[width=0.45\textwidth]{hv_model_phi2_distribution_eta_phi_smearing.pdf}
 			}
-			\caption{The azimuthal angle distribution before and after the $\eta-\phi$ smearing augmentation. $\phi_1$ and $\phi_2$ are the azimuthal angles of the leading and the sub-leading jet constituents, respectively.}
+			\caption{The azimuthal angle distribution before and after the $\eta-\phi$ smearing augmentation. $\phi_1$ and $\phi_2$ are the azimuthal angles of the leading and sub-leading jet constituents.}
 			\label{fig:jet_constituent_phi_distribution}
 		\end{figure}
 
@@ -844,11 +844,39 @@
 			\subfloat[Luminosity $\times 2$]{
 				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_x2.pdf}
 			}
-
-			\caption{The average jet images of different cases.}
+			\caption{The average jet images of different cases. These plots are made from mixed samples.}
 			\label{fig:jet_constituent_average_jet_image_aug_1_x2}
 		\end{figure}
 	% subsection check_the_codes_and_make_more_plots (end)
+	\subsection{Sensitivity difference}% (fold)
+	\label{sub:sensitivity_difference}
+		The CWoLa CNN is applied for event selection. The threshold is set for a given background efficiency $\varepsilon_{\text{b}}$ (false positive rate). For a given $\varepsilon_b$, the sensitivity would be scale by a factor ${\varepsilon_\text{s}} / {\sqrt{\varepsilon_{\text{b}}}}$.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} is the sensitivity improvement of orginal, ``+1 times'' and ``luminosity $\times 2$'' samples. The $10\%$ curves give more stable results. The lower background efficiencies could achieve better results at the range with higher sensitivities, but the standard deviation would be much larger. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01} compares the sensitivity improvement of various training samples with the same background efficiency. The ``+1 times'' samples provide the best threshold among all.
+
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_original.png}
+			}
+			\subfloat[+1 times augmentation]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_aug_1.png}
+			}
+			\subfloat[Luminosity $\times 2$]{
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_x2.png}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_aug_1_x2}
+		\end{figure}
+
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10.png}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``+1 times'' samples provide the best threshold.}
+			\label{fig:sensitivity_improvement_bkg_eff_01}
+		\end{figure}
+
+	% subsection sensitivity_difference (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
