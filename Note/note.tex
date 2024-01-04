@@ -555,7 +555,7 @@
 		Error messages:
 		\begin{verbatim}
 			PYTHIA Error: input string not found in settings databases::
-			  HiddenValley:separateFlav    = on ! Consider different flavours
+			  HiddenValley:separateFlav    = on! Consider different flavours
 
 			PYTHIA Error: input particle not found in Particle Data Table:
 			  4900102:m0                   = 10.3306
@@ -875,8 +875,27 @@
 			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``+1 times'' samples provide the best threshold.}
 			\label{fig:sensitivity_improvement_bkg_eff_01}
 		\end{figure}
-
 	% subsection sensitivity_difference (end)
+	\subsection{Training and true performance}% (fold)
+	\label{sub:training_and_true_performance}
+		In our intuition, we would expect that``+1 times'' and ``luminosity  $\times 2$'' samples should exhibit similar performance, or the ``luminosity  $\times 2$'' sample might provide better results since the data augmentation generates more samples from the known data. However, the results in Figure~\ref{fig:sensitivity_improvement_bkg_eff_01} contradict our intuition. Since we use the CWoLa approach, our comparison is not based on the training performance on mixed samples; instead, we evaluate the testing performance on pure samples, referred to as ``true performance.'' The relationship between training and true performance may not be a monotonic function and can be quite complicated.
+
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. For all cases, training ACC values are close, but true ACC values can be much different. The true ACC has a range that is ten times larger than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
+			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC. The range of training ACC is very small which, roughly 0.03, while the range of true ACC is about 0.3.}
+			\label{fig:training_and_true_acc_ori_aug_1_x2}
+		\end{figure}
+
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_3_x2} includes results with``+3 times'' training . The ``+3 times'' samples provide much better training ACC, but they do not achieve higher performance for true ACC.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_3_x2.pdf}
+			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC.}
+			\label{fig:training_and_true_acc_ori_aug_1_3_x2}
+		\end{figure}
+	% subsection training_and_true_performance (end)	
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
