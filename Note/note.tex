@@ -847,6 +847,14 @@
 			\caption{The average jet images of different cases. These plots are made from mixed samples.}
 			\label{fig:jet_constituent_average_jet_image_aug_1_x2}
 		\end{figure}
+
+		Figure~\ref{fig:cwola_hunting_cnn_acc_x2_luminosity_re-processed_sample} is training results with re-processed samples.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN_aug_1_x2_re-process.pdf}
+			\caption{The performance of CWoLa CNN training with re-processed samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:cwola_hunting_cnn_acc_x2_luminosity_re-processed_sample}
+		\end{figure}
 	% subsection check_the_codes_and_make_more_plots (end)
 	\subsection{Sensitivity difference}% (fold)
 	\label{sub:sensitivity_difference}
@@ -857,13 +865,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_original.png}
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_original.pdf}
 			}
 			\subfloat[+1 times augmentation]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_aug_1.png}
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_aug_1.pdf}
 			}
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_x2.png}
+				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_x2.pdf}
 			}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
 			\label{fig:sensitivity_improvement_origin_aug_1_x2}
@@ -871,7 +879,7 @@
 
 		\begin{figure}[htpb]
 			\centering
-			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10.png}
+			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10.pdf}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``+1 times'' samples provide the best threshold.}
 			\label{fig:sensitivity_improvement_bkg_eff_01}
 		\end{figure}
@@ -884,7 +892,7 @@
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
-			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC. The range of training ACC is very small which, roughly 0.03, while the range of true ACC is about 0.3.}
+			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC. The range of training ACC is very small, roughly 0.03, while the range of true ACC is about 0.3.}
 			\label{fig:training_and_true_acc_ori_aug_1_x2}
 		\end{figure}
 
@@ -895,7 +903,49 @@
 			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC.}
 			\label{fig:training_and_true_acc_ori_aug_1_3_x2}
 		\end{figure}
-	% subsection training_and_true_performance (end)	
+	% subsection training_and_true_performance (end)
+	\subsection{Miscellaneous test}% (fold)
+	\label{sub:miscellaneous_test}
+		\subsubsection{Sensitivity 11 to 20}% (fold)
+		\label{subs:sensitivity_11_to_20}
+			To find out the training performance when sensitivity is greater than 10, we generate the samples with sensitivity ranging from 11 to 20. The training performance is summarized in Figure~\ref{fig:cwola_cnn_training_performance_11_20}. The ACC is increased when the sensitivity is increased. When the $S / \sqrt{B} > 13$, the ACC improvement is slowed down, where the ACC is 85\%. The training ACC is still similar for all cases, but the true ACC exhibits better value when the sensitivity is higher.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_sensitivity_11_20.pdf}
+				}
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_sensitivity_11_20.pdf}
+				}
+				\caption{(a) The performance of CWoLa CNN training with higher sensitivity samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:cwola_cnn_training_performance_11_20}
+			\end{figure}
+		% subsubsection sensitivity_11_to_20 (end)
+		\subsubsection{+1 copy sample}% (fold)
+		\label{subs:_1_copy_sample}
+			To investigate the impact of the data augmentation technique, we generate a sample by duplicating the original sample without any augmentation. This sample is called ``+1 copy.''
+			Figure~\ref{fig:cwola_cnn_training_performance_copy_1} is the ACC curve and ACC distribution. The ACC is close ``+1 augmentation'' case when $S / \sqrt{B} \le 4$, while the ACC is worse when $S / \sqrt{B} \ge 5$. The training ACC is much better than the original and ``+1 augmentation'' samples, but the true ACC can not achieve higher values.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_aug_1_copy_1.pdf}
+				}
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_aug_1_copy_1.pdf}
+				}
+				\caption{(a) The performance of CWoLa CNN training with ``+1 copy'' samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:cwola_cnn_training_performance_copy_1}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_copy_1} is the sensitivity improvement. The performance of the ``+1 copy'' sample is worse than ``+1 augmentation''. It exhibits the worst results in high-sensitivity regions. The data augmentation is effective in improving the true ACC.
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10_copy_1.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``+1 times'' samples provide the best threshold.}
+				\label{fig:sensitivity_improvement_bkg_eff_01_copy_1}
+			\end{figure}
+		% subsubsection _1_copy_sample (end)
+	% subsection miscellaneous_test (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
