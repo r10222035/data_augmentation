@@ -740,7 +740,7 @@
 			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
 		\end{figure}
 		
-		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. It seems that the data augmentation technique can suppress the threshold and improve the training performance.
+		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique seems to suppress the threshold and improve the training performance.
 
 		\begin{figure}[htpb]
 			\centering
@@ -888,7 +888,7 @@
 	\label{sub:training_and_true_performance}
 		In our intuition, we would expect that``+1 times'' and ``luminosity  $\times 2$'' samples should exhibit similar performance, or the ``luminosity  $\times 2$'' sample might provide better results since the data augmentation generates more samples from the known data. However, the results in Figure~\ref{fig:sensitivity_improvement_bkg_eff_01} contradict our intuition. Since we use the CWoLa approach, our comparison is not based on the training performance on mixed samples; instead, we evaluate the testing performance on pure samples, referred to as ``true performance.'' The relationship between training and true performance may not be a monotonic function and can be quite complicated.
 
-		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. For all cases, training ACC values are close, but true ACC values can be much different. The true ACC has a range that is ten times larger than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. Training ACC values are close for all cases, but true ACC values can be much different. The true ACC has a range that is ten times larger than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
@@ -946,6 +946,48 @@
 			\end{figure}
 		% subsubsection _1_copy_sample (end)
 	% subsection miscellaneous_test (end)
+	\subsection{Train on only augmented sample}% (fold)
+	\label{sub:train_on_only_augmented_sample}
+		To diagnose augmented samples, we train the CWoLa CNN with only augmented datasets. The training samples are generated from the original dataset and only the augmented part is kept for training. We test ``1 augmentation'' and ``2 augmentation'' cases. They consist of pure augmented samples. Their sizes are 1 time and 2 times to original dataset.
+
+		Figure~\ref{fig:cwola_cnn_training_performance_only_aug_1} shows the ACC curve and ACC distribution with the ``1 augmentation'' case. The ACC of the ``1 augmentation'' sample is better than the ``original'' one at $S / \sqrt{B}=7$, but they have similar performance on other sensitivities. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_only_aug_1} is the sensitivity improvement. The threshold of the ``1 augmentation'' sample is lower than the ``original'' one, but they exhibit similar performance on other sensitivities. These results are consistent with the ACC curve. The difference at $S / \sqrt{B}=7$ may come from the training fluctuation. 
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_only_aug_1.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_only_aug_1.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with ``1 augmentation'' samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:cwola_cnn_training_performance_only_aug_1}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10_only_aug_1.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``1 augmentation'' samples provide a lower threshold.}
+			\label{fig:sensitivity_improvement_bkg_eff_01_only_aug_1}
+		\end{figure}
+
+		Figure~\ref{fig:cwola_cnn_training_performance_only_aug_2} is the training results with ``2 augmentation'' samples. The results are similar to the ``+1 augmentation'' case. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_only_aug_2} is the sensitivity improvement. The performance of the ``2 augmentation'' samples is almost the same as ``+1 augmentation''.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_only_aug_2.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_only_aug_2.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with ``2 augmentation'' samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:cwola_cnn_training_performance_only_aug_2}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10_only_aug_2.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The ``2 augmentation'' and ``+1 augmentation'' samples perform similarly.}
+			\label{fig:sensitivity_improvement_bkg_eff_01_only_aug_2}
+		\end{figure}
+	% subsection train_on_only_augmented_sample (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
