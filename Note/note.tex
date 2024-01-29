@@ -988,6 +988,65 @@
 			\label{fig:sensitivity_improvement_bkg_eff_01_only_aug_2}
 		\end{figure}
 	% subsection train_on_only_augmented_sample (end)
+	\subsection{Change the smearing scale}% (fold)
+	\label{sub:change_the_smearing_scale}
+		To investigate the impact of the smearing scale $\Lambda$ of data augmentation, we generate samples with various $\Lambda$ for CWoLa CNN training. We test $\Lambda = 200, 500 \text{ MeV}$ samples.
+
+		Figure~\ref{fig:eta_phi_smearing_jet_constituent_jet_image_smearing_scale} and \ref{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_smearing_scale} are the jet image with different smearing scales. When the smearing scale increases the jet image is more different.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_original.pdf}
+			} \\
+			\subfloat[$\Lambda = \text{100 MeV}$]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_eta_phi_smearing.pdf}
+			} \\
+			\subfloat[$\Lambda = \text{200 MeV}$]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_eta_phi_smearing_std_02.pdf}
+			} \\
+			\subfloat[$\Lambda = \text{500 MeV}$]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_one_event_eta_phi_smearing_std_05.pdf}
+			}
+			\caption{The jet images with different smearing scale $\Lambda$.}
+			\label{fig:eta_phi_smearing_jet_constituent_jet_image_smearing_scale}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_original.pdf}
+			}
+			\subfloat[$\Lambda = \text{100 MeV}$]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
+			} \\
+			\subfloat[$\Lambda = \text{200 MeV}$]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1_std_02.pdf}
+			}
+			\subfloat[$\Lambda = \text{500 MeV}$]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1_std_05.pdf}
+			}
+			\caption{The average jet images before with different smearing scale $\Lambda$.}
+			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_smearing_scale}
+		\end{figure}
+
+		Figure~\ref{fig:cwola_cnn_training_performance_smearing_scale} is the training results with various smearing scales. In the low-sensitivity region, the performance is better for the lower smearing scale, while in the high-sensitivity region, the performance is better for the higher smearing scale. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_smearing_scale} is the sensitivity improvement. The results are consistent with the ACC curve. $\Lambda = \text{100 MeV}$ exhibits the lower threshold.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_aug_1_std_01_02_05.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_aug_1_std_01_02_05.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with various smearing scales. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. ``+1'' means the +1 time augmentation sample. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:cwola_cnn_training_performance_smearing_scale}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10_aug_1_std_01_02_05.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. ``+1'' means the +1 time augmentation sample.}
+			\label{fig:sensitivity_improvement_bkg_eff_01_smearing_scale}
+		\end{figure}
+	% subsection change_the_smearing_scale (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
