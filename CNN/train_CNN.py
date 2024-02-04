@@ -99,7 +99,8 @@ def main():
     print(f'Read data from {data_path}')
 
     X, y = load_samples(data_path)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, shuffle=False)
 
     train_size = get_sample_size(y_train)
     test_size = get_sample_size(y_test)
@@ -122,7 +123,8 @@ def main():
     check_point    = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', 
                                                         verbose=1, save_best_only=True)
 
-    history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
 
 
     # Training results
