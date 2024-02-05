@@ -1024,7 +1024,7 @@
 			\subfloat[$\Lambda = \text{500 MeV}$]{
 				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_aug_1_std_05.pdf}
 			}
-			\caption{The average jet images before with different smearing scale $\Lambda$.}
+			\caption{The average jet images with different smearing scale $\Lambda$.}
 			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_smearing_scale}
 		\end{figure}
 
@@ -1049,7 +1049,20 @@
 	% subsection change_the_smearing_scale (end)
 	\subsection{Duplicate training sample}% (fold)
 	\label{sub:duplicate_training_sample}
-		To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original sample without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This sample is called ``+1 copy without shuffle.'' Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle} is the ACC curve and ACC distribution. The training results for ``+1 copy'' and ``+1 copy without shuffle'' do not have significant differences and they all have better performance than the original training sample.
+		To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original sample without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This dataset is called ``+1 copy without shuffle.'' Figure~\ref{fig:average_jet_image_0_to_n_n_to_2n} is the average jet image of first $n$-th sample and $n+1$-th to the final sample. These two images are the same. 
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[$1 \sim n$]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_1_copy_0_to_n.pdf}
+			}
+			\subfloat[$n+1 \sim 2n$]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_1_copy_n_to_2n.pdf}
+			}
+			\caption{The average jet image of first $n$-th sample and $n+1$-th to the final sample.}
+			\label{fig:average_jet_image_0_to_n_n_to_2n}
+		\end{figure}
+
+		Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle} is the ACC curve and ACC distribution. The training results for ``+1 copy'' and ``+1 copy without shuffle'' do not have significant differences and they all have better performance than the original training sample.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
