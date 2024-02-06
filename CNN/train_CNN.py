@@ -17,17 +17,19 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 os.environ['CUDA_VISIBLE_DEVICES']='0'
 
+
 def load_samples(path, change_order=False):
 
     root, _ = os.path.splitext(path)
 
     if change_order:
-        X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)   
+        X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)
     else:
         X = np.load(f'{root}-data.npy')
     Y = np.eye(2)[np.load(f'{root}-label.npy')]
-    
+
     return X, Y
+
 
 def get_sample_size(y):
     ns = (y.argmax(axis=1)==1).sum()
@@ -35,10 +37,11 @@ def get_sample_size(y):
     print(ns, nb)
     return ns, nb
 
+
 class CNN(tf.keras.Model):
     def __init__(self, name='CNN', dim_image=(75, 75, 2), n_class=2):
         super(CNN, self).__init__(name=name)
-        
+
         self.ptqk = tf.keras.Sequential([
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
@@ -53,22 +56,24 @@ class CNN(tf.keras.Model):
             tf.keras.layers.Dense(64, activation='relu'),
             tf.keras.layers.Dense(64, activation='relu'),
         ])
-        
+
         """Output Layer"""
         self._output = tf.keras.layers.Dense(n_class, activation='softmax')
-        
+
     @tf.function
     def call(self, inputs, training=False):
         latent_ptqk = self.ptqk(inputs)
-        
+
         return self._output(latent_ptqk)
+
 
 def get_tpr_from_fpr(passing_rate, fpr, tpr):
     n_th = (fpr < passing_rate).sum()
     return tpr[n_th]
-   
+
+
 def get_sensitivity_scale_factor(model_name, background_efficiencies):
-    true_label_path = f'../Sample/HVmodel/data/new/mix_sample_testing.npy'
+    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing.npy'
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
@@ -76,7 +81,7 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
 
     if true_label_results[1] < 0.5:
         y_test = y_test[:,[1,0]]
-        
+
     # Compute False positive rate, True positive rate
     predictions = loaded_model.predict(X_test)
 
@@ -91,6 +96,7 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
 
     return np.array(signal_efficiencies) / np.array(background_efficiencies)**0.5
 
+
 def main():
     data_path = sys.argv[1]
     model_name = sys.argv[2]
@@ -99,8 +105,8 @@ def main():
     print(f'Read data from {data_path}')
 
     X, y = load_samples(data_path)
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, shuffle=False)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, shuffle=False)
 
     train_size = get_sample_size(y_train)
     test_size = get_sample_size(y_test)
@@ -110,12 +116,12 @@ def main():
     train_epochs = 500
     patience = 10
     min_delta = 0.
-    learning_rate = 1e-4                                    
+    learning_rate = 1e-4
     save_model_name = f'./CNN_models/CNN_last_model_CWoLa_hunting_{model_name}/'
 
-    # Create the model  
+    # Create the model
     model = CNN(dim_image=[75,75,2])
-    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate), 
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
                 loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
                 metrics=['accuracy'])
 
@@ -123,9 +129,8 @@ def main():
     check_point    = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', 
                                                         verbose=1, save_best_only=True)
 
-    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
-    history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
-
+    history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
 
     # Training results
     best_model_name = f'./CNN_models/CNN_best_model_CWoLa_hunting_{model_name}/'
@@ -144,7 +149,6 @@ def main():
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
 
-
     # Compute AUC
     labels = y_test
     predictions = loaded_model.predict(X_test)
@@ -155,9 +159,8 @@ def main():
     i = 1
     AUC = roc_auc_score(y_test==i,  y_prob[:,i])
 
-    
     # Testing results on true label sample
-    true_label_path = f'../Sample/HVmodel/data/new/mix_sample_testing.npy'
+    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing.npy'
     X_test, y_test = load_samples(true_label_path)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
@@ -196,13 +199,14 @@ def main():
                 'TPR/FPR^0.5: FPR=0.001': [scale_factors[2]],
                 'time': [now],
                 }
-    
+
     df = pd.DataFrame(data_dict)
     if os.path.isfile(file_name):
         training_results_df = pd.read_csv(file_name)
         pd.concat([training_results_df, df], ignore_index=True).to_csv(file_name, index=False)
     else:
         df.to_csv(file_name, index=False)
+
 
 if __name__ == '__main__':
     main()
