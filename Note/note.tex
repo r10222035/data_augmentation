@@ -892,7 +892,7 @@
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
-			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC. The range of training ACC is very small, roughly 0.03, while the range of true ACC is about 0.3.}
+			\caption{Scatter plot for training ACC and true ACC. The slope of the grey dashed line is $1$, representing the same training and true ACC. The range of training ACC is tiny, roughly 0.03, while the range of true ACC is about 0.3.}
 			\label{fig:training_and_true_acc_ori_aug_1_x2}
 		\end{figure}
 
@@ -1049,7 +1049,7 @@
 	% subsection change_the_smearing_scale (end)
 	\subsection{Duplicate training sample}% (fold)
 	\label{sub:duplicate_training_sample}
-		To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original sample without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This dataset is called ``+1 copy without shuffle.'' Figure~\ref{fig:average_jet_image_0_to_n_n_to_2n} is the average jet image of first $n$-th sample and $n+1$-th to the final sample. These two images are the same. 
+		To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original sample without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This dataset is called ``+1 copy without shuffle.'' Figure~\ref{fig:average_jet_image_0_to_n_n_to_2n} is the average jet image of the first $n$-th sample and $n+1$-th to the final sample. These two images are the same. 
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[$1 \sim n$]{
@@ -1062,7 +1062,7 @@
 			\label{fig:average_jet_image_0_to_n_n_to_2n}
 		\end{figure}
 
-		Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle} is the ACC curve and ACC distribution. The training results for ``+1 copy'' and ``+1 copy without shuffle'' do not have significant differences and they all have better performance than the original training sample.
+		Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle} is the ACC curve and ACC distribution. The training results for ``+1 copy'' and ``+1 copy without shuffle'' do not have significant differences and they all perform better than the original training sample.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
@@ -1085,7 +1085,7 @@
 
 		\subsubsection{Remove shuffle in training code}% (fold)
 		\label{subs:remove_shuffle_in_training_code}
-			I remove default shuffles in the training codes. In the default setting, the training sample would be shuffled before training and testing sample splitting and each epoch training. Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle_code} is the ACC curve and ACC distribution. The training results of removing shuffling codes are still similar to the previous one and all ``+1 copy'' samples have better performance than the original training sample.
+			I remove default shuffles in the training codes. In the default setting, the training sample would be shuffled before training and testing sample splitting and each epoch training. Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle_code} is the ACC curve and ACC distribution. The training results of removing shuffling codes are still similar to the previous one and all ``+1 copy'' samples perform better than the original training sample.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -1105,7 +1105,32 @@
 				\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
 				\label{fig:sensitivity_improvement_bkg_eff_01_copy_1_wo_shuffle_code}
 			\end{figure}
-		% subsubsection remove_shuffle_in_training_code (end)	
+		% subsubsection remove_shuffle_in_training_code (end)
+		\subsubsection{Half original + copy}% (fold)
+		\label{subs:half_original_copy}
+			To make sure the better training results come from adding copy samples and not from the sample size, we use half the original sample and duplicate it. This dataset is called `` half +1 copy'' and has the same size as the original sample. 
+
+			Figure~\ref{fig:cwola_cnn_training_performance_half_copy_1} is the ACC curve and ACC distribution. The training results of ``half +1 copy'' are better than the original training sample in the low sensitivity region, while in the high sensitivity region, ``half +1 copy'' has the worse results. For the ``half +1 copy'' case, the training ACC is overfitting when $S / \sqrt{B} \ge 6$.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_half_copy_1.pdf}
+				}
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_half_copy_1.pdf}
+				}
+				\caption{(a) The performance of CWoLa CNN training with ``+1 copy'' sample and ``half +1 copy'' datasets. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:cwola_cnn_training_performance_half_copy_1}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_half_copy_1} is the sensitivity improvement. The threshold of the ``half +1 copy'' sample is lower than the original training sample, but the sensitivity improvement is smaller than the original dataset in the high sensitivity region.
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.55\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_10_half_copy_1.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_bkg_eff_01_half_copy_1}
+			\end{figure}
+		% subsubsection half_original_copy (end)		
 	% subsection duplicate_training_sample (end)	
 % section hidden_valley_model (end)
 
