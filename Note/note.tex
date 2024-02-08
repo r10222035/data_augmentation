@@ -342,7 +342,7 @@
 
 		Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size} provides the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. For the $\text{500 GeV}$ case, the ``0 times,'', ``1 times,'' and ``10 times'' samples yield similar results, while ``100 times'' sample exhibits better performance. This suggests that the CWoLa DNN can extract meaningful information from the ``100 times'' sample. In the case of $\text{1000 GeV}$, we can obtain better results when the signal sample size increases. The performance of 10 times and 100 times is similar. It seems that the training performance is saturated. 
 
-		To further understand the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, additional samples within this size range are generated, and the DNN is trained on these samples.
+		Additional samples within this size range are generated to further understand the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, and the DNN is trained on these samples.
 
 		\begin{figure}[htpb]
 			\centering
@@ -908,7 +908,7 @@
 	\label{sub:miscellaneous_test}
 		\subsubsection{Sensitivity 11 to 20}% (fold)
 		\label{subs:sensitivity_11_to_20}
-			To find out the training performance when sensitivity is greater than 10, we generate the samples with sensitivity ranging from 11 to 20. The training performance is summarized in Figure~\ref{fig:cwola_cnn_training_performance_11_20}. The ACC is increased when the sensitivity is increased. When the $S / \sqrt{B} > 13$, the ACC improvement is slowed down, where the ACC is 85\%. The training ACC is still similar for all cases, but the true ACC exhibits better value when the sensitivity is higher.
+			To find out the training performance when sensitivity is greater than 10, we generate the samples with sensitivity ranging from 11 to 20. The training performance is summarized in Figure~\ref{fig:cwola_cnn_training_performance_11_20}. The ACC is increased when the sensitivity is increased. When the $S / \sqrt{B} > 13$, the ACC improvement is slowed, where the ACC is 85\%. The training ACC is still similar for all cases, but the true ACC exhibits better value when the sensitivity is higher.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -948,7 +948,7 @@
 	% subsection miscellaneous_test (end)
 	\subsection{Train on only augmented sample}% (fold)
 	\label{sub:train_on_only_augmented_sample}
-		To diagnose augmented samples, we train the CWoLa CNN with only augmented datasets. The training samples are generated from the original dataset and only the augmented part is kept for training. We test ``1 augmentation'' and ``2 augmentation'' cases. They consist of pure augmented samples. Their sizes are 1 time and 2 times the original dataset.
+		We train the CWoLa CNN with only augmented datasets to diagnose augmented samples. The training samples are generated from the original dataset and only the augmented part is kept for training. We test ``1 augmentation'' and ``2 augmentation'' cases. They consist of pure augmented samples. Their sizes are 1 time and 2 times the original dataset.
 
 		Figure~\ref{fig:cwola_cnn_training_performance_only_aug_1} shows the ACC curve and ACC distribution with the ``1 augmentation'' case. The ACC of the ``1 augmentation'' sample is better than the ``original'' one at $S / \sqrt{B}=7$, but they have similar performance on other sensitivities. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_only_aug_1} is the sensitivity improvement. The threshold of the ``1 augmentation'' sample is lower than the ``original'' one, but they exhibit similar performance on other sensitivities. These results are consistent with the ACC curve. The difference at $S / \sqrt{B}=7$ may come from the training fluctuation. 
 		\begin{figure}[htpb]
@@ -1132,6 +1132,33 @@
 			\end{figure}
 		% subsubsection half_original_copy (end)		
 	% subsection duplicate_training_sample (end)	
+	\subsection{Another testing dataset}% (fold)
+	\label{sub:another_testing_dataset}
+		To rule out the problem in testing samples, I generate more signal and background samples and prepare another testing dataset. The testing results of old and new testing samples are shown in Figure~\ref{fig:acc_curve_two_testing_sample}. All cases perform similarly on two testing datasets. Note that because we only save the best model, we only present the ACC with the best training model for each case.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_new_testing_sample.pdf}
+			} 
+			\subfloat[+1 time augmatation]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
+			} 
+			\subfloat[x2 luminosity]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
+			} \\
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_testing_sample.pdf}
+			} 
+			\subfloat[1 time augmatation]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_only_aug_1_new_testing_sample.pdf}
+			} 
+			\subfloat[half + 1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_half_copy_1_new_testing_sample.pdf}
+			} 
+			\caption{The accuracy curves of two different testing sets. We present the ACC of the best training model. In all cases, they have similar performance.}
+			\label{fig:acc_curve_two_testing_sample}
+		\end{figure}
+	% subsection another_testing_dataset (end)		
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
