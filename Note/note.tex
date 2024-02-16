@@ -342,7 +342,7 @@
 
 		Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size} provides the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. For the $\text{500 GeV}$ case, the ``0 times,'', ``1 times,'' and ``10 times'' samples yield similar results, while ``100 times'' sample exhibits better performance. This suggests that the CWoLa DNN can extract meaningful information from the ``100 times'' sample. In the case of $\text{1000 GeV}$, we can obtain better results when the signal sample size increases. The performance of 10 times and 100 times is similar. It seems that the training performance is saturated. 
 
-		Additional samples within this size range are generated to further understand the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, and the DNN is trained on these samples.
+		Additional samples within this size range are generated to understand further the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, and the DNN is trained on these samples.
 
 		\begin{figure}[htpb]
 			\centering
@@ -1143,7 +1143,7 @@
 			\subfloat[+1 time augmatation]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
 			} 
-			\subfloat[x2 luminosity]{
+			\subfloat[$x2$ luminosity]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
 			} \\
 			\subfloat[+1 time copy]{
@@ -1155,10 +1155,33 @@
 			\subfloat[half + 1 time copy]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_half_copy_1_new_testing_sample.pdf}
 			} 
-			\caption{The accuracy curves of two different testing sets. We present the ACC of the best training model. In all cases, they have similar performance.}
+			\caption{The accuracy curves of two different testing sets. We present the accuracy of the best training model. In all cases, they have similar performance.}
 			\label{fig:acc_curve_two_testing_sample}
 		\end{figure}
 	% subsection another_testing_dataset (end)		
+	\subsection{Original + $x$ Copy}% (fold)
+	\label{sub:original_x_copy}
+		The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=0.25, 0.50, 0.75$. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. For $x = 0.50, 0.75$, the training results are quite different when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_copy_ratio.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_copy_ratio.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with various copy ratio datasets. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:cwola_cnn_training_performance_copy_ratio}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample, but the sensitivity improvement is smaller than the original dataset in the high sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_ratio.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_bkg_eff_01_copy_ratio}
+		\end{figure}
+	% subsection original_x_copy (end)	
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
