@@ -77,10 +77,10 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
-    true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
+    # true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
-    if true_label_results[1] < 0.5:
-        y_test = y_test[:,[1,0]]
+    # if true_label_results[1] < 0.5:
+    #     y_test = y_test[:,[1,0]]
 
     # Compute False positive rate, True positive rate
     predictions = loaded_model.predict(X_test)
@@ -164,9 +164,9 @@ def main():
     X_test, y_test = load_samples(true_label_path)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
 
-    if true_label_results[1] < 0.5:
-        y_test = y_test[:,[1,0]]
-        true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
+    # if true_label_results[1] < 0.5:
+    #     y_test = y_test[:,[1,0]]
+    #     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
     # Compute AUC
