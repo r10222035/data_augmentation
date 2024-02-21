@@ -1143,7 +1143,7 @@
 			\subfloat[+1 time augmatation]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
 			} 
-			\subfloat[$x2$ luminosity]{
+			\subfloat[Luminosity $\times 2$]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
 			} \\
 			\subfloat[+1 time copy]{
@@ -1174,14 +1174,43 @@
 			\label{fig:cwola_cnn_training_performance_copy_ratio}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample, but the sensitivity improvement is smaller than the original dataset in the high sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_ratio.pdf}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
-			\label{fig:sensitivity_improvement_bkg_eff_01_copy_ratio}
+			\label{fig:sensitivity_improvement_bkg_eff_copy_ratio}
 		\end{figure}
 	% subsection original_x_copy (end)	
+	\subsection{Remove rectification}% (fold)
+	\label{sub:remove_rectification}
+		For a properly constructed classifier, its accuracies should be greater than 50\% or it just mislabels the signal and background events.	Thus, a couple of codes are used for swapping labels. However, if the dataset causes a larger standard deviation, the swapping procedure might make a fake improvement. To investigate the impact of the ``rectification'', we remove the code that changes labels and train the CWoLa CNN again. We test on the original, ``luminosity $\times 2$'' and ``+1 copy'' datasets. The relabeling process before evaluating the ACC and sensitivity improvement is commented out.
+
+		Figure~\ref{fig:acc_curve_w_wo_swap_label} is accuracy curves with different training datasets. The training results with and without swapping procedures are similar for all cases. It seems that the rectification process does not have a large impact on the performance. The rectification is not the main reason for the improvement.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_no_swap.pdf}
+			} 
+			\subfloat[Luminosity $\times 2$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_no_swap.pdf}
+			} 
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_no_swap.pdf}
+			} 
+			\caption{The accuracy curves with and without the rectification procedure. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_curve_w_wo_swap_label}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_no_swap} is the sensitivity improvement. The training results with and without swapping procedures are similar for all cases. These results are consistent with the results of accuracy curves. The ``+1 copy'' dataset has the lowest threshold which is between 3 and 4 when $\varepsilon_{\text{b}} = 10\%$, but the sensitivity improvement is smaller than the original and ``luminosity $\times 2$'' datasets in the high sensitivity region. The threshold of the ``luminosity $\times 2$'' dataset is lower than the original sample but higher than the ``+1 copy'' dataset.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_no_swap.pdf}
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_x2_no_swap.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_bkg_eff_no_swap}
+		\end{figure}
+	% subsection remove_rectification (end)	
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
