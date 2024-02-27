@@ -1186,7 +1186,7 @@
 	\label{sub:remove_rectification}
 		For a properly constructed classifier, its accuracies should be greater than 50\% or it just mislabels the signal and background events.	Thus, a couple of codes are used for swapping labels. However, if the dataset causes a larger standard deviation, the swapping procedure might make a fake improvement. To investigate the impact of the ``rectification'', we remove the code that changes labels and train the CWoLa CNN again. We test on the original, ``luminosity $\times 2$'' and ``+1 copy'' datasets. The relabeling process before evaluating the ACC and sensitivity improvement is commented out.
 
-		Figure~\ref{fig:acc_curve_w_wo_swap_label} is accuracy curves with different training datasets. The training results with and without swapping procedures are similar for all cases. It seems that the rectification process does not have a large impact on the performance. The rectification is not the main reason for the improvement.
+		Figure~\ref{fig:acc_curve_w_wo_swap_label} is accuracy curves with different training datasets. Figure~\ref{fig:acc_scatter_w_wo_swap_label} is accuracy scatter plots with different training datasets. The training results with and without swapping procedures are similar for all cases. It seems that the rectification process does not have a large impact on the performance. The rectification is not the main reason for the improvement.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
@@ -1200,6 +1200,20 @@
 			} 
 			\caption{The accuracy curves with and without the rectification procedure. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:acc_curve_w_wo_swap_label}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_no_swap.pdf}
+			} 
+			\subfloat[Luminosity $\times 2$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_x2_no_swap.pdf}
+			} 
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_no_swap.pdf}
+			} 
+			\caption{Scatter plots for training ACC and true ACC with and without the rectification procedure. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:acc_scatter_w_wo_swap_label}
 		\end{figure}
 
 		Figure~\ref{fig:sensitivity_improvement_bkg_eff_no_swap} is the sensitivity improvement. The training results with and without swapping procedures are similar for all cases. These results are consistent with the results of accuracy curves. The ``+1 copy'' dataset has the lowest threshold which is between 3 and 4 when $\varepsilon_{\text{b}} = 10\%$, but the sensitivity improvement is smaller than the original and ``luminosity $\times 2$'' datasets in the high sensitivity region. The threshold of the ``luminosity $\times 2$'' dataset is lower than the original sample but higher than the ``+1 copy'' dataset.
