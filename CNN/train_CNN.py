@@ -26,45 +26,86 @@ def load_samples(path, change_order=False):
         X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)
     else:
         X = np.load(f'{root}-data.npy')
-    Y = np.eye(2)[np.load(f'{root}-label.npy')]
+    # Y = np.eye(2)[np.load(f'{root}-label.npy')]
+    Y = np.load(f'{root}-label.npy')
 
     return X, Y
 
 
 def get_sample_size(y):
-    ns = (y.argmax(axis=1)==1).sum()
-    nb = (y.argmax(axis=1)==0).sum()
+    if len(y.shape) == 1:
+        ns = (y==1).sum()
+        nb = (y==0).sum()
+    else:
+        ns = (y.argmax(axis=1)==1).sum()
+        nb = (y.argmax(axis=1)==0).sum()
     print(ns, nb)
     return ns, nb
 
 
+# class CNN(tf.keras.Model):
+#     def __init__(self, name='CNN', dim_image=(75, 75, 2), n_class=2):
+#         super(CNN, self).__init__(name=name)
+
+#         self.ptqk = tf.keras.Sequential([
+#             tf.keras.layers.BatchNormalization(),
+#             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
+#             tf.keras.layers.MaxPool2D((2,2)),
+#             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
+#             tf.keras.layers.MaxPool2D((2,2)),
+#             tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
+#             tf.keras.layers.MaxPool2D((2,2)),
+#             tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
+#             tf.keras.layers.Flatten(),
+#             tf.keras.layers.Dense(64, activation='relu'),
+#             tf.keras.layers.Dense(64, activation='relu'),
+#             tf.keras.layers.Dense(64, activation='relu'),
+#         ])
+
+#         """Output Layer"""
+#         self._output = tf.keras.layers.Dense(n_class, activation='softmax')
+
+#     @tf.function
+#     def call(self, inputs, training=False):
+#         latent_ptqk = self.ptqk(inputs)
+
+#         return self._output(latent_ptqk)
+
+
 class CNN(tf.keras.Model):
-    def __init__(self, name='CNN', dim_image=(75, 75, 2), n_class=2):
+    def __init__(self, name='CNN'):
         super(CNN, self).__init__(name=name)
-
-        self.ptqk = tf.keras.Sequential([
+        
+        self.sub_network = tf.keras.Sequential([
             tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
             tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(64, activation='relu'),
-            tf.keras.layers.Dense(64, activation='relu'),
-            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(1, activation='sigmoid'),
         ])
-
-        """Output Layer"""
-        self._output = tf.keras.layers.Dense(n_class, activation='softmax')
-
+        
+        
     @tf.function
     def call(self, inputs, training=False):
-        latent_ptqk = self.ptqk(inputs)
+        # split two channels
+        channel1, channel2 = tf.split(inputs, num_or_size_splits=2, axis=-1)
 
-        return self._output(latent_ptqk)
+        # pass through the same CNN
+        output_channel1 = self.sub_network(channel1)
+        output_channel2 = self.sub_network(channel2)
+
+        # multiply the output
+        output = tf.multiply(output_channel1, output_channel2)
+
+        return output
 
 
 def get_tpr_from_fpr(passing_rate, fpr, tpr):
@@ -85,10 +126,12 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     # Compute False positive rate, True positive rate
     predictions = loaded_model.predict(X_test)
 
-    labels = np.argmax(y_test, axis=1)
+    # labels = np.argmax(y_test, axis=1)
+    labels = y_test
     y_prob = np.array(predictions)
 
-    fpr, tpr, _ = roc_curve(labels==1, y_prob[:,1])
+    # fpr, tpr, _ = roc_curve(labels==1, y_prob[:,1])
+    fpr, tpr, _ = roc_curve(labels==1, y_prob)
 
     signal_efficiencies = []
     for bkg_eff in background_efficiencies:
@@ -120,14 +163,14 @@ def main():
     save_model_name = f'./CNN_models/CNN_last_model_CWoLa_hunting_{model_name}/'
 
     # Create the model
-    model = CNN(dim_image=[75,75,2])
+    model = CNN()
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
-                loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
+                # loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
+                loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
                 metrics=['accuracy'])
 
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=min_delta, verbose=1, patience=patience)
-    check_point    = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', 
-                                                        verbose=1, save_best_only=True)
+    check_point    = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
 
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
     # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
@@ -150,14 +193,15 @@ def main():
         print('Save to best model')
 
     # Compute AUC
-    labels = y_test
+    # labels = y_test
     predictions = loaded_model.predict(X_test)
 
-    y_test = np.argmax(labels, axis=1)
+    # y_test = np.argmax(labels, axis=1)
     y_prob = np.array(predictions)
 
     i = 1
-    AUC = roc_auc_score(y_test==i,  y_prob[:,i])
+    # AUC = roc_auc_score(y_test==i,  y_prob[:,i])
+    AUC = roc_auc_score(y_test==i,  y_prob)
 
     # Testing results on true label sample
     true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing.npy'
@@ -170,14 +214,15 @@ def main():
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
     # Compute AUC
-    labels = y_test
+    # labels = y_test
     predictions = loaded_model.predict(X_test)
 
-    y_test = np.argmax(labels, axis=1)
+    # y_test = np.argmax(labels, axis=1)
     y_prob = np.array(predictions)
 
     i = 1
-    true_label_AUC = roc_auc_score(y_test==i,  y_prob[:,i])
+    # true_label_AUC = roc_auc_score(y_test==i,  y_prob[:,i])
+    true_label_AUC = roc_auc_score(y_test==i,  y_prob)
 
     background_efficiencies = [0.1, 0.01, 0.001]
     scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies)
@@ -188,8 +233,10 @@ def main():
     data_dict = {
                 'Train signal size': [train_size[0]],
                 'Train background size': [train_size[1]],
+                'Loss': [results[0]],
                 'ACC': [results[1]],
                 'AUC': [AUC],
+                'Loss-true': [true_label_results[0]],
                 'ACC-true': [true_label_results[1]],
                 'AUC-true': [true_label_AUC],
                 'Sample Type': [sample_type],
