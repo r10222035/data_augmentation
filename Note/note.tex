@@ -908,7 +908,7 @@
 	\label{sub:miscellaneous_test}
 		\subsubsection{Sensitivity 11 to 20}% (fold)
 		\label{subs:sensitivity_11_to_20}
-			To find out the training performance when sensitivity is greater than 10, we generate the samples with sensitivity ranging from 11 to 20. The training performance is summarized in Figure~\ref{fig:cwola_cnn_training_performance_11_20}. The ACC is increased when the sensitivity is increased. When the $S / \sqrt{B} > 13$, the ACC improvement is slowed, where the ACC is 85\%. The training ACC is still similar for all cases, but the true ACC exhibits better value when the sensitivity is higher.
+			To find out the training performance when sensitivity is greater than 10, we generate the samples with sensitivity ranging from 11 to 20. The training performance is summarized in Figure~\ref{fig:cwola_cnn_training_performance_11_20}. The ACC is increased when the sensitivity is increased. When the $S / \sqrt{B} > 13$, the ACC improvement is slowed, where the ACC is 85\%. The training ACC is still similar for all cases, but the true ACC exhibits a better value when the sensitivity is higher.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -1174,7 +1174,7 @@
 			\label{fig:cwola_cnn_training_performance_copy_ratio}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_ratio.pdf}
@@ -1186,7 +1186,7 @@
 	\label{sub:remove_rectification}
 		For a properly constructed classifier, its accuracies should be greater than 50\% or it just mislabels the signal and background events.	Thus, a couple of codes are used for swapping labels. However, if the dataset causes a larger standard deviation, the swapping procedure might make a fake improvement. To investigate the impact of the ``rectification'', we remove the code that changes labels and train the CWoLa CNN again. We test on the original, ``luminosity $\times 2$'' and ``+1 copy'' datasets. The relabeling process before evaluating the ACC and sensitivity improvement is commented out.
 
-		Figure~\ref{fig:acc_curve_w_wo_swap_label} is accuracy curves with different training datasets. Figure~\ref{fig:acc_scatter_w_wo_swap_label} is accuracy scatter plots with different training datasets. The training results with and without swapping procedures are similar for all cases. It seems that the rectification process does not have a large impact on the performance. The rectification is not the main reason for the improvement.
+		Figure~\ref{fig:acc_curve_w_wo_swap_label} is accuracy curves with different training datasets. Figure~\ref{fig:acc_scatter_w_wo_swap_label} is an accuracy scatter plot with different training datasets. The training results with and without swapping procedures are similar for all cases. It seems that the rectification process does not greatly impact the performance. The rectification is not the main reason for the improvement.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
@@ -1216,7 +1216,7 @@
 			\label{fig:acc_scatter_w_wo_swap_label}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_no_swap} is the sensitivity improvement. The training results with and without swapping procedures are similar for all cases. These results are consistent with the results of accuracy curves. The ``+1 copy'' dataset has the lowest threshold which is between 3 and 4 when $\varepsilon_{\text{b}} = 10\%$, but the sensitivity improvement is smaller than the original and ``luminosity $\times 2$'' datasets in the high sensitivity region. The threshold of the ``luminosity $\times 2$'' dataset is lower than the original sample but higher than the ``+1 copy'' dataset.
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_no_swap} is the sensitivity improvement. The training results with and without swapping procedures are similar for all cases. These results are consistent with the results of accuracy curves. The ``+1 copy'' dataset has the lowest threshold which is between 3 and 4 when $\varepsilon_{\text{b}} = 10\%$, but the sensitivity improvement is smaller than the original and ``luminosity $\times 2$'' datasets in the high sensitivity region. The ``luminosity $\times 2$'' threshold is lower than the original sample but higher than the ``+1 copy'' dataset.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_no_swap.pdf}
@@ -1225,6 +1225,142 @@
 			\label{fig:sensitivity_improvement_bkg_eff_no_swap}
 		\end{figure}
 	% subsection remove_rectification (end)	
+	\subsection{Compare with Zong-En's results}% (fold)
+	\label{sub:compare_with_zong_en_s_results}
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_ZN_testing} is Zong-En's results with duplicated samples. The performance of original samples and duplicated samples is consistent.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.65\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_ZN_testing.pdf}
+			\caption{The significance before and after the CWoLa CNN selection. The solid lines are the new results with duplicated samples, and the dashed lines are the previous results. The slope of the dashed grey line is $1$, representing the same performance before and after the selection.}
+			\label{fig:sensitivity_improvement_bkg_eff_copy_1_ZN_testing}
+		\end{figure}
+
+		Since my training results are inconsistent with Zong-En's, it is need to make a comparison with Zong-En's training codes. The main differences are listed below:
+		\begin{enumerate}
+			\item Model structure: I treated 2 jet images as 2 channels of one diagram. Zong-En passed each jet image through a common CNN and multiplied output values.
+			\item Training sample preparation: I prepare training samples in the \verb|.npy| file before training. Zong-En uses the generator method to construct samples during the training process.
+			\item Hyperparameter setting: My early stopping patience parameter is set to 10. Zong-En's patience paramter is set to 30.
+			\item Tensorflow version: I use Tensorflow 2.11.1. Zong-En uses Tensorflow 2.0.0.
+		\end{enumerate}
+
+		\subsubsection{Model structure}% (fold)
+		\label{subs:model_structure}
+			Modify the model structure such that same as the Zong-En's model~\cite{Beauchesne:2023vie}. The main difference is how to process jet images. I treated 2 jet images as 2 channels of one diagram. For Zong-En's model, each jet image is passed through a common CNN and returns a single value. The output of the full network is the product of these two numbers.
+
+			The ``2 channel'' is my model and the ``2 image'' is Zong-En's model. Figure~\ref{fig:acc_curve_ZN_model}, \ref{fig:acc_scatter_ZN_model} are accuracy curves and scatter plots. For the original dataset, the performance of ``2 image'' is better than ``2 channel'' in high sensitivity region. For the ``+1 copy'' dataset, both models perform similarly. The ``+1 copy'' dataset can still obtain better performance in the low-sensitivity region.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_ZN_model.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_ZN_model.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_ZN_model.pdf}
+				} 
+				\caption{The accuracy curves with different model structures. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+				\label{fig:acc_curve_ZN_model}
+			\end{figure}
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_ZN_model.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
+				} 
+				\caption{Scatter plots for training ACC and true ACC with different model structures. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:acc_scatter_ZN_model}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_ZN_model} is the sensitivity improvement. The training results of ``2 image'' are better than ``2 channel''. The ``+1 copy'' dataset still has lower thresholds, and the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. For lower background efficiency, the ``2 image'' model can obtain larger improvement, but the threshold is still lower for the ``+1 copy'' dataset.
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_ZN_model.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_bkg_eff_ZN_model}
+			\end{figure}
+		% subsubsection model_structure (end)
+		\subsubsection{Early stopping patience}% (fold)
+		\label{subs:early_stopping_patience}
+			In my previous testing, I always set early stopping patience as 10, but Zong-En set this parameter as 30.
+
+			Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30} are accuracy curves and scatter plots. The performance ``patience 30'' is similar to previous results. It seems that patience 10 is sufficient for our training procedure. Therefore, it does not greatly impact the training performance even though we change patience from 10 to 30.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_patience_30.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_patience_30.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_patience_30.pdf}
+				} 
+				\caption{The accuracy curves with different early stopping patience. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
+				\label{fig:acc_curve_patience_30}
+			\end{figure}
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_patience_30.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
+				} 
+				\caption{Scatter plots for training ACC and true ACC with different early stopping patience. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:acc_scatter_patience_30}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30} is the sensitivity improvement. The training results of ``patience 10'' and ``patience 30'' are similar. This is consistent with the training accuracy. 
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_patience_30.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. Note that we only present the result of one-time training for ``patience 30''.}
+				\label{fig:sensitivity_improvement_bkg_eff_patience_30}
+			\end{figure}
+		% subsubsection early_stopping_patience (end)		
+		\subsubsection{Tensorflow version}% (fold)
+		\label{subs:tensorflow_version}
+			I use Tensorflow 2.11.1 and Zong-En uses Tensorflow 2.0.0. The difference in version may cause some unexpected issues.
+
+			Figure~\ref{fig:cwola_cnn_training_performance_copy_1_tf_250}, \ref{fig:sensitivity_improvement_bkg_eff_tf_250} are the training results with Tensorflow 2.5.0. The performance is consistent with version 2.11.1.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_tf_250.pdf}
+				}
+				\subfloat[]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_origin_copy_1_tf_250.pdf}
+				}
+				\caption{(a) The performance of CWoLa CNN training with Tensorflow 2.5.0. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:cwola_cnn_training_performance_copy_1_tf_250}
+			\end{figure}
+
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_tf_250.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_bkg_eff_tf_250}
+			\end{figure} 
+
+			I should test my training codes on version 2.0.0, but there is an error that still can not be resolved for now.
+
+			Error messages:
+			\begin{verbatim}
+				...
+				The tensor cannot be accessed here: it is defined in another function or code block. 
+				...
+			\end{verbatim}
+		% subsubsection tensorflow_version (end)		
+	% subsection compare_with_zong_en_s_results (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
