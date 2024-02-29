@@ -15,7 +15,7 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, roc_curve
 
-os.environ['CUDA_VISIBLE_DEVICES']='0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def load_samples(path, change_order=False):
@@ -75,7 +75,7 @@ def get_sample_size(y):
 class CNN(tf.keras.Model):
     def __init__(self, name='CNN'):
         super(CNN, self).__init__(name=name)
-        
+
         self.sub_network = tf.keras.Sequential([
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
@@ -91,8 +91,7 @@ class CNN(tf.keras.Model):
             tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.Dense(1, activation='sigmoid'),
         ])
-        
-        
+
     @tf.function
     def call(self, inputs, training=False):
         # split two channels
@@ -157,7 +156,7 @@ def main():
     # Training parameters
     batch_size = 512
     train_epochs = 500
-    patience = 10
+    patience = 30
     min_delta = 0.
     learning_rate = 1e-4
     save_model_name = f'./CNN_models/CNN_last_model_CWoLa_hunting_{model_name}/'
@@ -165,12 +164,12 @@ def main():
     # Create the model
     model = CNN()
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
-                # loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
-                loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
-                metrics=['accuracy'])
+                  # loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
+                  loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
+                  metrics=['accuracy'])
 
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=min_delta, verbose=1, patience=patience)
-    check_point    = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
+    check_point = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
 
     history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
     # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
