@@ -13,7 +13,7 @@ import pandas as pd
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, roc_curve
+from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
@@ -107,13 +107,27 @@ class CNN(tf.keras.Model):
         return output
 
 
+def get_highest_accuracy(y_true, y_pred):
+    _, _, thresholds = roc_curve(y_true, y_pred)
+    # compute highest accuracy
+    thresholds = np.array(thresholds)
+    if len(thresholds) > 1000:
+        thresholds = np.percentile(thresholds, np.linspace(0,100,1001))
+    accuracy_scores = []
+    for threshold in thresholds:
+        accuracy_scores.append(accuracy_score(y_true, y_pred>threshold))
+
+    accuracies = np.array(accuracy_scores)
+    return accuracies.max()
+
+
 def get_tpr_from_fpr(passing_rate, fpr, tpr):
     n_th = (fpr < passing_rate).sum()
     return tpr[n_th]
 
 
 def get_sensitivity_scale_factor(model_name, background_efficiencies):
-    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing.npy'
+    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing_25x25.npy'
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
@@ -156,7 +170,7 @@ def main():
     # Training parameters
     batch_size = 512
     train_epochs = 500
-    patience = 30
+    patience = 10
     min_delta = 0.
     learning_rate = 1e-4
     save_model_name = f'./CNN_models/CNN_last_model_CWoLa_hunting_{model_name}/'
@@ -187,41 +201,25 @@ def main():
     results = loaded_model.evaluate(x=X_test, y=y_test)
     print(f'Testing Loss = {results[0]:.3}, Testing Accuracy = {results[1]:.3}')
 
-    if results[1] > best_results[1]:
+    if results[0] < best_results[0]:
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
 
-    # Compute AUC
-    # labels = y_test
-    predictions = loaded_model.predict(X_test)
-
-    # y_test = np.argmax(labels, axis=1)
-    y_prob = np.array(predictions)
-
-    i = 1
-    # AUC = roc_auc_score(y_test==i,  y_prob[:,i])
-    AUC = roc_auc_score(y_test==i,  y_prob)
+    # Compute ACC & AUC
+    y_pred = loaded_model.predict(X_test)
+    ACC = get_highest_accuracy(y_test, y_pred)
+    AUC = roc_auc_score(y_test, y_pred)
 
     # Testing results on true label sample
-    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing.npy'
+    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing_25x25.npy'
     X_test, y_test = load_samples(true_label_path)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
-
-    # if true_label_results[1] < 0.5:
-    #     y_test = y_test[:,[1,0]]
-    #     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
-    # Compute AUC
-    # labels = y_test
-    predictions = loaded_model.predict(X_test)
-
-    # y_test = np.argmax(labels, axis=1)
-    y_prob = np.array(predictions)
-
-    i = 1
-    # true_label_AUC = roc_auc_score(y_test==i,  y_prob[:,i])
-    true_label_AUC = roc_auc_score(y_test==i,  y_prob)
+    # Compute ACC & AUC
+    y_pred = loaded_model.predict(X_test)
+    true_label_ACC = get_highest_accuracy(y_test, y_pred)
+    true_label_AUC = roc_auc_score(y_test, y_pred)
 
     background_efficiencies = [0.1, 0.01, 0.001]
     scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies)
@@ -233,10 +231,10 @@ def main():
                 'Train signal size': [train_size[0]],
                 'Train background size': [train_size[1]],
                 'Loss': [results[0]],
-                'ACC': [results[1]],
+                'ACC': [ACC],
                 'AUC': [AUC],
                 'Loss-true': [true_label_results[0]],
-                'ACC-true': [true_label_results[1]],
+                'ACC-true': [true_label_ACC],
                 'AUC-true': [true_label_AUC],
                 'Sample Type': [sample_type],
                 'Model Name': [model_name],
