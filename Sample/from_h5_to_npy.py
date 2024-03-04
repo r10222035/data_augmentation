@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python from_h5_to_npy.py <h5_path> <output_path> 
-# python from_h5_to_npy.py ./HVmodel/data/DA/mix_sample_0.0_aug_3.h5 ./HVmodel/data/DA/mix_sample_0.0_aug_3.npy
+# python from_h5_to_npy.py <h5_path> <output_path> <resolution>
+# python from_h5_to_npy.py ./HVmodel/data/DA/mix_sample_0.0_aug_3.h5 ./HVmodel/data/DA/mix_sample_0.0_aug_3.npy 75
 
 import os
 import sys
@@ -9,6 +9,7 @@ import h5py
 import random
 
 import numpy as np
+from seaborn import reset_orig
 
 def std_phi(phi):
     # return the phi in range [-pi, pi]
@@ -69,9 +70,9 @@ def preprocess(pts, etas, phis):
 
     return pts, eta_news, phi_news
 
-def from_h5_to_npy(h5_path, output_path):
+def from_h5_to_npy(h5_path, output_path, res=75):
     # Generate the jet image from h5 file and save it to npy file
-
+    # res: resolution of the jet image
     with h5py.File(h5_path, 'r') as f:
 
         print('Preprocessing J1')
@@ -84,8 +85,8 @@ def from_h5_to_npy(h5_path, output_path):
         nevent = f['EVENT/signal'].shape[0]
 
         # 計算 bin 的邊界
-        bins_eta = np.linspace(-1.0, 1.0, 76)
-        bins_phi = np.linspace(-1.0, 1.0, 76)
+        bins_eta = np.linspace(-1.0, 1.0, res + 1)
+        bins_phi = np.linspace(-1.0, 1.0, res + 1)
 
         # 計算每個數據點在直方圖中的位置
         # shape: (nevent, MAX_JETS)
@@ -95,16 +96,16 @@ def from_h5_to_npy(h5_path, output_path):
         bin_idx_phi1 = np.digitize(phi2, bins_phi) - 1
 
         # 計算每個 bin 的權重總和
-        hpT0 = np.zeros((nevent, 76, 76))
-        hpT1 = np.zeros((nevent, 76, 76))
+        hpT0 = np.zeros((nevent, res + 1, res + 1))
+        hpT1 = np.zeros((nevent, res + 1, res + 1))
         np.add.at(hpT0, (np.arange(nevent)[:, None], bin_idx_eta0, bin_idx_phi0), f['J1/pt'])
         np.add.at(hpT1, (np.arange(nevent)[:, None], bin_idx_eta1, bin_idx_phi1), f['J2/pt'])
 
-        hpT0 = hpT0[:,:75,:75]
-        hpT1 = hpT1[:,:75,:75]
+        hpT0 = hpT0[:,:res,:res]
+        hpT1 = hpT1[:,:res,:res]
   
         # 將結果堆疊起來
-        # data shpae: (nevent, 75, 75, 2)
+        # data shpae: (nevent, res, res, 2)
         # label shape: (nevent,)
         data = np.stack([hpT0, hpT1], axis=-1)
         label = f['EVENT/signal'][:]
@@ -126,8 +127,9 @@ def main():
 
     h5_path = sys.argv[1]
     output_path = sys.argv[2]
+    res = int(sys.argv[3])
 
-    from_h5_to_npy(h5_path, output_path)
+    from_h5_to_npy(h5_path, output_path, res)
 
 if __name__ == '__main__':
     main()

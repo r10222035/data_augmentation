@@ -112,7 +112,7 @@ def get_highest_accuracy(y_true, y_pred):
     # compute highest accuracy
     thresholds = np.array(thresholds)
     if len(thresholds) > 1000:
-        thresholds = np.percentile(thresholds, np.linspace(0,100,1001))
+        thresholds = np.percentile(thresholds, np.linspace(0, 100, 1001))
     accuracy_scores = []
     for threshold in thresholds:
         accuracy_scores.append(accuracy_score(y_true, y_pred>threshold))
