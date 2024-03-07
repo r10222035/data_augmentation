@@ -1382,57 +1382,111 @@
 		where $S$ and $B$ are the numbers of signal and background events. This formula would obtain much different results when $B$ is not much greater than $S$.
 
 		Figure~\ref{fig:acc_curve_resolution_25}, \ref{fig:acc_scatter_resolution_25} are accuracy curves and scatter plots. The performance of ``resolution $25\times 25$'' is better than ``resolution $75\times 75$''. The model processing high-resolution images is hard to train because there are more parameters. The training results of the ``+1 copy'' sample are not better than the original dataset.
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
-				} 
-				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
-				} 
-				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
-				} 
-				\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
-				\label{fig:acc_curve_resolution_25}
-			\end{figure}
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
-				} 
-				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
-				} 
-				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
-				} 
-				\caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$. The slope of the grey dashed line is 1, representing the same training and true ACC.}
-				\label{fig:acc_scatter_resolution_25}
-			\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
+			} 
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
+			} 
+			\subfloat[Original v.s. Copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
+			} 
+			\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
+			\label{fig:acc_curve_resolution_25}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
+			} 
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
+			} 
+			\subfloat[Original v.s. Copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
+			} 
+			\caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:acc_scatter_resolution_25}
+		\end{figure}
 
-			Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25} is the sensitivity improvement. The training results of ``resolution $25\times 25$'' are better than ``resolution $75\times 75$''. This is consistent with the training accuracy. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset with resolution $25\times 25$ has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset about 1 significance, but this difference is smaller than the case of resolution $75\times 75$ (Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30}).
-			\begin{figure}[htpb]
-				\centering
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_75_25.pdf}
-				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
-				\label{fig:sensitivity_improvement_bkg_eff_resolution_25}
-			\end{figure}
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25} is the sensitivity improvement. The training results of ``resolution $25\times 25$'' are better than ``resolution $75\times 75$''. This is consistent with the training accuracy. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset with resolution $25\times 25$ has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset about 1 significance, but this difference is smaller than the case of resolution $75\times 75$ (Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30}).
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_75_25.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_bkg_eff_resolution_25}
+		\end{figure}
 
-			Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. It seems that all curves have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
-			\begin{figure}[htpb]
-				\centering
-				\centering
-				\subfloat[My testing]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_25.pdf}
-				} 
-				\subfloat[Zong-En's testing]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_ZN_testing.pdf}
-				} 
-				\caption{The significance before and after the CWoLa CNN selection. The solid lines are the new results with duplicated samples, and the dashed lines are the previous results. The slope of the dashed grey line is $1$, representing the same performance before and after the selection.}
-				\label{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing}
-			\end{figure}
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. It seems that all curves have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[My testing]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_25.pdf}
+			} 
+			\subfloat[Zong-En's testing]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_ZN_testing.pdf}
+			} 
+			\caption{The significance before and after the CWoLa CNN selection. The solid lines are the new results with duplicated samples, and the dashed lines are the previous results. The slope of the dashed grey line is $1$, representing the same performance before and after the selection.}
+			\label{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing}
+		\end{figure}
 	% subsection resolution (end)
+	\subsection{Other plots}% (fold)
+	\label{sub:other_plots}
+		\subsubsection{Loss and accuracy across training}% (fold)
+		\label{subs:loss_and_accuracy_across_training}
+			Figure~\ref{fig:loss_acc_across_training_SB_3_res_75} is the loss and accuracy values across training. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. Thus, the difference between these curves may not be meaningful. The training time of the ``+1 copy'' dataset is much longer than the original samples. 
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_origin_SB_3_res_75.pdf}
+				} 
+				\subfloat[Original]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_origin_SB_3_res_75.pdf}
+				} \\ 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_copy_1_SB_3_res_75.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_copy_1_SB_3_res_75.pdf}
+				} 
+				\caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $75\times 75$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
+				\label{fig:loss_acc_across_training_SB_3_res_75}
+			\end{figure}
+		% subsubsection loss_and_accuracy_across_training (end)	
+		\subsubsection{ROC curve}% (fold)
+		\label{subs:roc_curve}
+			Figure~\ref{fig:roc_curve_SB_3_5_7} is ROC curves with different datasets. Here, we plot the ROC curve of the best training model. Resolution $25\times 25$ models perform better for sensitivity $S / \sqrt{B} = 3.0$. The curve of the ``+1 copy, $75\times 75$'' dataset has weird performance, it does not work as a well-training classifier. The model might overfit on the training dataset.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_3_res_75_25.pdf}
+				} 
+				\subfloat[]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_5_res_75_25.pdf}
+				} 
+				\subfloat[]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_7_res_75_25.pdf}
+				} 
+				\caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
+				\label{fig:roc_curve_SB_3_5_7}
+			\end{figure}
+
+			ROC curves with various datasets are presented in Figure~\ref{fig:roc_curve_res_25_75}. It seems that the ``+1 copy'' dataset would improve the performance at the low-FPR (False Positive Rate) region, while the performance would be worse when we consider the high-FPR region. The model might overfit on some samples.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[]{
+					\includegraphics[width=0.49\textwidth]{HVmodel_roc_curve_origin_copy_1_res_25.pdf}
+				} 
+				\subfloat[]{
+					\includegraphics[width=0.49\textwidth]{HVmodel_roc_curve_origin_copy_1_res_75.pdf}
+				} 
+				\caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
+				\label{fig:roc_curve_res_25_75}
+			\end{figure}
+		% subsubsection roc_curve (end)	
+	% subsection other_plots (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
