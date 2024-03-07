@@ -1235,7 +1235,7 @@
 			\label{fig:sensitivity_improvement_bkg_eff_copy_1_ZN_testing}
 		\end{figure}
 
-		Since my training results are inconsistent with Zong-En's, it is need to make a comparison with Zong-En's training codes. The main differences are listed below:
+		Since my training results are inconsistent with Zong-En's, I need to make a comparison with Zong-En's training codes. The main differences are listed below:
 		\begin{enumerate}
 			\item Model structure: I treated 2 jet images as 2 channels of one diagram. Zong-En passed each jet image through a common CNN and multiplied output values.
 			\item Training sample preparation: I prepare training samples in the \verb|.npy| file before training. Zong-En uses the generator method to construct samples during the training process.
@@ -1247,7 +1247,7 @@
 		\label{subs:model_structure}
 			Modify the model structure such that same as the Zong-En's model~\cite{Beauchesne:2023vie}. The main difference is how to process jet images. I treated 2 jet images as 2 channels of one diagram. For Zong-En's model, each jet image is passed through a common CNN and returns a single value. The output of the full network is the product of these two numbers.
 
-			The ``2 channel'' is my model and the ``2 image'' is Zong-En's model. Figure~\ref{fig:acc_curve_ZN_model}, \ref{fig:acc_scatter_ZN_model} are accuracy curves and scatter plots. For the original dataset, the performance of ``2 image'' is better than ``2 channel'' in high sensitivity region. For the ``+1 copy'' dataset, both models perform similarly. The ``+1 copy'' dataset can still obtain better performance in the low-sensitivity region.
+			The ``2 channel'' is my model and the ``2 image'' is Zong-En's model. Figure~\ref{fig:acc_curve_ZN_model}, \ref{fig:acc_scatter_ZN_model} are accuracy curves and scatter plots. For the original dataset, the performance of ``2 image'' is better than ``2 channel'' in high sensitivity region. Both models perform similarly for the ``+1 copy'' dataset, but ``2 image'' still performs slightly better.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
@@ -1271,7 +1271,7 @@
 					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_ZN_model.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_ZN_model.pdf}
 				} 
 				\caption{Scatter plots for training ACC and true ACC with different model structures. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 				\label{fig:acc_scatter_ZN_model}
@@ -1313,7 +1313,7 @@
 					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_patience_30.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_patience_30.pdf}
 				} 
 				\caption{Scatter plots for training ACC and true ACC with different early stopping patience. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 				\label{fig:acc_scatter_patience_30}
@@ -1351,7 +1351,7 @@
 				\label{fig:sensitivity_improvement_bkg_eff_tf_250}
 			\end{figure} 
 
-			I should test my training codes on version 2.0.0, but there is an error that still can not be resolved for now.
+			I should test my training codes on version 2.0.0, but an error still can not be resolved for now.
 
 			Error messages:
 			\begin{verbatim}
@@ -1361,6 +1361,78 @@
 			\end{verbatim}
 		% subsubsection tensorflow_version (end)		
 	% subsection compare_with_zong_en_s_results (end)
+	\subsection{Tensorflow Model compile}% (fold)
+	\label{sub:tensorflow_model_compile}
+		According to \href{https://www.tensorflow.org/api_docs/python/tf/keras/Model#compile}{tf.keras.Model.compile} documentation:
+		\begin{quote}
+			When you pass the strings `accuracy' or `acc', we convert this to one of \newline tf.keras.metrics.BinaryAccuracy, tf.keras.metrics.CategoricalAccuracy, \newline tf.keras.metrics.SparseCategoricalAccuracy based on the loss function used and the model output shape.
+		\end{quote}
+		When we modified the model structure, we also changed the loss function to binary cross entropy. Thus Tensorflow would use the BinaryAccuracy metric. However, this accuracy is not the best accuracy evaluated by threshold scanning, it computes the accuracy with the default threshold 0.5.
+
+		For the previous model structure, Tensorflow would use CategoricalAccuracy, which checks the index of output whether is the same as the index of the true label.
+
+		The accuracy results in Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30}, \ref{fig:cwola_cnn_training_performance_copy_1_tf_250} with the new model structure would be misleading. Only the sensitivity improvement results are meaningful.
+	% subsection tensorflow_model_compile (end)
+	\subsection{Resolution}% (fold)
+	\label{sub:resolution}
+		To fairly compare with Zong-En's results, the resolution is modified to $25 \times 25$. Moreover, we use the significance formula
+		\begin{equation}
+			\sigma = \sqrt{2\left[ \left( S+B \right) \log\left( \frac{S}{B} + 1 \right) - S  \right] }
+		\end{equation}
+		where $S$ and $B$ are the numbers of signal and background events. This formula would obtain much different results when $B$ is not much greater than $S$.
+
+		Figure~\ref{fig:acc_curve_resolution_25}, \ref{fig:acc_scatter_resolution_25} are accuracy curves and scatter plots. The performance of ``resolution $25\times 25$'' is better than ``resolution $75\times 75$''. The model processing high-resolution images is hard to train because there are more parameters. The training results of the ``+1 copy'' sample are not better than the original dataset.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
+				} 
+				\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
+				\label{fig:acc_curve_resolution_25}
+			\end{figure}
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
+				} 
+				\subfloat[Original v.s. Copy]{
+					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
+				} 
+				\caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+				\label{fig:acc_scatter_resolution_25}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25} is the sensitivity improvement. The training results of ``resolution $25\times 25$'' are better than ``resolution $75\times 75$''. This is consistent with the training accuracy. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset with resolution $25\times 25$ has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset about 1 significance, but this difference is smaller than the case of resolution $75\times 75$ (Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30}).
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_75_25.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_bkg_eff_resolution_25}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. It seems that all curves have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
+			\begin{figure}[htpb]
+				\centering
+				\centering
+				\subfloat[My testing]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_25.pdf}
+				} 
+				\subfloat[Zong-En's testing]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_ZN_testing.pdf}
+				} 
+				\caption{The significance before and after the CWoLa CNN selection. The solid lines are the new results with duplicated samples, and the dashed lines are the previous results. The slope of the dashed grey line is $1$, representing the same performance before and after the selection.}
+				\label{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing}
+			\end{figure}
+	% subsection resolution (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
