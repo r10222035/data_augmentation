@@ -1245,7 +1245,7 @@
 
 		\subsubsection{Model structure}% (fold)
 		\label{subs:model_structure}
-			Modify the model structure such that same as the Zong-En's model~\cite{Beauchesne:2023vie}. The main difference is how to process jet images. I treated 2 jet images as 2 channels of one diagram. For Zong-En's model, each jet image is passed through a common CNN and returns a single value. The output of the full network is the product of these two numbers.
+			Modify the model structure such that the same as Zong-En's model~\cite{Beauchesne:2023vie}. The main difference is how to process jet images. I treated 2 jet images as 2 channels of one diagram. For Zong-En's model, each jet image is passed through a common CNN and returns a single value. The output of the full network is the product of these two numbers.
 
 			The ``2 channel'' is my model and the ``2 image'' is Zong-En's model. Figure~\ref{fig:acc_curve_ZN_model}, \ref{fig:acc_scatter_ZN_model} are accuracy curves and scatter plots. For the original dataset, the performance of ``2 image'' is better than ``2 channel'' in high sensitivity region. Both models perform similarly for the ``+1 copy'' dataset, but ``2 image'' still performs slightly better.
 			\begin{figure}[htpb]
@@ -1277,7 +1277,7 @@
 				\label{fig:acc_scatter_ZN_model}
 			\end{figure}
 
-			Figure~\ref{fig:sensitivity_improvement_bkg_eff_ZN_model} is the sensitivity improvement. The training results of ``2 image'' are better than ``2 channel''. The ``+1 copy'' dataset still has lower thresholds, and the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. For lower background efficiency, the ``2 image'' model can obtain larger improvement, but the threshold is still lower for the ``+1 copy'' dataset.
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_ZN_model} is the sensitivity improvement. The training results of ``2 image'' are better than ``2 channel''. The ``+1 copy'' dataset still has lower thresholds, and the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. The ``2 image'' model can obtain larger improvement for lower background efficiency, but the threshold is still lower for the ``+1 copy'' dataset.
 			\begin{figure}[htpb]
 				\centering
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_ZN_model.pdf}
@@ -1485,7 +1485,22 @@
 				\caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
 				\label{fig:roc_curve_res_25_75}
 			\end{figure}
-		% subsubsection roc_curve (end)	
+		% subsubsection roc_curve (end)
+		\subsubsection{Signal score}% (fold)
+		\label{subs:signal_score}
+			The output of the neural network is a number, which is the signal score of an event. Figure~\ref{fig:signal_score_SB_3} is the signal score distribution of the model trained on original datasets and duplicated datasets. These distributions are very different and can explain the ROC curve in Figure~\ref{fig:roc_curve_SB_3_5_7}.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.49\textwidth]{HVmodel_signal_score_origin_SB_3_res_75.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.49\textwidth]{HVmodel_signal_score_copy_1_SB_3_res_75.pdf}
+				} 
+				\caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in signal region.}
+				\label{fig:signal_score_SB_3}
+			\end{figure}
+		% subsubsection signal_score (end)	
 	% subsection other_plots (end)
 % section hidden_valley_model (end)
 
