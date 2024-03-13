@@ -43,41 +43,16 @@ def get_sample_size(y):
     return ns, nb
 
 
-# class CNN(tf.keras.Model):
-#     def __init__(self, name='CNN', dim_image=(75, 75, 2), n_class=2):
-#         super(CNN, self).__init__(name=name)
-
-#         self.ptqk = tf.keras.Sequential([
-#             tf.keras.layers.BatchNormalization(),
-#             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
-#             tf.keras.layers.MaxPool2D((2,2)),
-#             tf.keras.layers.Conv2D(32, (5,5), padding='same', activation='relu'),
-#             tf.keras.layers.MaxPool2D((2,2)),
-#             tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
-#             tf.keras.layers.MaxPool2D((2,2)),
-#             tf.keras.layers.Conv2D(64, (3,3), padding='same', activation='relu'),
-#             tf.keras.layers.Flatten(),
-#             tf.keras.layers.Dense(64, activation='relu'),
-#             tf.keras.layers.Dense(64, activation='relu'),
-#             tf.keras.layers.Dense(64, activation='relu'),
-#         ])
-
-#         """Output Layer"""
-#         self._output = tf.keras.layers.Dense(n_class, activation='softmax')
-
-#     @tf.function
-#     def call(self, inputs, training=False):
-#         latent_ptqk = self.ptqk(inputs)
-
-#         return self._output(latent_ptqk)
-
-
 class CNN(tf.keras.Model):
     def __init__(self, name='CNN'):
         super(CNN, self).__init__(name=name)
 
+        self.bn1 = tf.keras.layers.BatchNormalization()
+
+        self.bn2 = tf.keras.layers.BatchNormalization()
+
         self.sub_network = tf.keras.Sequential([
-            tf.keras.layers.BatchNormalization(),
+            # tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2,2)),
             tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
@@ -98,6 +73,8 @@ class CNN(tf.keras.Model):
         channel1, channel2 = tf.split(inputs, num_or_size_splits=2, axis=-1)
 
         # pass through the same CNN
+        channel1 = self.bn1(channel1)
+        channel2 = self.bn2(channel2)
         output_channel1 = self.sub_network(channel1)
         output_channel2 = self.sub_network(channel2)
 
@@ -131,10 +108,6 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
-    # true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
-
-    # if true_label_results[1] < 0.5:
-    #     y_test = y_test[:,[1,0]]
 
     # Compute False positive rate, True positive rate
     predictions = loaded_model.predict(X_test)
@@ -143,7 +116,6 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     labels = y_test
     y_prob = np.array(predictions)
 
-    # fpr, tpr, _ = roc_curve(labels==1, y_prob[:,1])
     fpr, tpr, _ = roc_curve(labels==1, y_prob)
 
     signal_efficiencies = []
@@ -161,10 +133,12 @@ def main():
     print(f'Read data from {data_path}')
 
     X, y = load_samples(data_path)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
+    X, X_test, y, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.20, random_state=17)
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, shuffle=False)
 
     train_size = get_sample_size(y_train)
+    val_size = get_sample_size(y_val)
     test_size = get_sample_size(y_test)
 
     # Training parameters
@@ -178,14 +152,14 @@ def main():
     # Create the model
     model = CNN()
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
-                  # loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
                   loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
                   metrics=['accuracy'])
 
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=min_delta, verbose=1, patience=patience)
     check_point = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
 
-    history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    history = model.fit(x=X_train, y=y_train, validation_data=(X_val, y_val), epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
     # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
 
     # Training results
