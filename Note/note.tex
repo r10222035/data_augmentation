@@ -1457,7 +1457,7 @@
 		% subsubsection loss_and_accuracy_across_training (end)	
 		\subsubsection{ROC curve}% (fold)
 		\label{subs:roc_curve}
-			Figure~\ref{fig:roc_curve_SB_3_5_7} is ROC curves with different datasets. Here, we plot the ROC curve of the best training model. Resolution $25\times 25$ models perform better for sensitivity $S / \sqrt{B} = 3.0$. The curve of the ``+1 copy, $75\times 75$'' dataset has weird performance, it does not work as a well-training classifier. The model might overfit on the training dataset.
+			Figure~\ref{fig:roc_curve_SB_3_5_7} is ROC curves with different datasets. Here, we plot the ROC curve of the best training model. Resolution $25\times 25$ models perform better for sensitivity $S / \sqrt{B} = 3.0$. The curve of the ``+1 copy, $75\times 75$'' dataset has weird performance, it does not work as a well-training classifier. The model might overfit the training dataset.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -1497,11 +1497,43 @@
 				\subfloat[+1 time copy]{
 					\includegraphics[width=0.49\textwidth]{HVmodel_signal_score_copy_1_SB_3_res_75.pdf}
 				} 
-				\caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in signal region.}
+				\caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in the signal region.}
 				\label{fig:signal_score_SB_3}
 			\end{figure}
 		% subsubsection signal_score (end)	
 	% subsection other_plots (end)
+	\subsection{Label in .npy file}% (fold)
+	\label{sub:label_in_npy_file}
+		To make sure the labeling in the duplicated dataset is correct, we select the signal and background events from the original and duplicated datasets and plot some distributions. Figure~\ref{fig:pt_distribution_at_npy} is $p_{\text{T}}$ distributions. Figure~\ref{fig:average_jet_image_smearing_scale} is average images. They all have the same results. It seems that the labeling of the duplicated dataset is correct.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Leading jet]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_leading_jet_pt_distribution_at_npy.pdf}
+			} 
+			\subfloat[Sub-leading jet]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_sub-leading_jet_pt_distribution_at_npy.pdf}
+			} 
+			\caption{The $p_{\text{T}}$ distributions for original and duplicated datasets. The $p_{\text{T}}$ is the sum of the transverse momentum in each pixel. The differences of each bin in the corresponding region are all equal to zero. Therefore, they have the same distribution.}
+			\label{fig:pt_distribution_at_npy}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original, SR]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_origin_signal_region.pdf}
+			}
+			\subfloat[Original, SB]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_origin_sideband_region.pdf}
+			} \\
+			\subfloat[Duplicated, SR]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_copy_1_signal_region.pdf}
+			}
+			\subfloat[Duplicated, SB]{
+				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_copy_1_sideband_region.pdf}
+			}
+			\caption{The average jet images in signal and sideband region. The jet images are similar for original and duplicated datasets. The difference between two jet images in the corresponding region is a zero matrix. Therefore, they have the same distribution.}
+			\label{fig:average_jet_image_smearing_scale}
+		\end{figure}
+	% subsection label_in_npy_file (end)		
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
