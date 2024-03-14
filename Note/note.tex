@@ -1500,7 +1500,45 @@
 				\caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in the signal region.}
 				\label{fig:signal_score_SB_3}
 			\end{figure}
-		% subsubsection signal_score (end)	
+		% subsubsection signal_score (end)
+		\subsubsection{ROC curve in training process}% (fold)
+		\label{subs:roc_curve_in_training_process}
+			We found that the training processes are very different for original and duplicated datasets in Figure~\ref{fig:loss_acc_across_training_SB_3_res_75}. To investigate more information in the training process, we plot the ROC curve across the training process.
+
+			Figure~\ref{fig:roc_curve_training_process} is ROC curves at different epochs for duplicated datasets. The ROC curves before Epoch 11 satisfied our normal expectations, but the shape became weird after Epoch 16. Even if the shape or AUC value becomes worse, the loss value still decreases. The training process does not stop at a reasonable stage. It seems that the problem comes from the over-training issue.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Epoch 1]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep1.pdf}
+				} 
+				\subfloat[Epoch 6]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep6.pdf}
+				} 
+				\subfloat[Epoch 11]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep11.pdf}
+				} \\ 
+				\subfloat[Epoch 16]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep16.pdf}
+				} 
+				\subfloat[Epoch 21]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep21.pdf}
+				} 
+				\subfloat[Epoch 26]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep26.pdf}
+				} \\ 
+				\subfloat[Epoch 31]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep31.pdf}
+				} 
+				\subfloat[Epoch 36]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep36.pdf}
+				} 
+				\subfloat[Epoch 41]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep41.pdf}
+				} \\ 
+				\caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the duplicated dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
+				\label{fig:roc_curve_training_process}
+			\end{figure}
+		% subsubsection roc_curve_in_training_process (end)		
 	% subsection other_plots (end)
 	\subsection{Label in .npy file}% (fold)
 	\label{sub:label_in_npy_file}
