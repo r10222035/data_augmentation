@@ -34,11 +34,11 @@ def load_samples(path, change_order=False):
 
 def get_sample_size(y):
     if len(y.shape) == 1:
-        ns = (y==1).sum()
-        nb = (y==0).sum()
+        ns = (y == 1).sum()
+        nb = (y == 0).sum()
     else:
-        ns = (y.argmax(axis=1)==1).sum()
-        nb = (y.argmax(axis=1)==0).sum()
+        ns = (y.argmax(axis=1) == 1).sum()
+        nb = (y.argmax(axis=1) == 0).sum()
     print(ns, nb)
     return ns, nb
 
@@ -52,14 +52,13 @@ class CNN(tf.keras.Model):
         self.bn2 = tf.keras.layers.BatchNormalization()
 
         self.sub_network = tf.keras.Sequential([
-            # tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(64, (5,5), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2,2)),
-            tf.keras.layers.Conv2D(128, (3,3), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.Dense(128, activation='relu'),
@@ -135,7 +134,6 @@ def main():
     X, y = load_samples(data_path)
     X, X_test, y, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.20, random_state=17)
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, shuffle=False)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
@@ -158,9 +156,7 @@ def main():
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=min_delta, verbose=1, patience=patience)
     check_point = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
 
-    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
     history = model.fit(x=X_train, y=y_train, validation_data=(X_val, y_val), epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
-    # history = model.fit(x=X_train, y=y_train, validation_split=0.2, epochs=train_epochs, batch_size=batch_size, shuffle=False, callbacks=[early_stopping, check_point])
 
     # Training results
     best_model_name = f'./CNN_models/CNN_best_model_CWoLa_hunting_{model_name}/'
