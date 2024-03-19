@@ -924,7 +924,7 @@
 		\subsubsection{+1 copy sample}% (fold)
 		\label{subs:_1_copy_sample}
 			To investigate the impact of the data augmentation technique, we generate a sample by duplicating the original sample without any augmentation. This sample is called ``+1 copy.''
-			Figure~\ref{fig:cwola_cnn_training_performance_copy_1} is the ACC curve and ACC distribution. The ACC is close ``+1 augmentation'' case when $S / \sqrt{B} \le 4$, while the ACC is worse when $S / \sqrt{B} \ge 5$. The training ACC is much better than the original and ``+1 augmentation'' samples, but the true ACC can not achieve higher values.
+			Figure~\ref{fig:cwola_cnn_training_performance_copy_1} is the ACC curve and ACC distribution. The ACC is close to the ``+1 augmentation'' case when $S / \sqrt{B} \le 4$, while the ACC is worse when $S / \sqrt{B} \ge 5$. The training ACC is much better than the original and ``+1 augmentation'' samples, but the true ACC can not achieve higher values.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -1085,7 +1085,7 @@
 
 		\subsubsection{Remove shuffle in training code}% (fold)
 		\label{subs:remove_shuffle_in_training_code}
-			I remove default shuffles in the training codes. In the default setting, the training sample would be shuffled before training and testing sample splitting and each epoch training. Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle_code} is the ACC curve and ACC distribution. The training results of removing shuffling codes are still similar to the previous one and all ``+1 copy'' samples perform better than the original training sample.
+			I remove default shuffles in the training codes. In the default setting, the training sample would be shuffled before training and testing sample splitting and each epoch training. Figure~\ref{fig:cwola_cnn_training_performance_copy_1_wo_shuffle_code} is the ACC curve and ACC distribution. The training results of removing shuffling codes are similar to the previous one, and all ``+1 copy'' samples perform better than the original.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
@@ -1161,7 +1161,7 @@
 	% subsection another_testing_dataset (end)		
 	\subsection{Original + $x$ Copy}% (fold)
 	\label{sub:original_x_copy}
-		The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=0.25, 0.50, 0.75$. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. For $x = 0.50, 0.75$, the training results are quite different when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
+		The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=0.25, 0.50, 0.75$. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. The training results are quite different for $x = 0.50, 0.75$ when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
@@ -1393,7 +1393,7 @@
 			\subfloat[Original v.s. Copy]{
 				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
 			} 
-			\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
+			\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:acc_curve_resolution_25}
 		\end{figure}
 		\begin{figure}[htpb]
@@ -1436,7 +1436,9 @@
 	\label{sub:other_plots}
 		\subsubsection{Loss and accuracy across training}% (fold)
 		\label{subs:loss_and_accuracy_across_training}
-			Figure~\ref{fig:loss_acc_across_training_SB_3_res_75} is the loss and accuracy values across training. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. Thus, the difference between these curves may not be meaningful. The training time of the ``+1 copy'' dataset is much longer than the original samples. 
+			Figure~\ref{fig:loss_acc_across_training_SB_3_res_75} and \ref{fig:loss_acc_across_training_SB_3_res_25} are the loss and accuracy values across training. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. Thus, the difference between these curves may not be meaningful. The training time of the ``+1 copy'' dataset is longer than the original samples.
+
+			Since the imbalance of the sample size in signal and sideband regions (Table~\ref{tab:training_sample_size_cwola_hunting_hv}), the accuracy values of the training and validation curve are close to 0.6 but not 0.5. 
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
@@ -1453,6 +1455,24 @@
 				} 
 				\caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $75\times 75$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
 				\label{fig:loss_acc_across_training_SB_3_res_75}
+			\end{figure}
+
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_origin_SB_3_res_25.pdf}
+				} 
+				\subfloat[Original]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_origin_SB_3_res_25.pdf}
+				} \\ 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_copy_1_SB_3_res_25.pdf}
+				} 
+				\subfloat[+1 time copy]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_copy_1_SB_3_res_25.pdf}
+				} 
+				\caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $25\times 25$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
+				\label{fig:loss_acc_across_training_SB_3_res_25}
 			\end{figure}
 		% subsubsection loss_and_accuracy_across_training (end)	
 		\subsubsection{ROC curve}% (fold)
@@ -1503,9 +1523,9 @@
 		% subsubsection signal_score (end)
 		\subsubsection{ROC curve in training process}% (fold)
 		\label{subs:roc_curve_in_training_process}
-			We found that the training processes are very different for original and duplicated datasets in Figure~\ref{fig:loss_acc_across_training_SB_3_res_75}. To investigate more information in the training process, we plot the ROC curve across the training process.
+			We found that the training processes are very different for original and duplicated datasets in Figure~\ref{fig:loss_acc_across_training_SB_3_res_25}. To investigate more information in the training process, we plot the ROC curve across the training process.
 
-			Figure~\ref{fig:roc_curve_training_process} is ROC curves at different epochs for duplicated datasets. The ROC curves before Epoch 11 satisfied our normal expectations, but the shape became weird after Epoch 16. Even if the shape or AUC value becomes worse, the loss value still decreases. The training process does not stop at a reasonable stage. It seems that the problem comes from the over-training issue.
+			Figure~\ref{fig:roc_curve_training_process_copy_1} is ROC curves at different epochs for duplicated datasets. The ROC curves before Epoch 11 satisfied our normal expectations, but the shape became weird after Epoch 16. Even if the shape or AUC value becomes worse, the loss value still decreases. The training process does not stop at a reasonable stage. It seems that the problem comes from the over-training issue.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Epoch 1]{
@@ -1536,7 +1556,38 @@
 					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep41.pdf}
 				} \\ 
 				\caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the duplicated dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
-				\label{fig:roc_curve_training_process}
+				\label{fig:roc_curve_training_process_copy_1}
+			\end{figure}
+
+			Figure~\ref{fig:roc_curve_training_process_origin} is ROC curves at different epochs for original datasets. The ROC curves before Epoch 21 look normal. The shape of the ROC curve is a little deformed after Epoch 26, but the impact is very small compared with the ``+1 copy'' case. After the deformation of the ROC curve is observed, the training process does not take a long time to stop, which is terminated at the reasonable stage. It seems that there is no over-training issue for the original training sample.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Epoch 1]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep1.pdf}
+				}
+				\subfloat[Epoch 6]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep6.pdf}
+				}
+				\subfloat[Epoch 11]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep11.pdf}
+				} \\
+				\subfloat[Epoch 16]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep16.pdf}
+				}
+				\subfloat[Epoch 21]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep21.pdf}
+				}
+				\subfloat[Epoch 26]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep26.pdf}
+				} \\
+				\subfloat[Epoch 31]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep31.pdf}
+				}
+				\subfloat[Epoch 36]{
+					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep36.pdf}
+				}
+				\caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the original dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
+				\label{fig:roc_curve_training_process_origin}
 			\end{figure}
 		% subsubsection roc_curve_in_training_process (end)		
 	% subsection other_plots (end)
