@@ -1623,6 +1623,97 @@
 			\label{fig:average_jet_image_smearing_scale}
 		\end{figure}
 	% subsection label_in_npy_file (end)		
+	\subsection{More testing on new model structure}% (fold)
+	\label{sub:more_testing_on_new_model_structure}
+		Because we have modified the neural network model structure and the resolution of jet images, we would like to test the ``+1 augmentation'' and ``luminosity $\times 2$'' datasets with these new settings. Then, we can make similar plots as Figure~\ref{fig:cwola_cnn_training_performance_copy_1} and \ref{fig:sensitivity_improvement_bkg_eff_01_copy_1}.
+
+		Figure~\ref{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25} is the ACC curve and ACC distribution. The original and ``luminosity $\times 2$'' datasets have similar performance. The ``+1 augmentation'' and ``+1 copy'' datasets have similar performance and they perform worse than the original and ``luminosity $\times 2$'' samples. Since the training ACC of ``+1 augmentation'' and ``+1 copy'' datasets is a little higher than the original dataset, they may encounter the over-training problem.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_aug_1_x2_copy_1_res_25.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_origin_aug_1_x2_copy_1_res_25.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with different samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_aug_1_x2_copy_1_res_25} is the sensitivity improvement. The performance of the ``luminosity $\times 2$'' dataset is similar to the original datasets. ``Luminosity $\times 2$'' can obtain more sensitivity improvement when we use lower background efficiency. The ``+1 augmentation'' performs similarly to the ``+1 copy'' case. It exhibits better results in high-sensitivity regions compared with ``+1 copy'' datasets. These results are similar to Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25}. For $\varepsilon_{\text{b}} = 10 \%$, the original and ``luminosity $\times 2$'' datasets have the best performance. For lower background efficiencies, their thresholds would be worse than the ``+1 copy'' and ``+1 augmentation datasets.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_copy_1_res_25.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_aug_1_x2_copy_1_res_25}
+		\end{figure}
+	% subsection more_testing_on_new_model_structure (end)
+	\subsection{Modify the sideband region}% (fold)
+	\label{sub:modify_the_sideband_region}
+		We found the training accuracy is close to 0.6 but not 0.5 in Figure~\ref{fig:loss_acc_across_training_SB_3_res_25}. The reason is the imbalance of the data size. The size of sideband region samples is larger than the size of signal region samples. To investigate the impact of the sideband region, the sideband boundary is modified from $[4300,4700] \cup [5500,5900] \text{ GeV}$ to $[4400,4700] \cup [5500,5800] \text{ GeV}$.
+
+		After we modified the sideband region, the training sample sizes of each category are summarized in Table~\ref{tab:training_sample_size_cwola_hunting_hv_new_SB}.
+		\begin{table}[htpb]
+			\centering
+			\caption{The training sample size for the mixed sample. We set sensitivity $S / \sqrt{B} = 1$ in the signal region and evaluate the number of events in the signal region. The sideband region is modified to $[4400,4700] \cup [5500,5800] \text{ GeV}$.}
+			\label{tab:training_sample_size_cwola_hunting_hv_new_SB}
+			\begin{tabular}{c|cc}
+								& \multicolumn{2}{c}{True label} \\
+				Mixed sample    & Signal       & Background      \\ \hline
+				Signal region   & 138          & 19k             \\
+				Sideband region & 34           & 20k
+			\end{tabular}
+		\end{table}
+
+		Figure~\ref{fig:loss_acc_across_training_SB_3_res_25_new_SB} is the loss and accuracy values across training with the new sideband region. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. The training accuracy is close to 0.52, which satisfied our expectations. The ``+1 copy'' dataset takes a longer time to finish the training process. It seems that the ``+1 copy'' dataset still has the over-training issue.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_origin_SB_3_res_25_new_SB_region.pdf}
+			}
+			\subfloat[Original]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_origin_SB_3_res_25_new_SB_region.pdf}
+			} \\
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_copy_1_SB_3_res_25_new_SB_region.pdf}
+			}
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_copy_1_SB_3_res_25_new_SB_region.pdf}
+			}
+			\caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $25\times 25$. The sideband region is modified to $[4400,4700] \cup [5500,5800] \text{ GeV}$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
+			\label{fig:loss_acc_across_training_SB_3_res_25_new_SB}
+		\end{figure}
+
+		Figure~\ref{fig:acc_curve_new_SB_region}, \ref{fig:acc_scatter_new_SB_region} are accuracy curves and scatter plots. The sideband region does not highly impact the training performance.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_new_SB.pdf}
+			}
+			\subfloat[+1 time copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_SB.pdf}
+			}
+			\subfloat[Original v.s. Copy]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_new_SB.pdf}
+			}
+			\caption{The accuracy curves with resolution $25\times 25$ and the new sideband region. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_curve_new_SB_region}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25_new_SB.pdf}
+			\caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$ and the new sideband region. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:acc_scatter_new_SB_region}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_new_SB_region} is the sensitivity improvement. The results are consistent with the training accuracy. Even though we modified the sideband region, the training performance is similar to the previous one. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset about 1 significance.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_new_SB.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_new_SB_region}
+		\end{figure}
+	% subsection modify_the_sideband_region (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
