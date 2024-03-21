@@ -91,7 +91,7 @@ def get_highest_accuracy(y_true, y_pred):
         thresholds = np.percentile(thresholds, np.linspace(0, 100, 1001))
     accuracy_scores = []
     for threshold in thresholds:
-        accuracy_scores.append(accuracy_score(y_true, y_pred>threshold))
+        accuracy_scores.append(accuracy_score(y_true, y_pred > threshold))
 
     accuracies = np.array(accuracy_scores)
     return accuracies.max()
@@ -115,7 +115,7 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     labels = y_test
     y_prob = np.array(predictions)
 
-    fpr, tpr, _ = roc_curve(labels==1, y_prob)
+    fpr, tpr, _ = roc_curve(labels == 1, y_prob)
 
     signal_efficiencies = []
     for bkg_eff in background_efficiencies:
@@ -131,9 +131,13 @@ def main():
 
     print(f'Read data from {data_path}')
 
+    # Validation set
+    root, _ = os.path.splitext(data_path)
+    val_path = f'{root}_val.npy'
+
     X, y = load_samples(data_path)
-    X, X_test, y, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.20, random_state=17)
+    X_val, y_val = load_samples(val_path)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
