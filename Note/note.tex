@@ -669,7 +669,7 @@
 			\end{tabular}
 		\end{table}	
 
-		The pure testing sample consists of 10k signal events and 10k background events, which are selected from the signal region.
+		The pure testing sample consists of 10k signal events and 10k background events selected from the signal region.
 	% subsection datasets (end)	
 	\subsection{Training CNN}% (fold)
 	\label{sub:training_cnn}
@@ -740,7 +740,7 @@
 			\label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
 		\end{figure}
 		
-		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique seems to suppress the threshold and improve the training performance.
+		We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique suppresses the threshold and improves training performance.
 
 		\begin{figure}[htpb]
 			\centering
@@ -888,7 +888,7 @@
 	\label{sub:training_and_true_performance}
 		In our intuition, we would expect that``+1 times'' and ``luminosity  $\times 2$'' samples should exhibit similar performance, or the ``luminosity  $\times 2$'' sample might provide better results since the data augmentation generates more samples from the known data. However, the results in Figure~\ref{fig:sensitivity_improvement_bkg_eff_01} contradict our intuition. Since we use the CWoLa approach, our comparison is not based on the training performance on mixed samples; instead, we evaluate the testing performance on pure samples, referred to as ``true performance.'' The relationship between training and true performance may not be a monotonic function and can be quite complicated.
 
-		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. Training ACC values are close for all cases, but true ACC values can be much different. The true ACC has a range that is ten times larger than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. Training ACC values are close for all cases, but true ACC values can be much different. The true ACC has a ten times larger range than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
@@ -1714,6 +1714,35 @@
 			\label{fig:sensitivity_improvement_new_SB_region}
 		\end{figure}
 	% subsection modify_the_sideband_region (end)
+	\subsection{Modify the procedure of preparing validation dataset}% (fold)
+	\label{sub:modify_the_procedure_of_preparing_validation_dataset}
+		We found the training process can not stop at a reasonable stage in Figure~\ref{fig:roc_curve_training_process_copy_1}. Since the early stopping technique utilizes the validation loss to determine when the training process should be stopped, the over-training issue may come from the validation dataset.
+
+		The validation dataset is prepared at the training stage. The \verb|.npy| file would be split into the training and validation datasets with ratios of 0.8 and 0.2, respectively. This procedure works fine for original datasets. However, it is possible that the training and validation datasets could have some common samples for duplicated datasets. The splitting process randomly chooses samples from \verb|.npy| file.
+
+		To prevent some samples containing in the training and validation datasets, we change the procedure for preparing validation datasets. First, we split the validation set from the original dataset. Then, we duplicate samples to make the ``+1 copy'' datasets. In this way, the training and validation dataset would not contain common samples.
+
+		Figure~\ref{fig:acc_curve_split_validation_first} is accuracy curves and the scatter plot. The training results are similar for original and duplicated datasets.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_split_val.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25_split_val.pdf}
+			}
+			\caption{(a) The performance of CWoLa CNN training with different samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
+			\label{fig:acc_curve_split_validation_first}
+		\end{figure}
+		
+		Figure~\ref{fig:sensitivity_improvement_split_validation_first} is the sensitivity improvement. The results are consistent with the training accuracy. The original and duplicated datasets perform similarly.
+		\begin{figure}[htpb]
+			\centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_split_val.pdf}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_split_validation_first}
+		\end{figure}
+	% subsection modify_the_procedure_of_preparing_validation_dataset (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
