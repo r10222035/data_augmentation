@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python train_CNN.py <train_file> <model_name> "<sample_type>"
-# python train_CNN.py ../Sample/HVmodel/data/mix_sample_1.0.npy SB_1.0 "Sensitivity: 1.0"
+# python train_CNN.py <train_file> <validation_file> <true_label_file> <model_name> "<sample_type>"
+# python train_CNN.py ../Sample/HVmodel/data/split_val/mix_sample_1.0_75x75.npy ../Sample/HVmodel/data/split_val/mix_sample_1.0_val_75x75.npy ../Sample/HVmodel/data/split_val/mix_sample_test_75x75.npy SB_1.0_75x75 "Sensitivity: 1.0, Resolution: 75x75"
 
 import os
 import sys
@@ -18,17 +18,11 @@ from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
-def load_samples(path, change_order=False):
+def load_samples(path):
 
     root, _ = os.path.splitext(path)
-
-    if change_order:
-        X = np.load(f'{root}-data.npy').transpose(0, 2, 3, 1)
-    else:
-        X = np.load(f'{root}-data.npy')
-    # Y = np.eye(2)[np.load(f'{root}-label.npy')]
+    X = np.load(f'{root}-data.npy')
     Y = np.load(f'{root}-label.npy')
-
     return X, Y
 
 
@@ -102,8 +96,8 @@ def get_tpr_from_fpr(passing_rate, fpr, tpr):
     return tpr[n_th]
 
 
-def get_sensitivity_scale_factor(model_name, background_efficiencies):
-    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing_25x25.npy'
+def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label_path):
+
     X_test, y_test = load_samples(true_label_path)
 
     loaded_model = tf.keras.models.load_model(model_name)
@@ -111,7 +105,6 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
     # Compute False positive rate, True positive rate
     predictions = loaded_model.predict(X_test)
 
-    # labels = np.argmax(y_test, axis=1)
     labels = y_test
     y_prob = np.array(predictions)
 
@@ -125,23 +118,21 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies):
 
 
 def main():
-    data_path = sys.argv[1]
-    model_name = sys.argv[2]
-    sample_type = sys.argv[3]
+    train_path = sys.argv[1]
+    val_path = sys.argv[2]
+    true_label_path = sys.argv[3]
+    model_name = sys.argv[4]
+    sample_type = sys.argv[5]
 
-    print(f'Read data from {data_path}')
+    print(f'Read data from {train_path}')
 
-    # Validation set
-    root, _ = os.path.splitext(data_path)
-    val_path = f'{root}_val.npy'
-
-    X, y = load_samples(data_path)
+    X, y = load_samples(train_path)
     X_val, y_val = load_samples(val_path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
-    test_size = get_sample_size(y_test)
+    _ = get_sample_size(y_test)
 
     # Training parameters
     batch_size = 512
@@ -149,7 +140,7 @@ def main():
     patience = 10
     min_delta = 0.
     learning_rate = 1e-4
-    save_model_name = f'./CNN_models/CNN_last_model_CWoLa_hunting_{model_name}/'
+    save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
 
     # Create the model
     model = CNN()
@@ -163,7 +154,7 @@ def main():
     history = model.fit(x=X_train, y=y_train, validation_data=(X_val, y_val), epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
 
     # Training results
-    best_model_name = f'./CNN_models/CNN_best_model_CWoLa_hunting_{model_name}/'
+    best_model_name = f'./CNN_models/best_model_CWoLa_hunting_{model_name}/'
     if not os.path.isdir(best_model_name):
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
@@ -185,7 +176,6 @@ def main():
     AUC = roc_auc_score(y_test, y_pred)
 
     # Testing results on true label sample
-    true_label_path = '../Sample/HVmodel/data/new/mix_sample_testing_25x25.npy'
     X_test, y_test = load_samples(true_label_path)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
@@ -196,14 +186,16 @@ def main():
     true_label_AUC = roc_auc_score(y_test, y_pred)
 
     background_efficiencies = [0.1, 0.01, 0.001]
-    scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies)
+    scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies, true_label_path)
 
     # Write results
     now = datetime.datetime.now()
-    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results.csv'
+    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results-2.csv'
     data_dict = {
                 'Train signal size': [train_size[0]],
                 'Train background size': [train_size[1]],
+                'Validation signal size': [val_size[0]],
+                'Validation background size': [val_size[1]],
                 'Loss': [results[0]],
                 'ACC': [ACC],
                 'AUC': [AUC],
@@ -215,6 +207,7 @@ def main():
                 'TPR/FPR^0.5: FPR=0.1': [scale_factors[0]],
                 'TPR/FPR^0.5: FPR=0.01': [scale_factors[1]],
                 'TPR/FPR^0.5: FPR=0.001': [scale_factors[2]],
+                'Training epochs': [len(history.history['loss']) + 1],
                 'time': [now],
                 }
 
