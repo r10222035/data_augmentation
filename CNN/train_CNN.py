@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -126,13 +125,11 @@ def main():
 
     print(f'Read data from {train_path}')
 
-    X, y = load_samples(train_path)
+    X_train, y_train = load_samples(train_path)
     X_val, y_val = load_samples(val_path)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=17)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
-    _ = get_sample_size(y_test)
 
     # Training parameters
     batch_size = 512
@@ -159,11 +156,11 @@ def main():
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
     best_model = tf.keras.models.load_model(best_model_name)
-    best_results = best_model.evaluate(x=X_test, y=y_test)
+    best_results = best_model.evaluate(x=X_val, y=y_val)
     print(f'Testing Loss = {best_results[0]:.3}, Testing Accuracy = {best_results[1]:.3}')
 
     loaded_model = tf.keras.models.load_model(save_model_name)
-    results = loaded_model.evaluate(x=X_test, y=y_test)
+    results = loaded_model.evaluate(x=X_val, y=y_val)
     print(f'Testing Loss = {results[0]:.3}, Testing Accuracy = {results[1]:.3}')
 
     if results[0] < best_results[0]:
@@ -171,9 +168,9 @@ def main():
         print('Save to best model')
 
     # Compute ACC & AUC
-    y_pred = loaded_model.predict(X_test)
-    ACC = get_highest_accuracy(y_test, y_pred)
-    AUC = roc_auc_score(y_test, y_pred)
+    y_pred = loaded_model.predict(X_val)
+    ACC = get_highest_accuracy(y_val, y_pred)
+    AUC = roc_auc_score(y_val, y_pred)
 
     # Testing results on true label sample
     X_test, y_test = load_samples(true_label_path)
