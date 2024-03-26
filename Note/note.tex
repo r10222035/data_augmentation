@@ -148,7 +148,7 @@
 	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier. This technic is first introduced by Reference~\cite{Collins:2018epr}.
 	\subsection{Sample}% (fold)
 	\label{sub:sample_cwola_hunting}
-		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
+		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
 		
 		The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ is utilized to determine the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. Table~\ref{tab:signal_sideband_range} summarizes the signal and sideband regions. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
 		\begin{figure}[htpb]
@@ -393,7 +393,7 @@
 	The physical augmentations are inspired by Reference~\cite{Dillon:2023zac}, which considers the rotation and smearing augmentations. These augmentations reflect both the symmetries in the physical event and the experimental resolution of the detector.
 	\subsection{Original training data}% (fold)
 	\label{sub:original_training_data}
-		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. In this section, the Higgs boson pair is produced by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
+		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
 		
 		The training samples consist of 50k signal events and 50k background events and the testing samples consist of 5k signal events and 5k background events.
 
@@ -888,7 +888,7 @@
 	\label{sub:training_and_true_performance}
 		In our intuition, we would expect that``+1 times'' and ``luminosity  $\times 2$'' samples should exhibit similar performance, or the ``luminosity  $\times 2$'' sample might provide better results since the data augmentation generates more samples from the known data. However, the results in Figure~\ref{fig:sensitivity_improvement_bkg_eff_01} contradict our intuition. Since we use the CWoLa approach, our comparison is not based on the training performance on mixed samples; instead, we evaluate the testing performance on pure samples, referred to as ``true performance.'' The relationship between training and true performance may not be a monotonic function and can be quite complicated.
 
-		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. Training ACC values are close for all cases, but true ACC values can be much different. The true ACC has a ten times larger range than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_x2} is the scatter plot for training and true accuracy. Training ACC values are close for all cases, but true ACC values can be much different. The true ACC is ten times larger than the training ACC range. For training ACC, both ``+1 times'' and ``luminosity $\times 2$'' samples show similar performance, slightly better than the original results. For the true ACC, the ``+1 times'' provides much better results. It seems that ``+1 times'' samples are more effective in improving true ACC.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_x2.pdf}
@@ -896,7 +896,7 @@
 			\label{fig:training_and_true_acc_ori_aug_1_x2}
 		\end{figure}
 
-		Figure~\ref{fig:training_and_true_acc_ori_aug_1_3_x2} includes results with``+3 times'' training . The ``+3 times'' samples provide much better training ACC, but they do not achieve higher performance for true ACC.
+		Figure~\ref{fig:training_and_true_acc_ori_aug_1_3_x2} includes results with``+3 times'' training . The ``+3 times'' samples provide much better training ACC but do not achieve higher performance for true ACC.
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.55\textwidth]{HVmodel_training_true_acc_aug_1_3_x2.pdf}
@@ -1289,7 +1289,7 @@
 		\label{subs:early_stopping_patience}
 			In my previous testing, I always set early stopping patience as 10, but Zong-En set this parameter as 30.
 
-			Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30} are accuracy curves and scatter plots. The performance ``patience 30'' is similar to previous results. It seems that patience 10 is sufficient for our training procedure. Therefore, it does not greatly impact the training performance even though we change patience from 10 to 30.
+			Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30} are accuracy curves and scatter plots. The performance ``Patience 30'' is similar to previous results. It seems that patience 10 is sufficient for our training procedure. Therefore, it does not greatly impact the training performance even though we change patience from 10 to 30.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
@@ -1743,6 +1743,59 @@
 			\label{fig:sensitivity_improvement_split_validation_first}
 		\end{figure}
 	% subsection modify_the_procedure_of_preparing_validation_dataset (end)
+	\subsection{New data process flow}% (fold)
+	\label{sub:new_data_process_flow}
+		\begin{enumerate}
+			\item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
+			\item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is modified to $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below 
+				\begin{itemize}
+					\item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
+					\item Total invariant mass $m_{jj}$.
+					\item Type of event: 1 for signal, 0 for background.	
+				\end{itemize}
+			\item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:datasets}, we can compute the size of datasets. 80\% for training set, 20\% for validation set.
+			\item (Optional) Apply data augmentation in \verb|HDF5| format training dataset. Following Section~\ref{sub:data_augmentation}.
+			\item Generate the jet image from \verb|HDF5| data and save in \verb|.npy| file.
+		\end{enumerate}
+		The key difference with Section~\ref{sub:data_process_procedure} is step 3. To prevent a similar (common) sample in the training and validation set, the dataset would split into training and validation sets first, then the data augmentation is only applied to the training set.
+
+		Figure~\ref{fig:acc_curve_origin_copy_1_res_75_25_new_workflow} is accuracy curves. We verify that the training results are similar for original and duplicated datasets. Figure~\ref{fig:acc_curve_origin_aug_1_res_75_25_new_workflow} is accuracy curves with augmented samples. The training results are also similar for original and augmented datasets. The augmented samples do not improve the training results.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_split_val_res_75.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_split_val_res_25.pdf}
+			}
+			\caption{The performance of CWoLa CNN training with different samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_curve_origin_copy_1_res_75_25_new_workflow}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_aug_1_split_val_res_75.pdf}
+			}
+			\subfloat[]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_origin_aug_1_split_val_res_25.pdf}
+			}
+			\caption{The performance of CWoLa CNN training with different samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_curve_origin_aug_1_res_75_25_new_workflow}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_new_workflow} is the sensitivity improvement. The results are consistent with accuracy curves. The original, duplicated, and augmented datasets all perform similarly.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_aug_1_split_val_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_aug_1_split_val_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_new_workflow}
+		\end{figure}
+	% subsection new_data_process_flow (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
