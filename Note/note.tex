@@ -1796,6 +1796,23 @@
 			\label{fig:sensitivity_improvement_new_workflow}
 		\end{figure}
 	% subsection new_data_process_flow (end)
+	\subsection{Enlarge the data size with more simulated samples}% (fold)
+	\label{sub:enlarge_the_data_size_with_more_simulated_samples}
+		To identify the upper limit of augmented datasets, we enlarge the size of training data with more simulated samples. More specificaly, the luminosity is scaled to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests that there is still room for improvement in training performance with augmented samples.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_aug_1_x2}
+		\end{figure}
+	% subsection enlarge_the_data_size_with_more_simulated_samples (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
