@@ -204,7 +204,7 @@
 			\end{tabular}
 		\end{table}
 
-		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. In the $\text{min-}\Delta R$ method, the four $b$-tagged jets with the highest $p_{\text{T}}$ are used to form the two Higgs boson candidates. The $\text{min-}\Delta R$ method selects the pairing configuration in which the higher-$p_{\text{T}}$ jet pair has the smallest $\Delta R$ separation. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and the di-Higgs system's total invariant mass are excluded. For $\text{min-}\Delta R$ pairing, it only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
+		Consider the DNN CWoLa classifier. The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. In the $\text{min-}\Delta R$ method, the four $b$-tagged jets with the highest $p_{\text{T}}$ are used to form the two Higgs boson candidates. The $\text{min-}\Delta R$ method selects the pairing configuration in which the higher-$p_{\text{T}}$ jet pair has the smallest $\Delta R$ separation. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information and the di-Higgs system's total invariant mass are excluded. $\text{min-}\Delta R$ pairing only uses the $b$-tagged jets. Total invariant mass is already used to determine the signal and sideband region.
 
 	% subsection sample_cwola_hunting (end)
 	\subsection{Training results}% (fold)
@@ -252,14 +252,14 @@
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.9\textwidth]{correlation_coefficients-500GeV.pdf}
-			\caption{The correlation coefficients among different variables, which are computed from $\text{500 GeV}$ testing sample, which consists of 5k signal and 5k background.}
+			\caption{The correlation coefficients among different variables are computed from $\text{500 GeV}$ testing sample, consisting of 5k signal and 5k background.}
 			\label{fig:correlation_coefficient_500GeV}
 		\end{figure}
 		
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.9\textwidth]{correlation_coefficients-1000GeV.pdf}
-			\caption{The correlation coefficients among different variables, which are computed from $\text{1000 GeV}$ testing sample, which consists of 5k signal and 5k background.}
+			\caption{The correlation coefficients among different variables are computed from $\text{1000 GeV}$ testing sample, consisting of 5k signal and 5k background.}
 			\label{fig:correlation_coefficient_1000GeV}
 		\end{figure}
 
@@ -366,7 +366,7 @@
 	\label{sub:training_with_deeper_model}
 		In Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_1000GeV}, the performance of CWoLa DNN is quickly saturated. To investigate the impact of the model structure, the deeper DNN model is trained. In Section~\ref{sub:enlarge_the_signal_sample_size}, DNN consists of 2 hidden layers, while in this section we train the DNN with 4 hidden layers.
 
-		The DNN is trained on signal sample size ranging from 1 to 500 times. Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size_deeper_model} and Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV} are the training results. The performance is generally better than the previous results (Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size}), even for the without signal case. It seems that the previous model structure is too simple and it limits the training performance. For the signal size within 1 times to 300 times, the performance increases when the signal size is increased. After this region, the accuracy does not significantly improve. The accuracy is saturated at around 67\%, but this value is still better than the previous ones.
+		The DNN is trained on signal sample size ranging from 1 to 500 times. Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size_deeper_model} and Figure~\ref{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV} are the training results. The performance is generally better than the previous results (Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size}), even for the without signal case. It seems that the previous model structure is too simple and it limits the training performance. For the signal size within 1 time to 300 times, the performance increases when the signal size increases. After this region, the accuracy does not significantly improve. The accuracy is saturated at around 67\%, but this value is still better than the previous ones.
 
 		\begin{table}[htpb]
 			\centering
@@ -619,7 +619,7 @@
 	% subsection sample_selection (end)	
 	\subsection{Jet image}% (fold)
 	\label{sub:jet_image}
-		We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately, so for each event, we would obtain two jet images. They are treated as two channels of a picture. The following steps construct the jet image:
+		We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately, so we would obtain two for each event. They are treated as two channels of a picture. The following steps construct the jet image:
 		\begin{enumerate}
 			\item Centralization: Compute the $p_{\text{T}}$ weighted center in $\left( \eta,\phi \right) $ coordinates, then shift this point to origin.
 			\item Rotation: Rotate the highest intensity axis to the $\eta$ axis.
@@ -1813,6 +1813,23 @@
 			\label{fig:sensitivity_improvement_origin_aug_1_x2}
 		\end{figure}
 	% subsection enlarge_the_data_size_with_more_simulated_samples (end)
+	\subsection{Smearing scale in \texorpdfstring{$\eta-\phi$}{eta-phi} smearing}% (fold)
+	\label{sub:smearing_scale_in_eta_phi_smearing}
+		To improve the performance of $\eta-\phi$ augmentation, we generate samples with various $\Lambda$ for CWoLa CNN training. We test $\Lambda = 200, 500 \text{ MeV}$ samples.
+
+		Figure~\ref{fig:sensitivity_improvement_aug_1_smearing_scale} shows the sensitivity improvement with various smearing scales. The training results are similar for all cases. It seems that the $\eta-\phi$ augmentation can not improve the training performance.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_aug_1_std_01_02_05_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_aug_1_std_01_02_05_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. Here, the ``+1'' means ``+1 augmentation'' datasets.}
+			\label{fig:sensitivity_improvement_aug_1_smearing_scale}
+		\end{figure}
+	% subsection smearing_scale_in_eta_phi_smearing (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
