@@ -711,10 +711,10 @@
 	\subsection{Data augmentation}% (fold)
 	\label{sub:data_augmentation}
 		To reduce the threshold, the data augmentation technique is tested. Similar to the Section~\ref{sub:physical_augmentation}, we apply the $\eta-\phi$ smearing on our training sample. Specifically, the $\left( \eta,\phi \right) $ coordinate of jet constituents are resampled according to a Normal distribution centered on the original coordinate and with a standard deviation inversely proportional to the $p_{\text{T}}$
-				\begin{equation}
-					\eta' \sim \mathcal{N}\left(\eta, \frac{\Lambda}{p_{\text{T}}}\right), \quad \phi' \sim \mathcal{N}\left(\phi, \frac{\Lambda}{p_{\text{T}}}\right)
-				\end{equation}
-				where $\eta', \phi'$ are the augmented coordinate, $p_{\text{T}}$ is the transverse momentum of the jet constituent, and the smearing scale is set to be $\Lambda = \text{100 MeV}$.
+		\begin{equation}
+			\eta' \sim \mathcal{N}\left(\eta, \frac{\Lambda}{p_{\text{T}}}\right), \quad \phi' \sim \mathcal{N}\left(\phi, \frac{\Lambda}{p_{\text{T}}}\right)
+		\end{equation}
+		where $\eta', \phi'$ are the augmented coordinate, $p_{\text{T}}$ is the transverse momentum of the jet constituent, and the smearing scale is set to be $\Lambda = \text{100 MeV}$.
 
 		Figure~\ref{fig:eta_phi_smearing_jet_constituent_jet_image} and \ref{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image} are the jet image before and after the augmentation. The jet images look similar before and after the augmentation, but not the same.
 		\begin{figure}[htpb]
@@ -1800,7 +1800,7 @@
 	\label{sub:enlarge_the_data_size_with_more_simulated_samples}
 		To identify the upper limit of augmented datasets, we enlarge the size of training data with more simulated samples. More specificaly, the luminosity is scaled to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$.
 
-		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests that there is still room for improvement in training performance with augmented samples.
+		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests that there is still room for improvement in training performance with augmented samples. Note that if we want to compare the model trained on a similar signal sample size, we should compare the ``+1 augmentation'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity, similar to Section~\ref{sub:enlarge_the_training_sample_size}. 
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -1830,6 +1830,40 @@
 			\label{fig:sensitivity_improvement_aug_1_smearing_scale}
 		\end{figure}
 	% subsection smearing_scale_in_eta_phi_smearing (end)
+	\subsection{Implement \texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing}% (fold)
+	\label{sub:implement_pt_smearing}
+		Similar to the Section~\ref{sub:physical_augmentation}, we apply the $p_{\text{T}}$ smearing on our training sample. Specifically, the transverse momentum $p_{\text{T}}$ of each jet constituent is resampled according to a Normal distribution centered on the original value with a standard deviation $f(p_{\text{T}})$
+		\begin{equation}
+			p_{\text{T}}' \sim \mathcal{N}\left( p_{\text{T}}, f(p_{\text{T}}) \right), \quad f(p_{\text{T}}) = \sqrt{0.052 p_{\text{T}}^2 + 1.502p_{\text{T}}}
+		\end{equation}
+		where $p_{\text{T}}'$ is the augmented transverse momentum, $f\left( p_\text{T} \right) $ is the energy smearing applied by \verb|Delphes| (the $p_{\text{T}}$'s are normalised by $\text{1 GeV}$). Note that if a constituent has negative $p_{\text{T}}'$, then this jet constituent would be dropped.
+
+		Figure~\ref{fig:pt_smearing_jet_constituent_jet_image} is the jet image before and after the $p_{\text{T}}$ augmentation. These jet images look similar but not the same.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Before augmentation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_origin.pdf}
+			} \\
+			\subfloat[After augmentation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_pt_smearing.pdf}
+			}
+			\caption{The jet images before and after the $p_{\text{T}}$ smearing augmentation.}
+			\label{fig:pt_smearing_jet_constituent_jet_image}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1} shows the sensitivity improvement. The $p_{\text{T}}$ smearing datasets perform similarly to original datasets. As the background efficiency decreases, the improvement increases. However, because of the large standard deviation, there is no significant difference between original and augmented datasets. If we consider the same sample size, there is large room for improvement with augmented samples.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_x2_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_x2_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_pt_aug_1}
+		\end{figure}
+	% subsection implement_pt_smearing (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
