@@ -1894,6 +1894,34 @@
 			\label{fig:sensitivity_improvement_origin_pt_aug_1_3_5}
 		\end{figure}
 	% subsection more_augmented_sample (end)
+	\subsection{Combine \texorpdfstring{$\eta-\phi$}{eta-phi} and \texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing}% (fold)
+	\label{sub:combine_eta_phi_and_pt_smearing}
+		We combine the $\eta-\phi$ and $p_{\text{T}}$ smearing, to investigate whether the combining augmentation can further improve training results. We apply $\eta-\phi$ and $p_{\text{T}}$ smearing on jet images at the same time for combining augmentation.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_pt_aug_1} shows the sensitivity improvement. The $\eta-\phi$ and $p_{\text{T}}$ smearing has the best performance. For the lower background efficiency case, the sensitivity improvement is more notable. There is a significant improvement for the resolution $75\times 75$ with $\varepsilon_{\text{b}} = 0.1\%$. For the resolution $25\times 25$, the performance is similar for $p_{\text{T}}$ smearing and combining smearing. However, if we enlarge the training sample size, the difference between $p_{\text{T}}$ smearing and combining smearing would disappear. There is no difference between these two augmentation approaches in Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_pt_aug_3}.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_1_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_1_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_eta_phi_pt_aug_1}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_3_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_3_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_eta_phi_pt_aug_3}
+		\end{figure}
+	% subsection combine_eta_phi_and_pt_smearing (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
