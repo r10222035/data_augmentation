@@ -145,7 +145,7 @@
 
 \section{CWoLa hunting}% (fold)
 \label{sec:cwola_hunting}
-	The CWoLa hunting approach considers a variable $m_{\text{res}}$. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier. This technic is first introduced by Reference~\cite{Collins:2018epr}.
+	The CWoLa hunting approach considers a $m_{\text{res}}$ variable. For background, the $m_{\text{res}}$ distribution is smooth while signal $m_{\text{res}}$ distribution is expected to be localized near some $m_0$. Consequently, this variable could be used to create two mixed samples. Additional features that are uncorrelated with $m_{\text{res}}$ can be used for training a classifier. This technic is first introduced by Reference~\cite{Collins:2018epr}.
 	\subsection{Sample}% (fold)
 	\label{sub:sample_cwola_hunting}
 		The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
@@ -1367,9 +1367,9 @@
 		\begin{quote}
 			When you pass the strings `accuracy' or `acc', we convert this to one of \newline tf.keras.metrics.BinaryAccuracy, tf.keras.metrics.CategoricalAccuracy, \newline tf.keras.metrics.SparseCategoricalAccuracy based on the loss function used and the model output shape.
 		\end{quote}
-		When we modified the model structure, we also changed the loss function to binary cross entropy. Thus Tensorflow would use the BinaryAccuracy metric. However, this accuracy is not the best accuracy evaluated by threshold scanning, it computes the accuracy with the default threshold 0.5.
+		We modified the model structure and changed the loss function to binary cross entropy. Thus Tensorflow would use the BinaryAccuracy metric. However, this accuracy is not the best accuracy evaluated by threshold scanning, it computes the accuracy with the default threshold 0.5.
 
-		For the previous model structure, Tensorflow would use CategoricalAccuracy, which checks the index of output whether is the same as the index of the true label.
+		For the previous model structure, Tensorflow would use CategoricalAccuracy, which checks the index of output whether it is the same as the index of the true label.
 
 		The accuracy results in Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30}, \ref{fig:cwola_cnn_training_performance_copy_1_tf_250} with the new model structure would be misleading. Only the sensitivity improvement results are meaningful.
 	% subsection tensorflow_model_compile (end)
@@ -1864,6 +1864,36 @@
 			\label{fig:sensitivity_improvement_origin_pt_aug_1}
 		\end{figure}
 	% subsection implement_pt_smearing (end)
+	\subsection{More augmented sample}% (fold)
+	\label{sub:more_augmented_sample}
+		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows similar performance for original and $\eta-\phi$ smearing datasets. Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1} shows a little improvement for $p_{\text{T}}$ smearing samples. However, because of the large standard deviation, there is no significant difference. To ensure whether augmented samples can improve the training, we enlarge the size of the dataset.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_aug_1_3} shows the sensitivity improvement with larger $\eta-\phi$ smearing datasets. Even the we enlarge the training sample size, the training results are still similar. It seems that the $\eta-\phi$ augmentation can not improve the training performance.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_aug_1_3_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_aug_1_3_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_eta_phi_aug_1_3}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1_3_5} shows the sensitivity improvement with larger $p_{\text{T}}$ smearing datasets. For the lower background efficiency case, the sensitivity improvement is more significant. As the sample size increases, the training performance becomes better. For $\varepsilon_{\text{b}} = 1 \%, 0.1 \%$, +3 and +5 $p_{\text{T}}$ smearing datasets have lower training thresholds and larger improvement at the high sensitivity region. It seems that the $p_{\text{T}}$ smearing indeed can improve the training performance.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_3_5_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_3_5_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_pt_aug_1_3_5}
+		\end{figure}
+	% subsection more_augmented_sample (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
