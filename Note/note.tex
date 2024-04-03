@@ -1922,6 +1922,45 @@
 			\label{fig:sensitivity_improvement_origin_eta_phi_pt_aug_3}
 		\end{figure}
 	% subsection combine_eta_phi_and_pt_smearing (end)
+	\subsection{Jet rotation}% (fold)
+	\label{sub:jet_rotation}
+		One another augmentation approach is the jet rotation. This method rotates each jet with a random angle to enlarge the diversity of training datasets. 
+
+		The data process flow is different from Section~\ref{sub:new_data_process_flow}. The details are listed below:
+		\begin{enumerate}
+			\item Utilize the same steps 1 to 3 in Section~\ref{sub:new_data_process_flow}.
+			\item Apply preprocessing on \verb|HDF5| training datasets first.
+			\item Rotate each jet in each event with a random angle. The rotation angle is sampled from $[-\pi, \pi]$ uniformly.
+			\item Pixelate jets to construct jet images.
+			\item The validation and testing datasets are the same as in the original case.
+		\end{enumerate}
+
+		Figure~\ref{fig:jet_rotation_jet_constituent_jet_image} is the jet image before and after the jet rotation. These jet images differ by a rotation angle.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Before jet rotation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_jet_rotation_original.pdf}
+			} \\
+			\subfloat[After jet rotation]{
+				\includegraphics[width=0.95\textwidth]{HVmodel_jet_image_jet_rotation_augmented.pdf}
+			}
+			\caption{The jet images before and after the jet rotation augmentation.}
+			\label{fig:jet_rotation_jet_constituent_jet_image}
+		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_1_3_5} shows the sensitivity improvement with jet rotation datasets. For the lower background efficiency case, the sensitivity improvement is more significant. As the sample size increases, the training performance becomes better. For $\varepsilon_{\text{b}} = 0.1 \%$, even if we consider +1 jet rotation datasets, it has lower training thresholds and larger improvement at the high sensitivity region than the original datasets. As the sample size increases, the training performance becomes better. It seems that the jet rotation also can improve the training performance.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_75.pdf}
+			} \\
+			%\subfloat[Resolution: $25\times 25$]{
+				%\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_25.pdf} 
+			%}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_1_3_5}
+		\end{figure}
+	% subsection jet_rotation (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
