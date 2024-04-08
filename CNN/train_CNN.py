@@ -71,7 +71,7 @@ class CNN(tf.keras.Model):
         output_channel2 = self.sub_network(channel2)
 
         # multiply the output
-        output = tf.multiply(output_channel1, output_channel2)
+        output = tf.keras.layers.Multiply()([output_channel1, output_channel2])
 
         return output
 
