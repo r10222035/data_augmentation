@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python rotate_jet.py <h5_path> <output_path> <augmented times> <resolution>
-# python rotate_jet.py ./HVmodel/data/split_val/mix_sample_0.0.h5 ./HVmodel/data/rotate_jet/mix_sample_0.0_jet_aug_1_75x75.h5 1 75
+# python pT_smearing_jet_rotation.py <h5_path> <output_path> <augmented times> <resolution>
+# python pT_smearing_jet_rotation.py ./HVmodel/data/split_val/mix_sample_0.0.h5 ./HVmodel/data/rotate_jet/mix_sample_0.0_jet_aug_1_75x75.h5 1 75
 
 import os
 import sys
@@ -113,8 +113,12 @@ def rotation(etas, phis, angles):
     return eta_rotat, phi_rotat
 
 
-def rotate_jet_augmentation(h5_path, output_path, n=3, res=75):
-    # after pre-process, rotate the jet image with random angle
+def pt_scale(pt):
+    return np.sqrt(0.052*pt*pt + 1.502*pt)
+
+
+def pt_smearing_jet_rotation(h5_path, output_path, n=3, res=75):
+    # pT smearing, pre-process, rotate the jet image with random angle
     # save results in npy file
     # res: resolution of the jet image
     root, _ = os.path.splitext(output_path)
@@ -122,33 +126,47 @@ def rotate_jet_augmentation(h5_path, output_path, n=3, res=75):
     tmp_h5 = os.path.join(f'{root}-tmp.h5')
 
     shutil.copyfile(h5_path, out_h5)
-    # preprocess the eta and phi
-    with h5py.File(out_h5, 'a') as f_out:
-        print('Preprocessing J1')
-        _, eta1, phi1 = preprocess(f_out['J1/pt'][:], f_out['J1/eta'][:], f_out['J1/phi'][:])
-        print('Preprocessing J2')
-        _, eta2, phi2 = preprocess(f_out['J2/pt'][:], f_out['J2/eta'][:], f_out['J2/phi'][:])
-
-        f_out['J1/eta'][:] = eta1
-        f_out['J1/phi'][:] = phi1
-        f_out['J2/eta'][:] = eta2
-        f_out['J2/phi'][:] = phi2
-
     shutil.copyfile(out_h5, tmp_h5)
+
+    # read original pt, eta, phi
+    with h5py.File(h5_path, 'r') as f:
+        pt1, pt2 = f['J1/pt'][:], f['J2/pt'][:]
+        eta1, eta2 = f['J1/eta'][:], f['J2/eta'][:]
+        phi1, phi2 = f['J1/phi'][:], f['J2/phi'][:]
+    
     with h5py.File(out_h5, 'a') as f_out:
+        # preprocess original eta and phi
+        _, f_out['J1/eta'][:], f_out['J1/phi'][:] = preprocess(f_out['J1/pt'][:], f_out['J1/eta'][:], f_out['J1/phi'][:])
+        _, f_out['J2/eta'][:], f_out['J2/phi'][:] = preprocess(f_out['J2/pt'][:], f_out['J2/eta'][:], f_out['J2/phi'][:])
+
         keys = get_dataset_keys(f_out)
 
         nevent = f_out['EVENT/signal'].shape[0]
         total_size = nevent
 
+        # augment the data
         for _ in tqdm(range(n)):
             total_size += nevent
             with h5py.File(tmp_h5, 'a') as f_tmp:
+                # Smearing pt
+                pt1_tmp = np.random.normal(loc=pt1, scale=pt_scale(pt1))
+                pt2_tmp = np.random.normal(loc=pt2, scale=pt_scale(pt2))
+
+                # set negative pt as 0
+                pt1_tmp[pt1_tmp < 0] = 0
+                pt2_tmp[pt2_tmp < 0] = 0
+
+                f_tmp['J1/pt'][:] = pt1_tmp
+                f_tmp['J2/pt'][:] = pt2_tmp
+
+                _, eta1_tmp, phi1_tmp = preprocess(pt1_tmp, eta1, phi1)
+                _, eta2_tmp, phi2_tmp = preprocess(pt2_tmp, eta2, phi2)
+
                 # rotate eta and phi with random angle
                 angle = np.random.uniform(-np.pi, np.pi, size=nevent)[:, None]
-                eta1_rotat, phi1_rotat = rotation(eta1, phi1, angle)
+                eta1_rotat, phi1_rotat = rotation(eta1_tmp, phi1_tmp, angle)
                 angle = np.random.uniform(-np.pi, np.pi, size=nevent)[:, None]
-                eta2_rotat, phi2_rotat = rotation(eta2, phi2, angle)
+                eta2_rotat, phi2_rotat = rotation(eta2_tmp, phi2_tmp, angle)
 
                 f_tmp['J1/eta'][:] = eta1_rotat
                 f_tmp['J1/phi'][:] = phi1_rotat
@@ -195,7 +213,7 @@ def main():
     n = int(sys.argv[3])
     res = int(sys.argv[4])
 
-    rotate_jet_augmentation(h5_path, output_path, n, res)
+    pt_smearing_jet_rotation(h5_path, output_path, n, res)
 
 
 if __name__ == '__main__':
