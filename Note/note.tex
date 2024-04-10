@@ -1369,7 +1369,7 @@
 		\end{quote}
 		We modified the model structure and changed the loss function to binary cross entropy. Thus Tensorflow would use the BinaryAccuracy metric. However, this accuracy is not the best accuracy evaluated by threshold scanning, it computes the accuracy with the default threshold 0.5.
 
-		For the previous model structure, Tensorflow would use CategoricalAccuracy, which checks the index of output whether it is the same as the index of the true label.
+		For the previous model structure, Tensorflow would use CategoricalAccuracy, which checks the index of output to see whether it is the same as the index of the true label.
 
 		The accuracy results in Figure~\ref{fig:acc_curve_patience_30}, \ref{fig:acc_scatter_patience_30}, \ref{fig:cwola_cnn_training_performance_copy_1_tf_250} with the new model structure would be misleading. Only the sensitivity improvement results are meaningful.
 	% subsection tensorflow_model_compile (end)
@@ -1419,7 +1419,7 @@
 			\label{fig:sensitivity_improvement_bkg_eff_resolution_25}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. It seems that all curves have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. All curves seem to have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[My testing]{
@@ -1817,7 +1817,7 @@
 	\label{sub:smearing_scale_in_eta_phi_smearing}
 		To improve the performance of $\eta-\phi$ augmentation, we generate samples with various $\Lambda$ for CWoLa CNN training. We test $\Lambda = 200, 500 \text{ MeV}$ samples.
 
-		Figure~\ref{fig:sensitivity_improvement_aug_1_smearing_scale} shows the sensitivity improvement with various smearing scales. The training results are similar for all cases. It seems that the $\eta-\phi$ augmentation can not improve the training performance.
+		Figure~\ref{fig:sensitivity_improvement_aug_1_smearing_scale} shows the sensitivity improvement with various smearing scales. The training results are similar for all cases. The $\eta-\phi$ augmentation seems to not improve the training performance.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -1868,7 +1868,7 @@
 	\label{sub:more_augmented_sample}
 		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows similar performance for original and $\eta-\phi$ smearing datasets. Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1} shows a little improvement for $p_{\text{T}}$ smearing samples. However, because of the large standard deviation, there is no significant difference. To ensure whether augmented samples can improve the training, we enlarge the size of the dataset.
 
-		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_aug_1_3} shows the sensitivity improvement with larger $\eta-\phi$ smearing datasets. Even the we enlarge the training sample size, the training results are still similar. It seems that the $\eta-\phi$ augmentation can not improve the training performance.
+		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_aug_1_3} shows the sensitivity improvement with larger $\eta-\phi$ smearing datasets. Even the we enlarge the training sample size, the training results are still similar. The $\eta-\phi$ augmentation seems to not improve the training performance.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -1954,13 +1954,30 @@
 			\subfloat[Resolution: $75\times 75$]{
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_75.pdf}
 			} \\
-			%\subfloat[Resolution: $25\times 25$]{
-				%\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_25.pdf} 
-			%}
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_25.pdf} 
+			}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
 			\label{fig:sensitivity_improvement_origin_jet_aug_1_3_5}
 		\end{figure}
 	% subsection jet_rotation (end)
+	\subsection{Augmented sample size}% (fold)
+	\label{sub:augmented_sample_size}
+		To investigate the training performance across different sample sizes, we generate more augmented samples and examine at which point the performance is saturated.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_SB_1_3} shows the sensitivity improvement with jet rotation datasets. For resolution $25\times 25$, the training performance is saturated around +5 jet rotation. For resolution $75\times 75$, the training performance is saturated around +15 jet rotation. The model with higher resolution needs more augmented samples to reach the saturation point.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_25.pdf} 
+			}
+			\caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_SB_1_3}
+		\end{figure}
+	% subsection augmented_sample_size (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
