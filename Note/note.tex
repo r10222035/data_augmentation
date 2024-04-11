@@ -619,7 +619,7 @@
 	% subsection sample_selection (end)	
 	\subsection{Jet image}% (fold)
 	\label{sub:jet_image}
-		We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately, so we would obtain two for each event. They are treated as two channels of a picture. The following steps construct the jet image:
+		We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately so that we would obtain two for each event. They are treated as two channels of a picture. The following steps construct the jet image:
 		\begin{enumerate}
 			\item Centralization: Compute the $p_{\text{T}}$ weighted center in $\left( \eta,\phi \right) $ coordinates, then shift this point to origin.
 			\item Rotation: Rotate the highest intensity axis to the $\eta$ axis.
@@ -1411,7 +1411,7 @@
 			\label{fig:acc_scatter_resolution_25}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25} is the sensitivity improvement. The training results of ``resolution $25\times 25$'' are better than ``resolution $75\times 75$''. This is consistent with the training accuracy. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset with resolution $25\times 25$ has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset about 1 significance, but this difference is smaller than the case of resolution $75\times 75$ (Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30}).
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_resolution_25} is the sensitivity improvement. The training results of ``resolution $25\times 25$'' are better than ``resolution $75\times 75$''. This is consistent with the training accuracy. For $\varepsilon_{\text{b}} = 10 \%$, the original dataset with resolution $25\times 25$ has the best performance. For lower background efficiencies, the threshold of the original dataset would be worse than the ``+1 copy'' dataset by about 1 significance, but this difference is smaller than the case of resolution $75\times 75$ (Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30}).
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_75_25.pdf}
@@ -1419,7 +1419,7 @@
 			\label{fig:sensitivity_improvement_bkg_eff_resolution_25}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. All curves seem to have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, it results are worse in high-sensitivity regions.
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing} is my testing results and Zong-En's results. All curves seem to have similar results, except the ``+1 copy, $\varepsilon_{\text{b}} = 0.1\%$''. For Zong-En's results, it can obtain similar performance at high-sensitivity regions. However, in my case, the results are worse in high-sensitivity regions.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[My testing]{
@@ -1627,7 +1627,7 @@
 	\label{sub:more_testing_on_new_model_structure}
 		Because we have modified the neural network model structure and the resolution of jet images, we would like to test the ``+1 augmentation'' and ``luminosity $\times 2$'' datasets with these new settings. Then, we can make similar plots as Figure~\ref{fig:cwola_cnn_training_performance_copy_1} and \ref{fig:sensitivity_improvement_bkg_eff_01_copy_1}.
 
-		Figure~\ref{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25} is the ACC curve and ACC distribution. The original and ``luminosity $\times 2$'' datasets have similar performance. The ``+1 augmentation'' and ``+1 copy'' datasets have similar performance and they perform worse than the original and ``luminosity $\times 2$'' samples. Since the training ACC of ``+1 augmentation'' and ``+1 copy'' datasets is a little higher than the original dataset, they may encounter the over-training problem.
+		Figure~\ref{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25} is the ACC curve and ACC distribution. The original and ``luminosity $\times 2$'' datasets have similar performance. The ``+1 augmentation'' and ``+1 copy'' datasets have similar performance and they perform worse than the original and ``luminosity $\times 2$'' samples. Since the training ACC of the ``+1 augmentation'' and ``+1 copy'' datasets is a little higher than the original dataset, they may encounter the over-training problem.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
@@ -1930,7 +1930,7 @@
 		\begin{enumerate}
 			\item Utilize the same steps 1 to 3 in Section~\ref{sub:new_data_process_flow}.
 			\item Apply preprocessing on \verb|HDF5| training datasets first.
-			\item Rotate each jet in each event with a random angle. The rotation angle is sampled from $[-\pi, \pi]$ uniformly.
+			\item Rotate each jet in each event with a random angle. The rotation angle is uniformly sampled from $[-\pi, \pi]$.
 			\item Pixelate jets to construct jet images.
 			\item The validation and testing datasets are the same as in the original case.
 		\end{enumerate}
@@ -1995,6 +1995,32 @@
 			\label{fig:sensitivity_improvement_origin_pt_jet_aug_3}
 		\end{figure}
 	% subsection combine_pt_smearing_and_jet_rotation (end)
+	\subsection{Compare training results with Zong-En}% (fold)
+	\label{sub:compare_training_results_with_zong_en}
+		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_3_ZN} shows the sensitivity improvement with jet rotation datasets. The sensitivity improvement of FY and ZN are similar for the original datasets. However, ZN's training has better results for jet rotation datasets. From Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_3}, the situation of ``$p_{\text{T}}$ smearing + jet rotation'' augmentation is similar. ZN's training can obtain better results.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $75\times 75$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_ZN_res_75.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_ZN_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_3_ZN}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			%\subfloat[Resolution: $75\times 75$]{
+				%\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_ZN_res_75.pdf}
+			%} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_ZN_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_pt_jet_aug_3_ZN}
+		\end{figure}
+	% subsection compare_training_results_with_zong_en (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
