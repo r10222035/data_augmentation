@@ -18,6 +18,7 @@ ROOT.gInterpreter.Declare('#include "/usr/local/Delphes-3.4.2/external/ExRootAna
 ROOT.gInterpreter.Declare('#include "/usr/local/Delphes-3.4.2/external/ExRootAnalysis/ExRootTask.h"')
 ROOT.gSystem.Load("/usr/local/Delphes-3.4.2/install/lib/libDelphes")
 
+
 def create_dataset(f, nevent, MAX_JETS):
 
     f.create_dataset('J1/MASK', (nevent, MAX_JETS), maxshape=(None, MAX_JETS), dtype='|b1')
@@ -33,63 +34,51 @@ def create_dataset(f, nevent, MAX_JETS):
     f.create_dataset('EVENT/Mjj', (nevent,), maxshape=(None,), dtype='<f4')
     f.create_dataset('EVENT/signal', (nevent,), maxshape=(None,), dtype='<i8')
 
-def write_dataset(file, index, data: dict):
 
-    for key, value in data.items():
-        file[key][index] = value
+def write_dataset(file, data: list):
+    nevent = len(data)
+
+    for key in data[0].keys():
+        # Resize
+        shape = list(file[key].shape)
+        shape[0] = nevent
+        file[key].resize(shape)
+        # Write
+        value = np.array([data_dict[key] for data_dict in data])
+        file[key][:] = value
+
 
 def get_dataset_keys(f):
     keys = []
-    f.visit(lambda key : keys.append(key) if isinstance(f[key], h5py.Dataset) else None)
+    f.visit(lambda key: keys.append(key) if isinstance(f[key], h5py.Dataset) else None)
     return keys
 
-def resize_h5(file_path, nevent):
-
-    with h5py.File(file_path,'r+') as f:
-        keys = get_dataset_keys(f)
-        for key in keys:
-            shape = list(f[key].shape)
-            shape[0] = nevent
-            f[key].resize(shape)
-    print(f'{file_path} resize to {nevent}')
 
 def Mjets(*arg):
     # arg: list of jets
     # return: invariant mass of jets
     e_tot, px_tot, py_tot, pz_tot = 0, 0, 0, 0
-    
+
     for jet in arg:
         pt, eta, phi, m = jet[0], jet[1], jet[2], jet[3]
-        
+
         px, py, pz = pt*np.cos(phi), pt*np.sin(phi), pt*np.sinh(eta)
         e = np.sqrt(m**2 + px**2 + py**2 + pz**2)
-        
+
         px_tot += px
         py_tot += py
         pz_tot += pz
         e_tot += e
-    
+
     return np.sqrt(e_tot**2 - px_tot**2 - py_tot**2 - pz_tot**2)
 
+
 def get_pt_eta_phi(constituents):
-    pts, etas, phis  = [], [], []
-    
-    for consti in constituents:
-        try:
-            pts.append(consti.PT)
-            etas.append(consti.Eta)
-            phis.append(consti.Phi)
-
-        except:
-            pts.append(consti.ET)
-            etas.append(consti.Eta)
-            phis.append(consti.Phi)
-            
-    pts = np.array(pts)
-    etas = np.array(etas)
-    phis = np.array(phis)
-
+    pts = np.array([consti.PT if hasattr(consti, 'PT') else consti.ET for consti in constituents])
+    etas = np.array([consti.Eta for consti in constituents])
+    phis = np.array([consti.Phi for consti in constituents])
     return pts, etas, phis
+
 
 def from_root_to_h5(tree, output_path, nevent, signal):
     # Select events and save the jets information to h5 file
@@ -105,7 +94,7 @@ def from_root_to_h5(tree, output_path, nevent, signal):
         MAX_JETS = 300
         create_dataset(f_out, nevent, MAX_JETS)
 
-        event_index = 0
+        data_list = []
         for event_id, event in tqdm(enumerate(tree)):
 
             if event.Jet_size < 2:
@@ -122,7 +111,7 @@ def from_root_to_h5(tree, output_path, nevent, signal):
 
             if mjj < 4300 or mjj > 5900:
                 continue
-            
+
             # get jet constituents
             constituents = [consti for consti in event.Jet[0].Constituents if consti != 0]
             n_consti_1 = len(constituents)
@@ -134,27 +123,26 @@ def from_root_to_h5(tree, output_path, nevent, signal):
 
             if n_consti_1 < 5 or n_consti_2 < 5:
                 continue
-             
+
             # 準備寫入資料
             data_dict = {
-                'J1/MASK': np.arange(MAX_JETS)<n_consti_1,
-                'J1/pt': PT1[:MAX_JETS] if n_consti_1>MAX_JETS else np.pad(PT1, (0,MAX_JETS-n_consti_1)),
-                'J1/eta': Eta1[:MAX_JETS] if n_consti_1>MAX_JETS else np.pad(Eta1, (0,MAX_JETS-n_consti_1)),
-                'J1/phi': Phi1[:MAX_JETS] if n_consti_1>MAX_JETS else np.pad(Phi1, (0,MAX_JETS-n_consti_1)),
+                'J1/MASK': np.arange(MAX_JETS) < n_consti_1,
+                'J1/pt': PT1[:MAX_JETS] if n_consti_1 > MAX_JETS else np.pad(PT1, (0, MAX_JETS-n_consti_1)),
+                'J1/eta': Eta1[:MAX_JETS] if n_consti_1 > MAX_JETS else np.pad(Eta1, (0, MAX_JETS-n_consti_1)),
+                'J1/phi': Phi1[:MAX_JETS] if n_consti_1 > MAX_JETS else np.pad(Phi1, (0, MAX_JETS-n_consti_1)),
 
-                'J2/MASK': np.arange(MAX_JETS)<n_consti_2,
-                'J2/pt': PT2[:MAX_JETS] if n_consti_2>MAX_JETS else np.pad(PT2, (0,MAX_JETS-n_consti_2)),
-                'J2/eta': Eta2[:MAX_JETS] if n_consti_2>MAX_JETS else np.pad(Eta2, (0,MAX_JETS-n_consti_2)),
-                'J2/phi': Phi2[:MAX_JETS] if n_consti_2>MAX_JETS else np.pad(Phi2, (0,MAX_JETS-n_consti_2)),
-            
+                'J2/MASK': np.arange(MAX_JETS) < n_consti_2,
+                'J2/pt': PT2[:MAX_JETS] if n_consti_2 > MAX_JETS else np.pad(PT2, (0, MAX_JETS-n_consti_2)),
+                'J2/eta': Eta2[:MAX_JETS] if n_consti_2 > MAX_JETS else np.pad(Eta2, (0, MAX_JETS-n_consti_2)),
+                'J2/phi': Phi2[:MAX_JETS] if n_consti_2 > MAX_JETS else np.pad(Phi2, (0, MAX_JETS-n_consti_2)),
+
                 'EVENT/Mjj': mjj,
                 'EVENT/signal': signal,
             }
 
-            write_dataset(f_out, event_index, data_dict)
-            event_index += 1
+            data_list.append(data_dict)
+        write_dataset(f_out, data_list)
 
-    resize_h5(output_path, event_index)
 
 def main():
 
@@ -170,6 +158,7 @@ def main():
     print('Number of events: ', nevent)
 
     from_root_to_h5(tree_s, output_path, nevent, sample_type)
+
 
 if __name__ == '__main__':
     main()
