@@ -18,7 +18,6 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def load_samples(path):
-
     root, _ = os.path.splitext(path)
     X = np.load(f'{root}-data.npy')
     Y = np.load(f'{root}-label.npy')
@@ -123,6 +122,14 @@ def main():
     model_name = sys.argv[4]
     sample_type = sys.argv[5]
 
+    # Training parameters
+    BATCH_SIZE = 512
+    EPOCHS = 500
+    patience = 10
+    min_delta = 0.
+    learning_rate = 1e-4
+    save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
+
     print(f'Read data from {train_path}')
 
     X_train, y_train = load_samples(train_path)
@@ -130,14 +137,13 @@ def main():
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
+    
+    with tf.device('CPU'):
+        train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
+        train_dataset = train_dataset.shuffle(buffer_size=len(y_train)).batch(BATCH_SIZE)
 
-    # Training parameters
-    batch_size = 512
-    train_epochs = 500
-    patience = 10
-    min_delta = 0.
-    learning_rate = 1e-4
-    save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
+        valid_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val))
+        valid_dataset = valid_dataset.batch(BATCH_SIZE)
 
     # Create the model
     model = CNN()
@@ -148,7 +154,7 @@ def main():
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=min_delta, verbose=1, patience=patience)
     check_point = tf.keras.callbacks.ModelCheckpoint(save_model_name, monitor='val_loss', verbose=1, save_best_only=True)
 
-    history = model.fit(x=X_train, y=y_train, validation_data=(X_val, y_val), epochs=train_epochs, batch_size=batch_size, callbacks=[early_stopping, check_point])
+    history = model.fit(train_dataset, validation_data=valid_dataset, epochs=EPOCHS, callbacks=[early_stopping, check_point])
 
     # Training results
     best_model_name = f'./CNN_models/best_model_CWoLa_hunting_{model_name}/'
@@ -156,11 +162,11 @@ def main():
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
     best_model = tf.keras.models.load_model(best_model_name)
-    best_results = best_model.evaluate(x=X_val, y=y_val)
+    best_results = best_model.evaluate(valid_dataset)
     print(f'Testing Loss = {best_results[0]:.3}, Testing Accuracy = {best_results[1]:.3}')
 
     loaded_model = tf.keras.models.load_model(save_model_name)
-    results = loaded_model.evaluate(x=X_val, y=y_val)
+    results = loaded_model.evaluate(valid_dataset)
     print(f'Testing Loss = {results[0]:.3}, Testing Accuracy = {results[1]:.3}')
 
     if results[0] < best_results[0]:
