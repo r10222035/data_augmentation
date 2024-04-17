@@ -1438,7 +1438,7 @@
 		\label{subs:loss_and_accuracy_across_training}
 			Figure~\ref{fig:loss_acc_across_training_SB_3_res_75} and \ref{fig:loss_acc_across_training_SB_3_res_25} are the loss and accuracy values across training. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. Thus, the difference between these curves may not be meaningful. The training time of the ``+1 copy'' dataset is longer than the original samples.
 
-			Since the imbalance of the sample size in signal and sideband regions (Table~\ref{tab:training_sample_size_cwola_hunting_hv}), the accuracy values of the training and validation curve are close to 0.6 but not 0.5. 
+			Since the sample size imbalance in signal and sideband regions (Table~\ref{tab:training_sample_size_cwola_hunting_hv}), the accuracy values of the training and validation curve are close to 0.6 but not 0.5. 
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
@@ -1627,7 +1627,7 @@
 	\label{sub:more_testing_on_new_model_structure}
 		Because we have modified the neural network model structure and the resolution of jet images, we would like to test the ``+1 augmentation'' and ``luminosity $\times 2$'' datasets with these new settings. Then, we can make similar plots as Figure~\ref{fig:cwola_cnn_training_performance_copy_1} and \ref{fig:sensitivity_improvement_bkg_eff_01_copy_1}.
 
-		Figure~\ref{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25} is the ACC curve and ACC distribution. The original and ``luminosity $\times 2$'' datasets have similar performance. The ``+1 augmentation'' and ``+1 copy'' datasets have similar performance and they perform worse than the original and ``luminosity $\times 2$'' samples. Since the training ACC of the ``+1 augmentation'' and ``+1 copy'' datasets is a little higher than the original dataset, they may encounter the over-training problem.
+		Figure~\ref{fig:cwola_cnn_training_performance_aug_1_x2_copy_1_res_25} is the ACC curve and ACC distribution. The original and ``luminosity $\times 2$'' datasets have similar performance. The ``+1 augmentation'' and ``+1 copy'' datasets perform similarly and perform worse than the original and ``luminosity $\times 2$'' samples. Since the training ACC of the ``+1 augmentation'' and ``+1 copy'' datasets is a little higher than the original dataset, they may encounter the over-training problem.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
@@ -1665,7 +1665,7 @@
 			\end{tabular}
 		\end{table}
 
-		Figure~\ref{fig:loss_acc_across_training_SB_3_res_25_new_SB} is the loss and accuracy values across training with the new sideband region. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. The training accuracy is close to 0.52, which satisfied our expectations. The ``+1 copy'' dataset takes a longer time to finish the training process. It seems that the ``+1 copy'' dataset still has the over-training issue.
+		Figure~\ref{fig:loss_acc_across_training_SB_3_res_25_new_SB} is the loss and accuracy values across training with the new sideband region. The training and validation values are evaluated on mixed-label samples, while the testing values are evaluated on true-label samples. The training accuracy is close to 0.52, which satisfied our expectations. The ``+1 copy'' dataset takes longer to finish the training process. It seems that the ``+1 copy'' dataset still has the over-training issue.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
@@ -1965,18 +1965,66 @@
 	\label{sub:augmented_sample_size}
 		To investigate the training performance across different sample sizes, we generate more augmented samples and examine at which point the performance is saturated.
 
-		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_SB_1_3} shows the sensitivity improvement with jet rotation datasets. For resolution $25\times 25$, the training performance is saturated around +5 jet rotation. For resolution $75\times 75$, the training performance is saturated around +15 jet rotation. The model with higher resolution needs more augmented samples to reach the saturation point.
-		\begin{figure}[htpb]
-			\centering
-			\subfloat[Resolution: $75\times 75$]{
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_75.pdf}
-			} \\
-			\subfloat[Resolution: $25\times 25$]{
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_25.pdf} 
-			}
-			\caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
-			\label{fig:sensitivity_improvement_origin_jet_aug_SB_1_3}
-		\end{figure}
+		\subsubsection{Jet rotation}% (fold)
+		\label{subs:jet_rotation}
+			Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_SB_1_3} shows the sensitivity improvement with jet rotation datasets. For resolution $25\times 25$, the training performance is saturated around +5 jet rotation. For resolution $75\times 75$, the training performance is saturated around +15 jet rotation. The model with higher resolution needs more augmented samples to reach the saturation point.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Resolution: $25\times 25$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_25.pdf} 
+				} \\
+				\subfloat[Resolution: $75\times 75$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_75.pdf}
+				} 
+				\caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_origin_jet_aug_SB_1_3}
+			\end{figure}
+		% subsubsection jet_rotation (end)	
+		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing}% (fold)
+		\label{subs:pt_smearing}
+			Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_SB_1_3} shows the sensitivity improvement with $p_\text{T}$ smearing datasets. For resolution $25\times 25$, the training performance is saturated around +5 $p_{\text{T}}$ smearing. For resolution $75\times 75$, the training performance is saturated around +15 $p_{\text{T}}$ smearing.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Resolution: $25\times 25$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_aug_SB_1_3_res_25.pdf} 
+				} \\
+				\subfloat[Resolution: $75\times 75$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_aug_SB_1_3_res_75.pdf}
+				} 
+				\caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_origin_pt_aug_SB_1_3}
+			\end{figure}
+		% subsubsection pt_smearing (end)
+		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing + Jet rotation}% (fold)
+		\label{subs:pt_smearing_jet_rotation}
+			Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3} shows the sensitivity improvement with ``$p_{\text{T}}$ smearing + jet rotation'' datasets. For resolution $25\times 25$ with $\varepsilon_{\text{b}} = 10 \%$, the sensitivity improvement is saturated around +5 times the augmented size. For lower background efficiency, the performance still can be improved after +5 times augmentation and is saturated around +20 times augmentation. For resolution $75\times 75$, the training performance increases when we use larger datasets. Even if we use +33 times augmented datasets, for lower background efficiency, there seems to be room for improvement.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Resolution: $25\times 25$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_SB_1_3_res_25.pdf} 
+				} \\
+				\subfloat[Resolution: $75\times 75$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_SB_1_3_res_75.pdf}
+				} 
+				\caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3}
+			\end{figure}
+		% subsubsection pt_smearing_jet_rotation (end)
+		\subsubsection{Summary}% (fold)
+		\label{subs:summary}
+			Figure~\ref{fig:sensitivity_improvement_summary_aug_SB_3} shows the sensitivity improvement with different augmentation approaches. The ``$p_{\text{T}}$ smearing + jet rotation'' has the best performance. For resolution $75\times 75$ with $\varepsilon_{\text{b}}$, the combining method performs much better than other methods.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Resolution: $25\times 25$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_SB_3_res_25.pdf} 
+				} \\
+				\subfloat[Resolution: $75\times 75$]{
+					\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_SB_3_res_75.pdf}
+				}
+				\caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training.}
+				\label{fig:sensitivity_improvement_summary_aug_SB_3}
+			\end{figure}
+		% subsubsection summary (end)	
 	% subsection augmented_sample_size (end)
 	\subsection{Combine \texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing and jet rotation}% (fold)
 	\label{sub:combine_pt_smearing_and_jet_rotation}
