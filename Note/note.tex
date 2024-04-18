@@ -1720,7 +1720,7 @@
 
 		The validation dataset is prepared at the training stage. The \verb|.npy| file would be split into the training and validation datasets with ratios of 0.8 and 0.2, respectively. This procedure works fine for original datasets. However, it is possible that the training and validation datasets could have some common samples for duplicated datasets. The splitting process randomly chooses samples from \verb|.npy| file.
 
-		To prevent some samples containing in the training and validation datasets, we change the procedure for preparing validation datasets. First, we split the validation set from the original dataset. Then, we duplicate samples to make the ``+1 copy'' datasets. In this way, the training and validation dataset would not contain common samples.
+		We change the procedure for preparing validation datasets to prevent some samples containing in the training and validation datasets. First, we split the validation set from the original dataset. Then, we duplicate samples to make the ``+1 copy'' datasets. In this way, the training and validation dataset would not contain common samples.
 
 		Figure~\ref{fig:acc_curve_split_validation_first} is accuracy curves and the scatter plot. The training results are similar for original and duplicated datasets.
 		\begin{figure}[htpb]
@@ -1868,7 +1868,7 @@
 	\label{sub:more_augmented_sample}
 		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows similar performance for original and $\eta-\phi$ smearing datasets. Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1} shows a little improvement for $p_{\text{T}}$ smearing samples. However, because of the large standard deviation, there is no significant difference. To ensure whether augmented samples can improve the training, we enlarge the size of the dataset.
 
-		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_aug_1_3} shows the sensitivity improvement with larger $\eta-\phi$ smearing datasets. Even the we enlarge the training sample size, the training results are still similar. The $\eta-\phi$ augmentation seems to not improve the training performance.
+		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_aug_1_3} shows the sensitivity improvement with larger $\eta-\phi$ smearing datasets. Even though we enlarge the training sample size, the results are still similar. The $\eta-\phi$ augmentation seems to not improve the training performance.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -1881,7 +1881,7 @@
 			\label{fig:sensitivity_improvement_origin_eta_phi_aug_1_3}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1_3_5} shows the sensitivity improvement with larger $p_{\text{T}}$ smearing datasets. For the lower background efficiency case, the sensitivity improvement is more significant. As the sample size increases, the training performance becomes better. For $\varepsilon_{\text{b}} = 1 \%, 0.1 \%$, +3 and +5 $p_{\text{T}}$ smearing datasets have lower training thresholds and larger improvement at the high sensitivity region. It seems that the $p_{\text{T}}$ smearing indeed can improve the training performance.
+		Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_1_3_5} shows the sensitivity improvement with larger $p_{\text{T}}$ smearing datasets. For the lower background efficiency case, the sensitivity improvement is more significant. As the sample size increases, the training performance becomes better. For $\varepsilon_{\text{b}} = 1 \%, 0.1 \%$, +3 and +5 $p_{\text{T}}$ smearing datasets have lower training thresholds and larger improvement at the high sensitivity region. The $p_{\text{T}}$ smearing can improve the training performance.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -2069,6 +2069,49 @@
 			\label{fig:sensitivity_improvement_pt_jet_aug_3_ZN}
 		\end{figure}
 	% subsection compare_training_results_with_zong_en (end)
+	\subsection{Fluctuation from different datasets}% (fold)
+	\label{sub:fluctuation_from_different_datasets}
+		To explore the fluctuation of different experiments, i.e., the fluctuation of different training datasets, we prepare a datasets pool and randomly select the events from the pool to make training datasets. 
+
+		The size of the dataset pool in each category is presented in Table~\ref{tab:dataset_pool_sample_size}. Compared to the training datasets (Table~\ref{tab:training_sample_size_cwola_hunting_hv_new_SB}), the background size of the pool is 5 times the training sample size ($\sim$ 20k). 
+		\begin{table}[htpb]
+			\centering
+			\caption{The number of events for the dataset pool.}
+			\label{tab:dataset_pool_sample_size}
+			\begin{tabular}{c|cc}
+								& \multicolumn{2}{c}{True label} \\
+				Dataset pool    & Signal       & Background      \\ \hline
+				Signal region   & 111k         & 99k             \\
+				Sideband region & 27k          & 105k
+			\end{tabular}
+		\end{table}
+
+		To prepare new training datasets, events are randomly selected from the dataset pool. To reproduce these datasets, the random seed is set by hand.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_random_res_25} and Figure~\ref{fig:sensitivity_improvement_jet_aug_3_random_res_25} show the sensitivity improvement with 10 different datasets. The training could be much different for various datasets. This could explain why there are some differences between ZN's and my training results.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_random_res_25.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_random_average_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The average of 10 datasets is evaluated from 100 times training.}
+			\label{fig:sensitivity_improvement_origin_random_res_25}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_3_random_res_25.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_3_random_average_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The average of 10 datasets is evaluated from 100 times training.}
+			\label{fig:sensitivity_improvement_jet_aug_3_random_res_25}
+		\end{figure}
+	% subsection fluctuation_from_different_datasets (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
