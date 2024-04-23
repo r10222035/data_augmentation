@@ -141,6 +141,7 @@ def main():
     with tf.device('CPU'):
         train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
         train_dataset = train_dataset.shuffle(buffer_size=len(y_train)).batch(BATCH_SIZE)
+        del X_train, y_train
 
         valid_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val))
         valid_dataset = valid_dataset.batch(BATCH_SIZE)
