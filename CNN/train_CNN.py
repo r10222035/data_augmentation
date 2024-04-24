@@ -5,6 +5,7 @@
 
 import os
 import sys
+import json
 import shutil
 import datetime
 
@@ -36,27 +37,36 @@ def get_sample_size(y):
 
 
 class CNN(tf.keras.Model):
-    def __init__(self, name='CNN'):
+    def __init__(self, parameters, name='CNN'):
         super(CNN, self).__init__(name=name)
 
         self.bn1 = tf.keras.layers.BatchNormalization()
 
         self.bn2 = tf.keras.layers.BatchNormalization()
 
-        self.sub_network = tf.keras.Sequential([
-            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dense(1, activation='sigmoid'),
-        ])
+        # create sub-network
+        self.sub_network = tf.keras.Sequential()
+
+        kernel = (parameters['CNN_kernel_size'], parameters['CNN_kernel_size'])
+
+        for i in range(parameters['n_CNN_layers_tot']):
+            if i < parameters['n_CNN_layers_1']:
+                n_filters = parameters['n_CNN_filters']
+            else:
+                n_filters = parameters['n_CNN_filters'] * 2
+
+            if i == 0:
+                self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
+            else:
+                self.sub_network.add(tf.keras.layers.MaxPool2D((2, 2)))
+                self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
+
+        self.sub_network.add(tf.keras.layers.Flatten())
+
+        for _ in range(parameters['n_dense_layers']):
+            self.sub_network.add(tf.keras.layers.Dense(parameters['dense_hidden_dim'], activation='relu'))
+
+        self.sub_network.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 
     @tf.function
     def call(self, inputs, training=False):
@@ -123,11 +133,16 @@ def main():
     sample_type = sys.argv[5]
 
     # Training parameters
-    BATCH_SIZE = 512
-    EPOCHS = 500
-    patience = 10
-    min_delta = 0.
-    learning_rate = 1e-4
+    # 讀取參數設定
+    with open('params.json', 'r') as f:
+        params = json.load(f)
+
+    # 從參數設定中獲取變數
+    BATCH_SIZE = params['BATCH_SIZE']
+    EPOCHS = params['EPOCHS']
+    patience = params['patience']
+    min_delta = params['min_delta']
+    learning_rate = params['learning_rate']
     save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
 
     print(f'Read data from {train_path}')
@@ -137,7 +152,7 @@ def main():
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
-    
+
     with tf.device('CPU'):
         train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
         train_dataset = train_dataset.shuffle(buffer_size=len(y_train)).batch(BATCH_SIZE)
@@ -147,7 +162,21 @@ def main():
         valid_dataset = valid_dataset.batch(BATCH_SIZE)
 
     # Create the model
-    model = CNN()
+    n_CNN_layers_tot = params['n_CNN_layers_tot']
+    n_CNN_layers_1 = params['n_CNN_layers_1']
+    n_CNN_filters = params['n_CNN_filters']
+    CNN_kernel_size = params['CNN_kernel_size']
+    n_dense_layers = params['n_dense_layers']
+    dense_hidden_dim = params['dense_hidden_dim']
+    model_parameters = {
+        'n_CNN_layers_tot': n_CNN_layers_tot,
+        'n_CNN_layers_1': n_CNN_layers_1,
+        'n_CNN_filters': n_CNN_filters,
+        'CNN_kernel_size': CNN_kernel_size,
+        'n_dense_layers': n_dense_layers,
+        'dense_hidden_dim': dense_hidden_dim,
+    }
+    model = CNN(model_parameters)
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
                   loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
                   metrics=['accuracy'])

@@ -1,0 +1,16 @@
+{
+    "BATCH_SIZE": 256,
+    "learning_rate": 0.0025369051445870597,
+
+    "EPOCHS": 500,
+    "patience": 10,
+    "min_delta": 0.0,
+
+    "CNN_kernel_size": 6,
+    "n_CNN_filters": 64,
+    "n_CNN_layers_tot": 2,
+    "n_CNN_layers_1": 1,
+
+    "n_dense_layers": 5,
+    "dense_hidden_dim": 128
+}
