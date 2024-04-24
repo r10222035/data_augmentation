@@ -1508,7 +1508,7 @@
 		% subsubsection roc_curve (end)
 		\subsubsection{Signal score}% (fold)
 		\label{subs:signal_score}
-			The output of the neural network is a number, which is the signal score of an event. Figure~\ref{fig:signal_score_SB_3} is the signal score distribution of the model trained on original datasets and duplicated datasets. These distributions are very different and can explain the ROC curve in Figure~\ref{fig:roc_curve_SB_3_5_7}.
+			The neural network's output is a number, which is the signal score of an event. Figure~\ref{fig:signal_score_SB_3} is the signal score distribution of the model trained on original datasets and duplicated datasets. These distributions are very different and can explain the ROC curve in Figure~\ref{fig:roc_curve_SB_3_5_7}.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
@@ -1559,7 +1559,7 @@
 				\label{fig:roc_curve_training_process_copy_1}
 			\end{figure}
 
-			Figure~\ref{fig:roc_curve_training_process_origin} is ROC curves at different epochs for original datasets. The ROC curves before Epoch 21 look normal. The shape of the ROC curve is a little deformed after Epoch 26, but the impact is very small compared with the ``+1 copy'' case. After the deformation of the ROC curve is observed, the training process does not take a long time to stop, which is terminated at the reasonable stage. It seems that there is no over-training issue for the original training sample.
+			Figure~\ref{fig:roc_curve_training_process_origin} is ROC curves at different epochs for original datasets. The ROC curves before Epoch 21 look normal. The shape of the ROC curve is a little deformed after Epoch 26, but the impact is very small compared with the ``+1 copy'' case. After the deformation of the ROC curve is observed, the training process does not take long to stop, which is terminated at the reasonable stage. It seems that there is no over-training issue for the original training sample.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Epoch 1]{
@@ -1997,7 +1997,7 @@
 		% subsubsection pt_smearing (end)
 		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing + Jet rotation}% (fold)
 		\label{subs:pt_smearing_jet_rotation}
-			Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3} shows the sensitivity improvement with ``$p_{\text{T}}$ smearing + jet rotation'' datasets. For resolution $25\times 25$ with $\varepsilon_{\text{b}} = 10 \%$, the sensitivity improvement is saturated around +5 times the augmented size. For lower background efficiency, the performance still can be improved after +5 times augmentation and is saturated around +20 times augmentation. For resolution $75\times 75$, the training performance increases when we use larger datasets. Even if we use +33 times augmented datasets, for lower background efficiency, there seems to be room for improvement.
+			Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3} shows the sensitivity improvement with ``$p_{\text{T}}$ smearing + jet rotation'' datasets. For resolution $25\times 25$ with $\varepsilon_{\text{b}} = 10 \%$, the sensitivity improvement is saturated around +5 times the augmented size. For lower background efficiency, the performance can still be improved after +5 times augmentation and is saturated around +20 times augmentation. For resolution $75\times 75$, the training performance increases when we use larger datasets. Even if we use +33 times augmented datasets, for lower background efficiency, there seems to be room for improvement.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Resolution: $25\times 25$]{
@@ -2112,6 +2112,45 @@
 			\label{fig:sensitivity_improvement_jet_aug_3_random_res_25}
 		\end{figure}
 	% subsection fluctuation_from_different_datasets (end)
+	\subsection{Hyperparameter optimization}% (fold)
+	\label{sub:hyperparameter_optimization}
+		This section uses Optuna to do the hyperparameter optimization.
+
+		The optimization range of different hyperparameters is listed in the below
+		\begin{itemize}
+			\item \verb|BATCH_SIZE|: $[256, 512, 1024, 2048]$
+			\item \verb|learning_rate|: $[10^{-5}, 10^{-2}]$
+			\item \verb|n_CNN_layers_tot|: $[2, 4]$
+			\item \verb|n_CNN_layers_1|: $[1, \verb|n_CNN_layers_tot|]$
+			\item \verb|n_CNN_filters|: $[16, 32, 64, 128, 256]$ 
+			\item \verb|CNN_kernel_size|: $[2, 6]$
+			\item \verb|n_dense_layers|: $[1, 5]$
+			\item \verb|dense_hidden_dim|: $[16, 32, 64, 128, 256]$ 	
+		\end{itemize}
+		Test 100 trials and find the parameters set that can minimize the loss value of the testing dataset with true labels.
+
+		For orignal dataset with $S/\sqrt{B} = 5.0$ and resolution $25\times 25$, the hyperparameter optimization results are listed below
+		\begin{itemize}
+			\item \verb|BATCH_SIZE|: $256$
+			\item \verb|learning_rate|: $2.54 \times 10^{-3}$
+			\item \verb|n_CNN_layers_tot|: $2$
+			\item \verb|n_CNN_layers_1|: $1$
+			\item \verb|n_CNN_filters|: $64$ 
+			\item \verb|CNN_kernel_size|: $6$
+			\item \verb|n_dense_layers|: $5$
+			\item \verb|dense_hidden_dim|: $128$ 	
+		\end{itemize}
+
+		Test this parameter set on all sensitivities. Figure~\ref{fig:sensitivity_improvement_origin_random_res_25} shows the sensitivity improvement. The training could be improved with the hyperparameter set for all sensitivities.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_best_hp_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The average of 10 datasets is evaluated from 100 times training.}
+			\label{fig:sensitivity_improvement_origin_best_hp_res_25}
+		\end{figure}
+	% subsection hyperparameter_optimization (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
