@@ -2114,9 +2114,9 @@
 	% subsection fluctuation_from_different_datasets (end)
 	\subsection{Hyperparameter optimization}% (fold)
 	\label{sub:hyperparameter_optimization}
-		This section uses Optuna to do the hyperparameter optimization.
+		To reduce the fluctuation of the model performance, we tune the hyperparameter setting to optimize the training. For the best hyperparameter set it might make training results more stable. This section uses \verb|Optuna| to do the hyperparameter optimization.
 
-		The optimization range of different hyperparameters is listed in the below
+		The batch size, learning rate, and some hyperparameters related to the neural network structure are scanned. The optimization range of different hyperparameters is listed in the below
 		\begin{itemize}
 			\item \verb|BATCH_SIZE|: $[256, 512, 1024, 2048]$
 			\item \verb|learning_rate|: $[10^{-5}, 10^{-2}]$
@@ -2141,16 +2141,76 @@
 			\item \verb|dense_hidden_dim|: $128$ 	
 		\end{itemize}
 
-		Test this parameter set on all sensitivities. Figure~\ref{fig:sensitivity_improvement_origin_random_res_25} shows the sensitivity improvement. The training could be improved with the hyperparameter set for all sensitivities.
+		Test this parameter set on all sensitivities. Figure~\ref{fig:sensitivity_improvement_best_hp_res_25} shows the sensitivity improvement. The training could be improved with this hyperparameter set for original datasets. However, for +5 jet rotation, the performance is similar. The fluctuation of training results could not be reduced for both cases.
 		\begin{figure}[htpb]
 			\centering
-			\subfloat[Resolution: $25\times 25$]{
+			\subfloat[Original]{
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_best_hp_res_25.pdf}
+			} \\
+			\subfloat[Jet rotation: +5]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_5_best_hp_res_25.pdf}
 			}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. The average of 10 datasets is evaluated from 100 times training.}
-			\label{fig:sensitivity_improvement_origin_best_hp_res_25}
+			\label{fig:sensitivity_improvement_best_hp_res_25}
 		\end{figure}
 	% subsection hyperparameter_optimization (end)
+	\subsection{Sculpting effect}% (fold)
+	\label{sub:sculpting_effect}
+		To confirm whether the sculpting effect exists for augmented training datasets, we plot the ACC and AUC curves and focus on the performance of no-signal models. Their ACC and AUC values should be close to 0.5 since they are trained on all background datasets.
+
+		Figure~\ref{fig:acc_auc_curve_origin_pt_aug_1_3_5_res_25_75}, \ref{fig:acc_auc_curve_origin_jet_aug_1_3_5_res_25_75} and \ref{fig:acc_auc_curve_origin_pt_jet_aug_1_3_res_25_75} are ACC and AUC curves with various augmented approaches. The ACC and AUC values are evaluated from the testing datasets with true labels. We verify that the ACC and AUC values of no-signal models are close to 0.5. There is no significant difference between the original and the augmented cases on the no-signal model. Therefore, the improvement of the augmented dataset does not result from the sculpting effect.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_pt_aug_1_3_5_res_75.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_pt_aug_1_3_5_res_75.pdf}
+			} \\
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_pt_aug_1_3_5_res_25.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_pt_aug_1_3_5_res_25.pdf}
+			}
+			\caption{The performance of CWoLa CNN training with $p_{\text{T}}$ smearing datasets. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_auc_curve_origin_pt_aug_1_3_5_res_25_75}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_jet_aug_1_3_5_res_75.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_jet_aug_1_3_5_res_75.pdf}
+			} \\
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_jet_aug_1_3_5_res_25.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_jet_aug_1_3_5_res_25.pdf}
+			}
+			\caption{The performance of CWoLa CNN training with jet rotation datasets. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_auc_curve_origin_jet_aug_1_3_5_res_25_75}
+		\end{figure}
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_pt_jet_aug_1_3_res_75.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_pt_jet_aug_1_3_res_75.pdf}
+			} \\
+			\subfloat[ACC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_ACC_origin_pt_jet_aug_1_3_res_25.pdf}
+			}
+			\subfloat[AUC]{
+				\includegraphics[width=0.45\textwidth]{HVmodel_CWoLa_CNN_AUC_origin_pt_jet_aug_1_3_res_25.pdf}
+			}
+			\caption{The performance of CWoLa CNN training with ``$p_{\text{T}}$ smearing + jet rotation'' datasets. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
+			\label{fig:acc_auc_curve_origin_pt_jet_aug_1_3_res_25_75}
+		\end{figure}
+	% subsection sculpting_effect (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
