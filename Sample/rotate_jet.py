@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python rotate_jet.py <h5_path> <output_path> <augmented times> <resolution>
-# python rotate_jet.py ./HVmodel/data/split_val/mix_sample_0.0.h5 ./HVmodel/data/rotate_jet/mix_sample_0.0_jet_aug_1_75x75.h5 1 75
+# python rotate_jet.py <h5_path> <output_path> <augmented times> <resolution> <rotation range>
+# python rotate_jet.py ./HVmodel/data/split_val/mix_sample_0.0.h5 ./HVmodel/data/rotate_jet/mix_sample_0.0_jet_aug_1_75x75.h5 1 75 90
 
 import os
 import sys
@@ -22,11 +22,7 @@ def get_dataset_keys(f):
 
 def std_phi(phi):
     # return the phi in range [-pi, pi]
-    while np.any(phi > np.pi):
-        phi[phi > np.pi] -= 2 * np.pi
-    while np.any(phi < -np.pi):
-        phi[phi < -np.pi] += 2 * np.pi
-    return phi
+    return np.mod(phi + np.pi, 2 * np.pi) - np.pi
 
 
 def quadrant_max_vectorized(eta, phi, pt):
@@ -58,13 +54,14 @@ def preprocess(pts, etas, phis):
 
     # compute pt weighted center
     # eta_central shape: (n_events, 1)
-    eta_central = ((pts * etas).sum(axis=1) / pts.sum(axis=1))[:, None]
-    phi_central = ((pts * phis).sum(axis=1) / pts.sum(axis=1))[:, None]
+    pt_sum = pts.sum(axis=1)
+    eta_central = ((pts * etas).sum(axis=1) / pt_sum)[:, None]
+    phi_central = ((pts * phis).sum(axis=1) / pt_sum)[:, None]
 
     # compute rotation angle
-    s_etaeta = (pts * (etas - eta_central)**2).sum(axis=1) / pts.sum(axis=1)
-    s_phiphi = (pts * (phis - phi_central)**2).sum(axis=1) / pts.sum(axis=1)
-    s_etaphi = (pts * (etas - eta_central) * (phis - phi_central)).sum(axis=1) / pts.sum(axis=1)
+    s_etaeta = (pts * (etas - eta_central)**2).sum(axis=1) / pt_sum
+    s_phiphi = (pts * (phis - phi_central)**2).sum(axis=1) / pt_sum
+    s_etaphi = (pts * (etas - eta_central) * (phis - phi_central)).sum(axis=1) / pt_sum
 
     angle = -np.arctan2(-s_etaeta + s_phiphi + np.sqrt((s_etaeta - s_phiphi)**2 + 4. * s_etaphi**2), 2.*s_etaphi)[:, None]
 
@@ -113,10 +110,11 @@ def rotation(etas, phis, angles):
     return eta_rotat, phi_rotat
 
 
-def rotate_jet_augmentation(h5_path, output_path, n=3, res=75):
+def rotate_jet_augmentation(h5_path, output_path, n=3, res=75, rot_range=np.pi):
     # after pre-process, rotate the jet image with random angle
     # save results in npy file
     # res: resolution of the jet image
+    # rot_range: rotation range
     root, _ = os.path.splitext(output_path)
     out_h5 = os.path.join(f'{root}-out.h5')
     tmp_h5 = os.path.join(f'{root}-tmp.h5')
@@ -145,9 +143,9 @@ def rotate_jet_augmentation(h5_path, output_path, n=3, res=75):
             total_size += nevent
             with h5py.File(tmp_h5, 'a') as f_tmp:
                 # rotate eta and phi with random angle
-                angle = np.random.uniform(-np.pi, np.pi, size=nevent)[:, None]
+                angle = np.random.uniform(-rot_range, rot_range, size=nevent)[:, None]
                 eta1_rotat, phi1_rotat = rotation(eta1, phi1, angle)
-                angle = np.random.uniform(-np.pi, np.pi, size=nevent)[:, None]
+                angle = np.random.uniform(-rot_range, rot_range, size=nevent)[:, None]
                 eta2_rotat, phi2_rotat = rotation(eta2, phi2, angle)
 
                 f_tmp['J1/eta'][:] = eta1_rotat
@@ -194,8 +192,9 @@ def main():
     output_path = sys.argv[2]
     n = int(sys.argv[3])
     res = int(sys.argv[4])
+    rot_range = np.pi / 180 * int(sys.argv[5])
 
-    rotate_jet_augmentation(h5_path, output_path, n, res)
+    rotate_jet_augmentation(h5_path, output_path, n, res, rot_range)
 
 
 if __name__ == '__main__':
