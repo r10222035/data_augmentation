@@ -45,28 +45,43 @@ class CNN(tf.keras.Model):
         self.bn2 = tf.keras.layers.BatchNormalization()
 
         # create sub-network
-        self.sub_network = tf.keras.Sequential()
+        # self.sub_network = tf.keras.Sequential()
 
-        kernel = (parameters['CNN_kernel_size'], parameters['CNN_kernel_size'])
+        # kernel = (parameters['CNN_kernel_size'], parameters['CNN_kernel_size'])
 
-        for i in range(parameters['n_CNN_layers_tot']):
-            if i < parameters['n_CNN_layers_1']:
-                n_filters = parameters['n_CNN_filters']
-            else:
-                n_filters = parameters['n_CNN_filters'] * 2
+        # for i in range(parameters['n_CNN_layers_tot']):
+        #     if i < parameters['n_CNN_layers_1']:
+        #         n_filters = parameters['n_CNN_filters']
+        #     else:
+        #         n_filters = parameters['n_CNN_filters'] * 2
 
-            if i == 0:
-                self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
-            else:
-                self.sub_network.add(tf.keras.layers.MaxPool2D((2, 2)))
-                self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
+        #     if i == 0:
+        #         self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
+        #     else:
+        #         self.sub_network.add(tf.keras.layers.MaxPool2D((2, 2)))
+        #         self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
 
-        self.sub_network.add(tf.keras.layers.Flatten())
+        # self.sub_network.add(tf.keras.layers.Flatten())
 
-        for _ in range(parameters['n_dense_layers']):
-            self.sub_network.add(tf.keras.layers.Dense(parameters['dense_hidden_dim'], activation='relu'))
+        # for _ in range(parameters['n_dense_layers']):
+        #     self.sub_network.add(tf.keras.layers.Dense(parameters['dense_hidden_dim'], activation='relu'))
 
-        self.sub_network.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+        # self.sub_network.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+
+        self.sub_network = tf.keras.Sequential([
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dense(1, activation='sigmoid'),
+        ])
 
     @tf.function
     def call(self, inputs, training=False):
