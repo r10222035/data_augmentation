@@ -2227,6 +2227,20 @@
 			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
 			\label{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180}
 		\end{figure}
+		\subsubsection{Fixed rotation angles}% (fold)
+		\label{subs:fixed_rotation_angles}
+			Instead of using the angle randomly sampled from the rotation range, we specify the rotation angles by hand.
+
+			We test $\pm 5^\circ$ rotation. More specifically, the training dataset contains original events, events rotated by $5^\circ$, and events rotated by $-5^\circ$. Therefore, the training sample size is 3 times to original datasets. Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5} shows the sensitivity improvement of jet rotation datasets with fixed angles. The sensitivity improvement is close to the original case since there is no difference in jet images if the rotation angle is very small. For lower background efficiency, there seems to be a little improvement at the high sensitivity range.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$. Rotation angles: $-5^\circ, 5^\circ$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_angles_-5_5_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The rotation angle $\theta = -5^\circ, 5^\circ$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5}
+		\end{figure}
+		% subsubsection fixed_rotation_angles (end)	
 	% subsection jet_rotation_range (end)
 % section hidden_valley_model (end)
 
