@@ -706,7 +706,7 @@
 			\item Apply data augmentation in \verb|HDF5| format. Following Section~\ref{sub:data_augmentation}.
 			\item Generate the jet image from \verb|HDF5| data.
 		\end{enumerate}
-		Note the preprocessing is done in step 5. If we do the preprocessing many times, then the rounding errors would break the jet image.
+		Note the preprocessing is done in step 5. If we do the preprocessing many times, the rounding errors would break the jet image.
 	% subsection data_process_procedure (end)	
 	\subsection{Data augmentation}% (fold)
 	\label{sub:data_augmentation}
@@ -1239,7 +1239,7 @@
 		\begin{enumerate}
 			\item Model structure: I treated 2 jet images as 2 channels of one diagram. Zong-En passed each jet image through a common CNN and multiplied output values.
 			\item Training sample preparation: I prepare training samples in the \verb|.npy| file before training. Zong-En uses the generator method to construct samples during the training process.
-			\item Hyperparameter setting: My early stopping patience parameter is set to 10. Zong-En's patience paramter is set to 30.
+			\item Hyperparameter setting: My early stopping patience parameter is 10. Zong-En's patience paramter is set to 30.
 			\item Tensorflow version: I use Tensorflow 2.11.1. Zong-En uses Tensorflow 2.0.0.
 		\end{enumerate}
 
@@ -2211,6 +2211,23 @@
 			\label{fig:acc_auc_curve_origin_pt_jet_aug_1_3_res_25_75}
 		\end{figure}
 	% subsection sculpting_effect (end)
+	\subsection{Jet rotation range}% (fold)
+	\label{sub:jet_rotation_range}
+		To investigate how the jet rotation improves the training, we modify the range of rotation angle. For previous training, the range is $\pm 180^\circ$. The small and large ranges are tested. Similarly, the rotation angle is uniformly sampled from the rotation range.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180} shows the sensitivity improvement of jet rotation datasets with different rotation ranges. For ranges $\pm 1^\circ$ and $\pm 5^\circ$, the sensitivity improvement is close to the original case, since there is no difference in jet images if the rotation angle is very small. For ranges $\pm 45^\circ$ and  $\pm 90^\circ$, their training performance is similar and significantly better than the original case. The dataset with the largest rotation range $\pm 180^\circ$ can achieve the lowest training threshold even at the high sensitivity range the performance is not so good.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$. Rotation range: $\pm 180^\circ, \pm 5^\circ, \pm 1^\circ$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_5_range_180_5_1_res_25.pdf}
+			} \\
+			\subfloat[Resolution: $25\times 25$. Rotation range: $\pm 180^\circ, \pm 90^\circ, \pm 45^\circ$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_5_range_180_90_45_res_25.pdf} 
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180}
+		\end{figure}
+	% subsection jet_rotation_range (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
