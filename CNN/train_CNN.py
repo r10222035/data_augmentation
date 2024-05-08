@@ -288,7 +288,6 @@ def main():
 
         valid_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val))
         valid_dataset = valid_dataset.batch(BATCH_SIZE)
-        del X_val, y_val
 
     # Create the model
     n_CNN_layers_tot = params['n_CNN_layers_tot']
