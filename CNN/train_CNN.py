@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
-# python train_CNN.py <train_file> <validation_file> <true_label_file> <model_name> "<sample_type>"
-# python train_CNN.py ../Sample/HVmodel/data/split_val/mix_sample_1.0_75x75.npy ../Sample/HVmodel/data/split_val/mix_sample_1.0_val_75x75.npy ../Sample/HVmodel/data/split_val/mix_sample_test_75x75.npy SB_1.0_75x75 "Sensitivity: 1.0, Resolution: 75x75"
+# python train_CNN.py <config_path.json>
+# python train_CNN.py config_files/config_01.json
 
 import os
+import re
 import sys
 import json
 import shutil
@@ -16,6 +17,103 @@ import tensorflow as tf
 from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
+
+def get_info(path):
+    # path: run path
+    name = os.path.split(path)[1]
+
+    with open(os.path.join(path, f'{name}_tag_1_banner.txt')) as f:
+        for line in f.readlines():
+
+            #  Integrated weight (pb)  :       0.020257
+            match = re.match('#  Integrated weight \(pb\)  : +(\d+\.\d+)', line)
+            if match:
+                # unit: fb
+                cross_section = float(match.group(1)) * 1000
+            #  Number of Events        :       100000
+            match = re.match('#  Number of Events        :       (\d+)', line)
+            if match:
+                # unit: fb
+                nevent = int(match.group(1))
+
+    return cross_section, nevent
+
+
+def compute_nevent_in_SR_SB(sensitivity=1.0):
+    results_s = np.load('../Sample/HVmodel/data/selection_results_SB_4400_5800_s.npy', allow_pickle=True).item()
+    results_b = np.load('../Sample/HVmodel/data/selection_results_SB_4400_5800_b.npy', allow_pickle=True).item()
+
+    # Total cross section and number of events
+    xection, _ = get_info('../Sample/ppjj/Events/run_03')
+
+    # cross section in signal region and sideband region
+    cross_section_SR = results_b['cutflow_number']['Signal region'] / results_b['cutflow_number']['Total'] * xection
+    cross_section_SB = results_b['cutflow_number']['Sideband region'] / results_b['cutflow_number']['Total'] * xection
+    print(f'Background cross section, SR: {cross_section_SR:.2f} fb, SB: {cross_section_SB:.2f} fb')
+
+    # number of background events in signal region and sideband region
+    L = 139 * 1
+    n_SR_B = cross_section_SR * L
+    n_SB_B = cross_section_SB * L
+
+    print(f'Background sample size: SR: {n_SR_B:.1f}, SB: {n_SB_B:.1f}')
+
+    n_SR_S = sensitivity * np.sqrt(n_SR_B)
+    n_SB_S = n_SR_S * results_s['cutflow_number']['Sideband region'] / results_s['cutflow_number']['Signal region']
+    print(f'Signal sample size: SR: {n_SR_S:.1f}, SB: {n_SB_S:.1f}')
+
+    return n_SR_S, n_SR_B, n_SB_S, n_SB_B
+
+
+def create_mix_sample_from(npy_dirs: list, nevents: tuple, seed=0):
+    # npy_dirs: list of npy directories
+    # nevents: tuple of (n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB)
+    data = None
+    label = None
+
+    data_sig_SR = np.load(os.path.join(npy_dirs[0], 'sig_in_SR-data.npy'))
+    data_sig_SB = np.load(os.path.join(npy_dirs[0], 'sig_in_SB-data.npy'))
+    data_bkg_SR = np.load(os.path.join(npy_dirs[0], 'bkg_in_SR-data.npy'))
+    data_bkg_SB = np.load(os.path.join(npy_dirs[0], 'bkg_in_SB-data.npy'))
+
+    n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB = nevents
+
+    np.random.seed(seed)
+    idx_sig_SR = np.random.choice(data_sig_SR.shape[0], n_sig_SR, replace=False)
+    idx_sig_SB = np.random.choice(data_sig_SB.shape[0], n_sig_SB, replace=False)
+    idx_bkg_SR = np.random.choice(data_bkg_SR.shape[0], n_bkg_SR, replace=False)
+    idx_bkg_SB = np.random.choice(data_bkg_SB.shape[0], n_bkg_SB, replace=False)
+
+    print(f'Preparing dataset from {npy_dirs}')
+    for npy_dir in npy_dirs:
+
+        data_sig_SR = np.load(os.path.join(npy_dir, 'sig_in_SR-data.npy'))
+        data_sig_SB = np.load(os.path.join(npy_dir, 'sig_in_SB-data.npy'))
+        data_bkg_SR = np.load(os.path.join(npy_dir, 'bkg_in_SR-data.npy'))
+        data_bkg_SB = np.load(os.path.join(npy_dir, 'bkg_in_SB-data.npy'))
+
+        new_data = np.concatenate([
+            data_sig_SR[idx_sig_SR],
+            data_bkg_SR[idx_bkg_SR],
+            data_sig_SB[idx_sig_SB],
+            data_bkg_SB[idx_bkg_SB]
+        ], axis=0)
+
+        if data is None:
+            data = new_data
+        else:
+            data = np.concatenate([data, new_data], axis=0)
+
+        new_label = np.zeros(sum(nevents))
+        new_label[:n_sig_SR + n_bkg_SR] = 1
+
+        if label is None:
+            label = new_label
+        else:
+            label = np.concatenate([label, new_label])
+
+    return data, label
 
 
 def load_samples(path):
@@ -141,11 +239,20 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label
 
 
 def main():
-    train_path = sys.argv[1]
-    val_path = sys.argv[2]
-    true_label_path = sys.argv[3]
-    model_name = sys.argv[4]
-    sample_type = sys.argv[5]
+    config_path = sys.argv[1]
+
+    # Read config file
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+
+    train_npy_paths = config['train_npy_paths']
+    val_npy_paths = config['val_npy_paths']
+    seed = config['seed']
+    sensitivity = config['sensitivity']
+
+    true_label_path = config['true_label_path']
+    model_name = config['model_name']
+    sample_type = config['sample_type']
 
     # Training parameters
     # 讀取參數設定
@@ -158,12 +265,18 @@ def main():
     patience = params['patience']
     min_delta = params['min_delta']
     learning_rate = params['learning_rate']
+
     save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
 
-    print(f'Read data from {train_path}')
+    # Sampling dataset
+    r_train, r_val = 0.8, 0.2
+    n_SR_S, n_SR_B, n_SB_S, n_SB_B = compute_nevent_in_SR_SB(sensitivity=sensitivity)
 
-    X_train, y_train = load_samples(train_path)
-    X_val, y_val = load_samples(val_path)
+    train_nevents = int(n_SR_S * r_train), int(n_SB_S * r_train), int(n_SR_B * r_train), int(n_SB_B * r_train)
+    X_train, y_train = create_mix_sample_from(train_npy_paths, train_nevents, seed=seed)
+
+    val_nevents = int(n_SR_S * r_val), int(n_SB_S * r_val), int(n_SR_B * r_val), int(n_SB_B * r_val)
+    X_val, y_val = create_mix_sample_from(val_npy_paths, val_nevents, seed=seed)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
@@ -175,6 +288,7 @@ def main():
 
         valid_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val))
         valid_dataset = valid_dataset.batch(BATCH_SIZE)
+        del X_val, y_val
 
     # Create the model
     n_CNN_layers_tot = params['n_CNN_layers_tot']
@@ -238,7 +352,7 @@ def main():
 
     # Write results
     now = datetime.datetime.now()
-    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results-2.csv'
+    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results-3.csv'
     data_dict = {
                 'Train signal size': [train_size[0]],
                 'Train background size': [train_size[1]],

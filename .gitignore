@@ -9,6 +9,7 @@
 *.blg
 /Reference
 *_models/
+config_files/
 *.sh
 Sample/ppjj/
 Sample/SPANet/
