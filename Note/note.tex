@@ -2242,6 +2242,48 @@
 		\end{figure}
 		% subsubsection fixed_rotation_angles (end)	
 	% subsection jet_rotation_range (end)
+	\subsection{Re-sampling before training}% (fold)
+	\label{sub:re_sampling_before_training}
+		We randomly select events before each training to incorporate the fluctuation of different datasets. The sample process flow is modified as follows to implement the re-sampling:
+		\begin{enumerate}
+			\item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
+			\item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below 
+				\begin{itemize}
+					\item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
+					\item Total invariant mass $m_{jj}$.
+					\item Type of event: 1 for signal, 0 for background.	
+				\end{itemize}
+			\item Samples are separated in 4 \verb|HDF5| files: signal in signal region, signal in sideband region, background in signal region, and background in sideband region.
+			\item Process the sample at \verb|HDF5| level. Preprocess or apply data augmentation. Note that all processing should be done in this step except the pixelization. Results are saved in a directory that contains 4 \verb|HDF5| files. Events with the same index in each directory correspond to the same original event.
+			\item Pixelize each event to generate the jet image from \verb|HDF5| data and save in \verb|.npy| file.
+			\item This step is executed at the head of each training. Following Section~\ref{sub:datasets}, we can compute the size of datasets. 80\% for training set, 20\% for validation set. The events with specific indices are chosen to make mixed samples. These indices are obtained from the given random number seed and sensitivity.
+
+				For example, for the ``+3 jet rotation'' dataset, we select the events from the following directories: 
+				\begin{itemize}
+					\item \verb|<path-to-origin>/|
+					\item \verb|<path-to-jet_aug>/01/|
+					\item \verb|<path-to-jet_aug>/02/|
+					\item \verb|<path-to-jet_aug>/03/|.
+				\end{itemize}
+				We can obtain the indices to select events from the given sensitivity and random seed. These indices would repeatedly apply to each directory. Then, the results are ``+3 jet rotation'' datasets. Note that events with the same index in each directory should correspond to the same original event. Therefore, we do not shuffle events in the data process flow.
+		\end{enumerate}
+
+		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_3_random_res_25} shows the sensitivity improvement with the re-sampling process. The ``old'' curves are the previous training results, where the neural network is trained on the same dataset 10 times. The ``new'' curves are the re-sampling results, where different datasets are used for each training. The average values are similar. The standard deviation of the new curve is almost greater than the old one. These results are consistent with Section~\ref{sub:fluctuation_from_different_datasets}.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original, Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_resample_res_25.pdf}
+			} \\
+			\subfloat[Jet rotation: +3, Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_3_resample_res_25.pdf}
+			} \\
+			\subfloat[Jet rotation: +5, Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_5_resample_res_25.pdf}
+			}
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. For new curves, we use different datasets for each training.}
+			\label{fig:sensitivity_improvement_origin_jet_aug_3_random_res_25}
+		\end{figure}
+	% subsection re_sampling_before_training (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
