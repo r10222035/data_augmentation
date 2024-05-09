@@ -2284,6 +2284,23 @@
 			\label{fig:sensitivity_improvement_origin_jet_aug_3_random_res_25}
 		\end{figure}
 	% subsection re_sampling_before_training (end)
+	\subsection{\texorpdfstring{$\eta-\phi$, $p_{\mathrm{T}}$ smearing + Jet rotation}{eta phi pt smearing + jet rotation}}% (fold)
+	\label{sub:eta_phi_pt_smearing_jet_rotation}
+		We combine the $\eta-\phi$, $p_{\text{T}}$ smearing and jet rotation, to investigate whether the combining augmentation can further improve training results. We apply $\eta-\phi$ and $p_{\text{T}}$ smearing first, then apply jet rotation, because the $p_{\text{T}}$-weighted center is needed for jet rotation.
+
+		Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5} shows the sensitivity improvement. All augmentation approaches can improve the training results. There seems to be no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are a little better than the jet rotation. 
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5_res_25.pdf} 
+			} \\
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_jet_aug_5_res_25.pdf}
+			} \\
+			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+			\label{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5}
+		\end{figure}
+	% subsection eta_phi_pt_smearing_jet_rotation (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
