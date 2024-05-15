@@ -1174,7 +1174,7 @@
 			\label{fig:cwola_cnn_training_performance_copy_ratio}
 		\end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds which are lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
+		Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+ 0.50 \sim +1$ copy samples have similar thresholds that are lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
 		\begin{figure}[htpb]
 			\centering
 			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_ratio.pdf}
@@ -2086,7 +2086,7 @@
 			\end{tabular}
 		\end{table}
 
-		To prepare new training datasets, events are randomly selected from the dataset pool. To reproduce these datasets, the random seed is set by hand.
+		Events are randomly selected from the dataset pool to prepare new training datasets. To reproduce these datasets, the random seed is set by hand.
 
 		Figure~\ref{fig:sensitivity_improvement_origin_random_res_25} and Figure~\ref{fig:sensitivity_improvement_jet_aug_3_random_res_25} show the sensitivity improvement with 10 different datasets. The training could be much different for various datasets. This could explain why there are some differences between ZN's and my training results.
 		\begin{figure}[htpb]
@@ -2158,7 +2158,7 @@
 	\label{sub:sculpting_effect}
 		To confirm whether the sculpting effect exists for augmented training datasets, we plot the ACC and AUC curves and focus on the performance of no-signal models. Their ACC and AUC values should be close to 0.5 since they are trained on all background datasets.
 
-		Figure~\ref{fig:acc_auc_curve_origin_pt_aug_1_3_5_res_25_75}, \ref{fig:acc_auc_curve_origin_jet_aug_1_3_5_res_25_75} and \ref{fig:acc_auc_curve_origin_pt_jet_aug_1_3_res_25_75} are ACC and AUC curves with various augmented approaches. The ACC and AUC values are evaluated from the testing datasets with true labels. We verify that the ACC and AUC values of no-signal models are close to 0.5. There is no significant difference between the original and the augmented cases on the no-signal model. Therefore, the improvement of the augmented dataset does not result from the sculpting effect.
+		Figure~\ref{fig:acc_auc_curve_origin_pt_aug_1_3_5_res_25_75}, \ref{fig:acc_auc_curve_origin_jet_aug_1_3_5_res_25_75} and \ref{fig:acc_auc_curve_origin_pt_jet_aug_1_3_res_25_75} are ACC and AUC curves with various augmented approaches. The ACC and AUC values are evaluated from the testing datasets with true labels. We verify that the ACC and AUC values of no-signal models are close to 0.5. No significant difference exists between the original and the augmented cases on the no-signal model. Therefore, the improvement of the augmented dataset does not result from the sculpting effect.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[ACC]{
@@ -2213,7 +2213,7 @@
 	% subsection sculpting_effect (end)
 	\subsection{Jet rotation range}% (fold)
 	\label{sub:jet_rotation_range}
-		To investigate how the jet rotation improves the training, we modify the range of rotation angle. For previous training, the range is $\pm 180^\circ$. The small and large ranges are tested. Similarly, the rotation angle is uniformly sampled from the rotation range.
+		To investigate how the jet rotation improves the training, we modify the rotation angle range. For previous training, the range is $\pm 180^\circ$. The small and large ranges are tested. Similarly, the rotation angle is uniformly sampled from the rotation range.
 
 		Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180} shows the sensitivity improvement of jet rotation datasets with different rotation ranges. For ranges $\pm 1^\circ$ and $\pm 5^\circ$, the sensitivity improvement is close to the original case, since there is no difference in jet images if the rotation angle is very small. For ranges $\pm 45^\circ$ and  $\pm 90^\circ$, their training performance is similar and significantly better than the original case. The dataset with the largest rotation range $\pm 180^\circ$ can achieve the lowest training threshold even at the high sensitivity range the performance is not so good.
 		\begin{figure}[htpb]
@@ -2231,7 +2231,7 @@
 		\label{subs:fixed_rotation_angles}
 			Instead of using the angle randomly sampled from the rotation range, we specify the rotation angles by hand.
 
-			We test $\pm 5^\circ$ rotation. More specifically, the training dataset contains original events, events rotated by $5^\circ$, and events rotated by $-5^\circ$. Therefore, the training sample size is 3 times to original datasets. Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5} shows the sensitivity improvement of jet rotation datasets with fixed angles. The sensitivity improvement is close to the original case since there is no difference in jet images if the rotation angle is very small. For lower background efficiency, there seems to be a little improvement at the high sensitivity range.
+			We test $\pm 5^\circ$ rotation. More specifically, the training dataset contains original events, events rotated by $5^\circ$, and events rotated by $-5^\circ$. Therefore, the training sample size is 3 times to original datasets. Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5} shows the sensitivity improvement of jet rotation datasets with fixed angles. The sensitivity improvement is close to the original case since there is no difference in jet images if the rotation angle is very small. Or lower background efficiency, there is a little improvement at the high sensitivity range.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $25\times 25$. Rotation angles: $-5^\circ, 5^\circ$]{
@@ -2300,7 +2300,18 @@
 			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
 			\label{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5}
 		\end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_summary_aug_3_to_33_SB_3} shows the sensitivity improvement with different augmentation approaches. Even though we enlarge the augmented sample size, there is still no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are much better than the ``jet rotation'' augmentation at the large size range. For all augmentation approaches, the sensitivity improvement is saturated after +10 times augmentation.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Resolution: $25\times 25$]{
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_3_to_33_SB_3_res_25.pdf}
+			}
+			\caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training.}
+			\label{fig:sensitivity_improvement_summary_aug_3_to_33_SB_3}
+		\end{figure}
 	% subsection eta_phi_pt_smearing_jet_rotation (end)
+	
 % section hidden_valley_model (end)
 
 \bibliographystyle{plain}
