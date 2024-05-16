@@ -2351,10 +2351,52 @@
 			\label{fig:event_score_train_SR_SB_res_25}
 		\end{figure}
 	% subsection check_about_sculpting (end)
+	\subsection{Threshold value}% (fold)
+	\label{sub:threshold_value}
+		In previous exercises, we determine threshold values using another testing dataset. This dataset consists of 10k signal and 10k background events in the signal region. In a real application, the CWoLa classifier would be applied back to the training datasets. We would then use the threshold values or sensitivity improvements obtained from the testing sets to compute how many signal and background events remain after applying the cut. We expect the sensitivity improvement from the testing set to be similar to that of the training set. 
+
+		As a sanity check, we should examine whether the distributions of the training and testing datasets are similar. If they have similar distributions, then the threshold values and sensitivity improvements will also be similar.
+
+		Figure~\ref{fig:event_score_train_test_SR_res_25} shows the event score distributions of the training and testing datasets. We consider original, +3 jet rotation, and +3 $p_{\text{T}}$ smearing + jet rotation datasets. All distributions are normalized so that the area of each histogram is 1. The ratio represents the training value divided by the testing value.
+
+		The training and testing distributions look similar. Due to the small sample size, the signal distributions in the training datasets present larger fluctuations. Across all cases, no significant difference exists between training and testing datasets. Thus, we can use another testing set to estimate the sensitivity improvement in the signal region.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_0_res_25.pdf}
+			}
+			\subfloat[Original, $S / \sqrt{B} = 3$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_3_res_25.pdf}
+			}
+			\subfloat[Original, $S / \sqrt{B} = 7$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_7_res_25.pdf}
+			} \\
+			\subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 jet rotation, $S / \sqrt{B} = 3$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
+			}
+			\subfloat[+3 jet rotation, $S / \sqrt{B} = 7$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
+			} \\
+			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 3$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
+			}
+			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 7$]{
+				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
+			} 
+			\caption{The event score distribution of training and testing datasets. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
+			\label{fig:event_score_train_test_SR_res_25}
+		\end{figure}
+	% subsection threshold_value (end)
 	
 % section hidden_valley_model (end)
 
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
 \bibliography{reference}
 		
 \end{document} 
