@@ -836,13 +836,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_original.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_jet_image_average_original.pdf}
 			}
 			\subfloat[+1 times augmentation]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_jet_image_average_aug_1.pdf}
 			}
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_jet_image_average_x2.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_jet_image_average_x2.pdf}
 			}
 			\caption{The average jet images of different cases. These plots are made from mixed samples.}
 			\label{fig:jet_constituent_average_jet_image_aug_1_x2}
@@ -865,13 +865,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_original.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_sensitivity_improvement_original.pdf}
 			}
 			\subfloat[+1 times augmentation]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_aug_1.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_sensitivity_improvement_aug_1.pdf}
 			}
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.32\textwidth]{HVmodel_sensitivity_improvement_x2.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_sensitivity_improvement_x2.pdf}
 			}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
 			\label{fig:sensitivity_improvement_origin_aug_1_x2}
@@ -1138,30 +1138,30 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_new_testing_sample.pdf}
 			} 
 			\subfloat[+1 time augmatation]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
 			} 
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
 			} \\
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_testing_sample.pdf}
 			} 
 			\subfloat[1 time augmatation]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_only_aug_1_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_only_aug_1_new_testing_sample.pdf}
 			} 
 			\subfloat[half + 1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_half_copy_1_new_testing_sample.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_half_copy_1_new_testing_sample.pdf}
 			} 
 			\caption{The accuracy curves of two different testing sets. We present the accuracy of the best training model. In all cases, they have similar performance.}
 			\label{fig:acc_curve_two_testing_sample}
 		\end{figure}
 	% subsection another_testing_dataset (end)		
-	\subsection{Original + $x$ Copy}% (fold)
+    \subsection{Original + \texorpdfstring{$x$}{x} Copy}% (fold)
 	\label{sub:original_x_copy}
-		The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=0.25, 0.50, 0.75$. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. The training results are quite different for $x = 0.50, 0.75$ when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
+		The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=$ 0.25, 0.50, 0.75. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. The training results are quite different for $x = 0.50, 0.75$ when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[]{
@@ -1190,13 +1190,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_no_swap.pdf}
 			} 
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_x2_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_x2_no_swap.pdf}
 			} 
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_no_swap.pdf}
 			} 
 			\caption{The accuracy curves with and without the rectification procedure. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:acc_curve_w_wo_swap_label}
@@ -1204,13 +1204,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_no_swap.pdf}
 			} 
 			\subfloat[Luminosity $\times 2$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_x2_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_x2_no_swap.pdf}
 			} 
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_no_swap.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_no_swap.pdf}
 			} 
 			\caption{Scatter plots for training ACC and true ACC with and without the rectification procedure. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 			\label{fig:acc_scatter_w_wo_swap_label}
@@ -1251,13 +1251,13 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_ZN_model.pdf}
 				} 
 				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_ZN_model.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_ZN_model.pdf}
 				} 
 				\caption{The accuracy curves with different model structures. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 				\label{fig:acc_curve_ZN_model}
@@ -1265,19 +1265,19 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
 				} 
 				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_ZN_model.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_ZN_model.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_ZN_model.pdf}
 				} 
 				\caption{Scatter plots for training ACC and true ACC with different model structures. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 				\label{fig:acc_scatter_ZN_model}
 			\end{figure}
 
-			Figure~\ref{fig:sensitivity_improvement_bkg_eff_ZN_model} is the sensitivity improvement. The training results of ``2 image'' are better than ``2 channel''. The ``+1 copy'' dataset still has lower thresholds, and the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. The ``2 image'' model can obtain larger improvement for lower background efficiency, but the threshold is still lower for the ``+1 copy'' dataset.
+			Figure~\ref{fig:sensitivity_improvement_bkg_eff_ZN_model} is the sensitivity improvement. The training results of ``2 images'' are better than ``2 channels''. The ``+1 copy'' dataset still has lower thresholds, and the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. The ``2 image'' model can obtain larger improvement for lower background efficiency, but the threshold is still lower for the ``+1 copy'' dataset.
 			\begin{figure}[htpb]
 				\centering
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_ZN_model.pdf}
@@ -1293,13 +1293,13 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_patience_30.pdf}
 				} 
 				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_patience_30.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_patience_30.pdf}
 				} 
 				\caption{The accuracy curves with different early stopping patience. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
 				\label{fig:acc_curve_patience_30}
@@ -1307,13 +1307,13 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
 				} 
 				\subfloat[+1 time copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_patience_30.pdf}
 				} 
 				\subfloat[Original v.s. Copy]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_patience_30.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_patience_30.pdf}
 				} 
 				\caption{Scatter plots for training ACC and true ACC with different early stopping patience. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 				\label{fig:acc_scatter_patience_30}
@@ -1356,7 +1356,8 @@
 			Error messages:
 			\begin{verbatim}
 				...
-				The tensor cannot be accessed here: it is defined in another function or code block. 
+				The tensor cannot be accessed here:
+                it is defined in another function or code block. 
 				...
 			\end{verbatim}
 		% subsubsection tensorflow_version (end)		
@@ -1385,13 +1386,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
 			} 
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
 			} 
 			\subfloat[Original v.s. Copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
 			} 
 			\caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:acc_curve_resolution_25}
@@ -1399,13 +1400,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
 			} 
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
 			} 
 			\subfloat[Original v.s. Copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
 			} 
 			\caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$. The slope of the grey dashed line is 1, representing the same training and true ACC.}
 			\label{fig:acc_scatter_resolution_25}
@@ -1481,13 +1482,13 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_3_res_75_25.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_3_res_75_25.pdf}
 				} 
 				\subfloat[]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_5_res_75_25.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_5_res_75_25.pdf}
 				} 
 				\subfloat[]{
-					\includegraphics[width=0.33\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_7_res_75_25.pdf}
+					\includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_7_res_75_25.pdf}
 				} 
 				\caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
 				\label{fig:roc_curve_SB_3_5_7}
@@ -1497,10 +1498,10 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[]{
-					\includegraphics[width=0.49\textwidth]{HVmodel_roc_curve_origin_copy_1_res_25.pdf}
+					\includegraphics[width=0.48\textwidth]{HVmodel_roc_curve_origin_copy_1_res_25.pdf}
 				} 
 				\subfloat[]{
-					\includegraphics[width=0.49\textwidth]{HVmodel_roc_curve_origin_copy_1_res_75.pdf}
+					\includegraphics[width=0.48\textwidth]{HVmodel_roc_curve_origin_copy_1_res_75.pdf}
 				} 
 				\caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
 				\label{fig:roc_curve_res_25_75}
@@ -1512,10 +1513,10 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Original]{
-					\includegraphics[width=0.49\textwidth]{HVmodel_signal_score_origin_SB_3_res_75.pdf}
+					\includegraphics[width=0.48\textwidth]{HVmodel_signal_score_origin_SB_3_res_75.pdf}
 				} 
 				\subfloat[+1 time copy]{
-					\includegraphics[width=0.49\textwidth]{HVmodel_signal_score_copy_1_SB_3_res_75.pdf}
+					\includegraphics[width=0.48\textwidth]{HVmodel_signal_score_copy_1_SB_3_res_75.pdf}
 				} 
 				\caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in the signal region.}
 				\label{fig:signal_score_SB_3}
@@ -1529,31 +1530,31 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Epoch 1]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep1.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep1.pdf}
 				} 
 				\subfloat[Epoch 6]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep6.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep6.pdf}
 				} 
 				\subfloat[Epoch 11]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep11.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep11.pdf}
 				} \\ 
 				\subfloat[Epoch 16]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep16.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep16.pdf}
 				} 
 				\subfloat[Epoch 21]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep21.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep21.pdf}
 				} 
 				\subfloat[Epoch 26]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep26.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep26.pdf}
 				} \\ 
 				\subfloat[Epoch 31]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep31.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep31.pdf}
 				} 
 				\subfloat[Epoch 36]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep36.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep36.pdf}
 				} 
 				\subfloat[Epoch 41]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_ep41.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep41.pdf}
 				} \\ 
 				\caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the duplicated dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
 				\label{fig:roc_curve_training_process_copy_1}
@@ -1563,28 +1564,28 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Epoch 1]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep1.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep1.pdf}
 				}
 				\subfloat[Epoch 6]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep6.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep6.pdf}
 				}
 				\subfloat[Epoch 11]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep11.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep11.pdf}
 				} \\
 				\subfloat[Epoch 16]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep16.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep16.pdf}
 				}
 				\subfloat[Epoch 21]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep21.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep21.pdf}
 				}
 				\subfloat[Epoch 26]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep26.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep26.pdf}
 				} \\
 				\subfloat[Epoch 31]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep31.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep31.pdf}
 				}
 				\subfloat[Epoch 36]{
-					\includegraphics[width=0.33\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep36.pdf}
+					\includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_origin_ep36.pdf}
 				}
 				\caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the original dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
 				\label{fig:roc_curve_training_process_origin}
@@ -1597,10 +1598,10 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Leading jet]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_leading_jet_pt_distribution_at_npy.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_leading_jet_pt_distribution_at_npy.pdf}
 			} 
 			\subfloat[Sub-leading jet]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_sub-leading_jet_pt_distribution_at_npy.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_sub-leading_jet_pt_distribution_at_npy.pdf}
 			} 
 			\caption{The $p_{\text{T}}$ distributions for original and duplicated datasets. The $p_{\text{T}}$ is the sum of the transverse momentum in each pixel. The differences of each bin in the corresponding region are all equal to zero. Therefore, they have the same distribution.}
 			\label{fig:pt_distribution_at_npy}
@@ -1608,16 +1609,16 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original, SR]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_origin_signal_region.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_jet_image_average_origin_signal_region.pdf}
 			}
 			\subfloat[Original, SB]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_origin_sideband_region.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_jet_image_average_origin_sideband_region.pdf}
 			} \\
 			\subfloat[Duplicated, SR]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_copy_1_signal_region.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_jet_image_average_copy_1_signal_region.pdf}
 			}
 			\subfloat[Duplicated, SB]{
-				\includegraphics[width=0.49\textwidth]{HVmodel_jet_image_average_copy_1_sideband_region.pdf}
+				\includegraphics[width=0.48\textwidth]{HVmodel_jet_image_average_copy_1_sideband_region.pdf}
 			}
 			\caption{The average jet images in signal and sideband region. The jet images are similar for original and duplicated datasets. The difference between two jet images in the corresponding region is a zero matrix. Therefore, they have the same distribution.}
 			\label{fig:average_jet_image_smearing_scale}
@@ -1688,13 +1689,13 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_new_SB.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_new_SB.pdf}
 			}
 			\subfloat[+1 time copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_SB.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_SB.pdf}
 			}
 			\subfloat[Original v.s. Copy]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_new_SB.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_new_SB.pdf}
 			}
 			\caption{The accuracy curves with resolution $25\times 25$ and the new sideband region. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
 			\label{fig:acc_curve_new_SB_region}
@@ -1800,7 +1801,7 @@
 	\label{sub:enlarge_the_data_size_with_more_simulated_samples}
 		To identify the upper limit of augmented datasets, we enlarge the size of training data with more simulated samples. More specificaly, the luminosity is scaled to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$.
 
-		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests that there is still room for improvement in training performance with augmented samples. Note that if we want to compare the model trained on a similar signal sample size, we should compare the ``+1 augmentation'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity, similar to Section~\ref{sub:enlarge_the_training_sample_size}. 
+		Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2_split_val} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests that there is still room for improvement in training performance with augmented samples. Note that if we want to compare the model trained on a similar signal sample size, we should compare the ``+1 augmentation'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity, similar to Section~\ref{sub:enlarge_the_training_sample_size}. 
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Resolution: $75\times 75$]{
@@ -1810,7 +1811,7 @@
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_25.pdf} 
 			}
 			\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
-			\label{fig:sensitivity_improvement_origin_aug_1_x2}
+			\label{fig:sensitivity_improvement_origin_aug_1_x2_split_val}
 		\end{figure}
 	% subsection enlarge_the_data_size_with_more_simulated_samples (end)
 	\subsection{Smearing scale in \texorpdfstring{$\eta-\phi$}{eta-phi} smearing}% (fold)
@@ -1997,7 +1998,7 @@
 		% subsubsection pt_smearing (end)
 		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing + Jet rotation}% (fold)
 		\label{subs:pt_smearing_jet_rotation}
-			Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3} shows the sensitivity improvement with ``$p_{\text{T}}$ smearing + jet rotation'' datasets. For resolution $25\times 25$ with $\varepsilon_{\text{b}} = 10 \%$, the sensitivity improvement is saturated around +5 times the augmented size. For lower background efficiency, the performance can still be improved after +5 times augmentation and is saturated around +20 times augmentation. For resolution $75\times 75$, the training performance increases when we use larger datasets. Even if we use +33 times augmented datasets, for lower background efficiency, there seems to be room for improvement.
+			Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3} shows the sensitivity improvement of ``$p_{\text{T}}$ smearing + jet rotation'' datasets. For resolution $25\times 25$ with $\varepsilon_{\text{b}} = 10 \%$, the sensitivity improvement is saturated around +5 times the augmented size. For lower background efficiency, the performance can still be improved after +5 times augmentation and is saturated around +20 times augmentation. For resolution $75\times 75$, the training performance increases when we use larger datasets. Even if we use +33 times augmented datasets, for lower background efficiency, there seems to be room for improvement.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[Resolution: $25\times 25$]{
@@ -2321,31 +2322,31 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_0_res_25.pdf}
 			}
 			\subfloat[Original, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_3_res_25.pdf}
 			}
 			\subfloat[Original, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_SR_SB_SB_7_res_25.pdf}
 			} \\
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_0_res_25.pdf}
 			}
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_3_res_25.pdf}
 			}
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_SR_SB_SB_7_res_25.pdf}
 			} \\
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_0_res_25.pdf}
 			}
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_3_res_25.pdf}
 			}
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_7_res_25.pdf}
 			} 
 			\caption{The event score distribution of training samples. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
 			\label{fig:event_score_train_SR_SB_res_25}
@@ -2363,37 +2364,97 @@
 		\begin{figure}[htpb]
 			\centering
 			\subfloat[Original, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_0_res_25.pdf}
 			}
 			\subfloat[Original, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_3_res_25.pdf}
 			}
 			\subfloat[Original, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_test_SR_SB_7_res_25.pdf}
 			} \\
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
 			}
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
 			}
 			\subfloat[+3 jet rotation, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
 			} \\
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_0_res_25.pdf}
 			}
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 3$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_3_res_25.pdf}
 			}
 			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 7$]{
-				\includegraphics[width=0.33\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
 			} 
 			\caption{The event score distribution of training and testing datasets. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
 			\label{fig:event_score_train_test_SR_res_25}
 		\end{figure}
 	% subsection threshold_value (end)
-	
+    \subsection{Sculpting effect}% (fold)
+    \label{sub:sculpting_effect_2}
+		Figure~\ref{fig:event_score_train_SR_SB_res_25} shows that the event score distribution of the SR samples is slightly shifted to the right, which may cause a fake bump in the no-signal case. To determine if the shifting effect is due to overfitting on training datasets, we plot the event score distribution of the testing dataset. 
+
+		Figure~\ref{fig:event_score_train_test_SR_SB_res_25} is the event score distribution for the testing dataset, which was not used in training. The ratio represents the SR value divided by the SB value, normalized by the ratio of total events in the SR and SB regions. The grey dashed line, equal to 1, indicates the same shape in both the SR and SB regions. The band is the standard deviation of the ratio, evaluated from the equation:
+		\begin{equation}
+			\sigma = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{\left( \frac{\sigma_{N_{\text{SR}}}}{N_{\text{SR}}} \right)^2 + \left( \frac{\sigma_{N_{\text{SB}}}}{N_{\text{SB}}} \right)^2} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{ \frac{1}{N_{\text{SR}}} + \frac{1}{N_{\text{SB}}} }  
+		\end{equation}
+		where $N_{\text{SR}}$ is the number of events in the signal region and $\sigma_{N_{\text{SR}}} = \sqrt{N_{\text{SR}}}$ is the standard deviation of $N_{\text{SR}}$. Similarly, $N_{\text{SB}}$ and $\sigma_{N_{\text{SB}}}$ are the corresponding values for the sideband region.
+
+		The SR distribution in testing datasets still slightly shifts to the right, which indicates differences between the SR and SB regions.
+		\begin{figure}[htpb]
+			\centering
+			\subfloat[Original, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_train_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_train_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SB_0_res_25.pdf}
+			} \\
+			\subfloat[Original, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_origin_test_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_jet_aug_3_test_SB_0_res_25.pdf}
+			}
+			\subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
+				\includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_test_SB_0_res_25.pdf}
+			} \\
+			\caption{The event score distribution of training samples. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
+			\label{fig:event_score_train_test_SR_SB_res_25}
+		\end{figure}
+
+        We evaluate the background passing efficiency in the SR and SB regions to describe the sculpting effect. If the sculpting effect does not exist, we expect the background efficiencies in the SR and SB regions to be the same. However, the sculpting effect makes the background efficiency in the SR to be higher than in the SB, creating a fake bump. To estimate the sensitivity of this fake bump, we use the following formula
+		\begin{equation}
+			\sigma = \frac{B\times \left( \epsilon_{\text{SR}} - \epsilon_{\text{SB}} \right)}{\sqrt{B \epsilon_{\text{SB}}}}
+		\end{equation}
+        where $\epsilon_{\text{SR}}, \epsilon_{\text{SB}}$ are the background efficiencies in SR and SB regions, respectively, and $B$ is the number of background events in the signal region.
+
+        Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity} shows the background efficiency in the SR and SB regions. The background sample size $B = 18,922$. The fake sensitivity of training samples is greater than that of testing samples in all cases. This suggests that the sculpting effect partially arises from the overfitting of training samples. Data augmentation appears to make the situation worse, the fake sensitivity is higher than the original case.
+        \begin{table}[htpb]
+			\centering
+			\caption{The background efficiencies and fake bump sensitivities.}
+			\label{tab:background_efficiency_in_SR_SB_and_fake_sensitivity}
+			\begin{tabular}{c|ccc|ccc}
+												   & \multicolumn{3}{c|}{Training sample}                       & \multicolumn{3}{c}{Testing sample}                         \\
+			Model                                  & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$ & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$ \\ \hline
+			\multirow{3}{*}{Original}              & 10.0 \%                & 12.4 \%                & 10.4     & 10.0 \%                & 10.7 \%                & 3.1      \\
+												   & 1.00 \%                & 2.02 \%                & 14.1     & 1.00 \%                & 1.72 \%                & 9.9      \\
+												   & 0.10 \%                & 0.22 \%                & 5.4      & 0.10 \%                & 0.06 \%                & $-1.7$   \\ \hline
+			\multirow{3}{*}{+3 Jet rotation}       & 10.0 \%                & 14.2 \%                & 18.3     & 10.0 \%                & 11.2 \%                & 5.4      \\
+												   & 1.00 \%                & 2.68 \%                & 23.1     & 1.00 \%                & 2.16 \%                & 16.0     \\
+												   & 0.10 \%                & 0.11 \%                & 0.5      & 0.10 \%                & 0.03 \%                & $-3.0$   \\ \hline
+			\multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0 \%                & 12.4 \%                & 13.9     & 10.0 \%                & 12.4 \%                & 6.5      \\
+												   & 1.00 \%                & 2.02 \%                & 15.4     & 1.00 \%                & 2.02 \%                & 8.7      \\
+												   & 0.10 \%                & 0.23 \%                & 4.4      & 0.10 \%                & 0.23 \%                & 0.4     
+			\end{tabular}
+		\end{table}
+    % subsection sculpting_effect_2 (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
