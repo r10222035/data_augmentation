@@ -40,7 +40,7 @@ def get_info(path):
     return cross_section, nevent
 
 
-def compute_nevent_in_SR_SB(sensitivity=1.0):
+def compute_nevent_in_SR_SB(sensitivity=1.0, L=139):
     results_s = np.load('../Sample/HVmodel/data/selection_results_SB_4400_5800_s.npy', allow_pickle=True).item()
     results_b = np.load('../Sample/HVmodel/data/selection_results_SB_4400_5800_b.npy', allow_pickle=True).item()
 
@@ -53,7 +53,6 @@ def compute_nevent_in_SR_SB(sensitivity=1.0):
     print(f'Background cross section, SR: {cross_section_SR:.2f} fb, SB: {cross_section_SB:.2f} fb')
 
     # number of background events in signal region and sideband region
-    L = 139 * 1
     n_SR_B = cross_section_SR * L
     n_SB_B = cross_section_SB * L
 
@@ -249,6 +248,7 @@ def main():
     val_npy_paths = config['val_npy_paths']
     seed = config['seed']
     sensitivity = config['sensitivity']
+    luminosity = config['luminosity']
 
     true_label_path = config['true_label_path']
     model_name = config['model_name']
@@ -270,7 +270,7 @@ def main():
 
     # Sampling dataset
     r_train, r_val = 0.8, 0.2
-    n_SR_S, n_SR_B, n_SB_S, n_SB_B = compute_nevent_in_SR_SB(sensitivity=sensitivity)
+    n_SR_S, n_SR_B, n_SB_S, n_SB_B = compute_nevent_in_SR_SB(sensitivity=sensitivity, L=luminosity)
 
     train_nevents = int(n_SR_S * r_train), int(n_SB_S * r_train), int(n_SR_B * r_train), int(n_SB_B * r_train)
     X_train, y_train = create_mix_sample_from(train_npy_paths, train_nevents, seed=seed)
