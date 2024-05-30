@@ -91,7 +91,6 @@ def select_event(root_path, sample_type, start, end):
     # 1. 2 jets
     # 2. pT > 750 GeV
     # 3. |eta| < 2.0
-    # 4. 4300 < Mjj < 5900 GeV
 
     f = ROOT.TFile(root_path)
     tree = f.Get("Delphes")
@@ -111,9 +110,6 @@ def select_event(root_path, sample_type, start, end):
 
         jets = [[tree.Jet[i].PT, tree.Jet[i].Eta, tree.Jet[i].Phi, tree.Jet[i].Mass] for i in range(2)]
         mjj = Mjets(*jets)
-
-        if mjj < 4300 or mjj > 5900:
-            continue
 
         # get jet constituents
         constituents = [consti for consti in tree.Jet[0].Constituents if consti != 0]
