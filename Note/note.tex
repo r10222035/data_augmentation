@@ -54,7 +54,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=violet,
-    filecolor=blue,      
+    filecolor=blue,
     urlcolor=blue,
     citecolor=cyan,
 }
@@ -72,7 +72,7 @@
 \setlength{\parindent}{2em}
 \linespread{1.25}
 
-% 
+%
 % \setmainfont{Times New Roman}
 
 \title{Note}
@@ -109,8 +109,8 @@
                 Higgs candidate             & $(p_\text{T}, \eta, \phi, m)$ & 8  \\
                 Subjets                     & $\Delta R(j_1,j_2)$                    & 2  \\
                 b-tagging                   & Boolean for $j_i \in h_{1,2}^{\text{cand}}$       & 4  \\
-                Di-Higgs system             & $p_\text{T}^{hh}, m_{hh}$        & 2 
-            \end{tabular}       
+                Di-Higgs system             & $p_\text{T}^{hh}, m_{hh}$        & 2
+            \end{tabular}
         \end{table}
 
     % subsection sample (end)
@@ -133,14 +133,14 @@
 
         This is because SPANet is trained on both pairing and classification tasks simultaneously. The pairing part introduces asymmetries between signal and background samples, leading to the AUC that deviates from $0.5$.
 
-        To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. As expected, the AUC is close to $0.5$ when $f_1 = 0.5$. 
+        To investigate the effect of the pairing task on SPANet's performance, the weight of the pairing component is set to zero, meaning that SPANet focuses solely on the classification task. Figure~\ref{fig:CWoLa_SPANet_without_pairing} shows the SPANet training results without pairing task. As expected, the AUC is close to $0.5$ when $f_1 = 0.5$.
         \begin{figure}[htpb]
             \centering
             \includegraphics[width=0.65\textwidth]{CWoLa_SPANet_no_pair.pdf}
             \caption{The AUC of CWoLa SPANet training as a function of the signal fraction $f_1$. For simplicity, we set signal fraction $f_2$ equal to $1 - f_1$. Here, SPANet is trained on the classification task only.}
             \label{fig:CWoLa_SPANet_without_pairing}
-        \end{figure}    
-    % subsection result (end)   
+        \end{figure}
+    % subsection result (end)
 % section cwola (end)
 
 \section{CWoLa hunting}% (fold)
@@ -149,7 +149,7 @@
     \subsection{Sample}% (fold)
     \label{sub:sample_cwola_hunting}
         The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
-        
+
         The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ determines the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. Table~\ref{tab:signal_sideband_range} summarizes the signal and sideband regions. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
         \begin{figure}[htpb]
             \centering
@@ -180,16 +180,16 @@
             \label{tab:diHiggs_cutflow_table}
             \begin{tabular}{c|l|cc|c|c}
                                       &                 & \multicolumn{2}{c|}{Cross section (fb)} &          & $\mathcal{L} = 139 \text{ fb}^{-1}$ \\
-                $m_H$ (GeV)           &                 & Signal           & Background           & $S / B$  & $S/\sqrt{B}$                        \\ \hline 
-                \multirow{3}{*}{500}  & Four tag        & 3.64             & 6.03e+03             & 6.03e-04 & 0.553                               \\ \cline{2-6} 
+                $m_H$ (GeV)           &                 & Signal           & Background           & $S / B$  & $S/\sqrt{B}$                        \\ \hline
+                \multirow{3}{*}{500}  & Four tag        & 3.64             & 6.03e+03             & 6.03e-04 & 0.553                               \\ \cline{2-6}
                                       & Signal region   & 3.13             & 2.57e+03             & 1.22e-03 & 0.727                               \\
                                       & Sideband region & 0.35             & 2.36e+03             & 1.50e-04 & 0.086                               \\ \hline \hline
-                \multirow{3}{*}{1000} & Four tag        & 0.081            & 6.03e+03             & 1.34e-05 & 0.0123                              \\ \cline{2-6} 
+                \multirow{3}{*}{1000} & Four tag        & 0.081            & 6.03e+03             & 1.34e-05 & 0.0123                              \\ \cline{2-6}
                                       & Signal region   & 0.063            & 3.32e+02             & 1.90e-04 & 0.0408                              \\
-                                      & Sideband region & 0.010            & 3.19e+02             & 3.03e-05 & 0.0064                             
+                                      & Sideband region & 0.010            & 3.19e+02             & 3.03e-05 & 0.0064
             \end{tabular}
         \end{table}
-        
+
         \begin{table}[htpb]
             \centering
             \caption{The training sample size for the mixed sample. The luminosity is $\mathcal{L} = 78 \text{ fb}^{-1}$ because the generated samples are not enough for now.}
@@ -200,7 +200,7 @@
                 \multirow{2}{*}{500}  & $M_1$        & 244          & 200k            \\
                                       & $M_2$        & 28           & 184k            \\ \hline
                 \multirow{2}{*}{1000} & $M_1$        & 5            & 26k             \\
-                                      & $M_2$        & 1            & 25k            
+                                      & $M_2$        & 1            & 25k
             \end{tabular}
         \end{table}
 
@@ -242,12 +242,12 @@
         There are two issues:
         \begin{itemize}
             \item The input features might correlated to the observables used to determine the signal and sideband region. We need to construct other independent input variables.
-            \item The signal fraction is too low. It is hard to learn something about signal events. 
+            \item The signal fraction is too low. It is hard to learn something about signal events.
         \end{itemize}
     % subsection training_results (end)
     \subsection{Correlation matrix}% (fold)
     \label{sub:correlation_matrix}
-        The results in Section~\ref{sub:training_results} imply that the di-Higgs system's total invariant mass is not independent of other input features. To find the variables that are highly dependent on the total invariant mass, the correlation coefficients are computed among these variables. Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} are correlation coefficients on the $\text{500 GeV}$ and $\text{1000 GeV}$ cases, respectively. 
+        The results in Section~\ref{sub:training_results} imply that the di-Higgs system's total invariant mass is not independent of other input features. To find the variables that are highly dependent on the total invariant mass, the correlation coefficients are computed among these variables. Figure~\ref{fig:correlation_coefficient_500GeV} and \ref{fig:correlation_coefficient_1000GeV} are correlation coefficients on the $\text{500 GeV}$ and $\text{1000 GeV}$ cases, respectively.
 
         \begin{figure}[htpb]
             \centering
@@ -255,7 +255,7 @@
             \caption{The correlation coefficients among different variables are computed from $\text{500 GeV}$ testing sample, consisting of 5k signal and 5k background.}
             \label{fig:correlation_coefficient_500GeV}
         \end{figure}
-        
+
         \begin{figure}[htpb]
             \centering
             \includegraphics[width=0.9\textwidth]{correlation_coefficients-1000GeV.pdf}
@@ -263,7 +263,7 @@
             \label{fig:correlation_coefficient_1000GeV}
         \end{figure}
 
-        The results show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly correlated to the total invariant mass. Figure~\ref{fig:pt1_mhh_scatter_plot} shows the scatter plots of the transverse momentum of the leading Higgs candidate and the total invariant mass $m_{\text{hh}}$. These plots also explain why the DNN only trained on background samples can distinguish the signal and background events, because the background distribution in the signal and sideband regions are different.  
+        The results show that the transverse momentum $p_\text{T}$ and the invariant mass $m$ of Higgs candidates are highly correlated to the total invariant mass. Figure~\ref{fig:pt1_mhh_scatter_plot} shows the scatter plots of the transverse momentum of the leading Higgs candidate and the total invariant mass $m_{\text{hh}}$. These plots also explain why the DNN only trained on background samples can distinguish the signal and background events, because the background distribution in the signal and sideband regions are different.
         \begin{figure}[htpb]
             \centering
             \subfloat[$m_H = \text{500 GeV}$]{
@@ -294,7 +294,7 @@
         \end{table}
 
          Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m} summarizes the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. The training datasets with and without signal events still have similar results. Compared to the previous one (Table~\ref{tab:cwola_hunting_DNN_results}) the accuracy values are closer to 0.5. These results suggest that the removed features significantly contribute to the model's discrimination power, and the remaining parameters are hard to utilize to distinguish the signal and background events.
-    % subsection remove_highly_correlated_features (end)    
+    % subsection remove_highly_correlated_features (end)
     \subsection{Transverse momentum cut testing}% (fold)
     \label{sub:pt_cut_testing}
         In Figure~\ref{fig:mhh_distribution}, the distribution of the background sample exhibits a gradual termination around $\text{150 GeV}$. To investigate whether this termination is a result of the ``four-tag cut'', which requires $p_{\text{T}} > \text{40 GeV}$, total invariant mass distributions with different $p_{\text{T}}$ cuts are plotted in Figure~\ref{fig:mhh_distribution_bkg_pt}. As the transverse momentum requirement increases from $\text{40 GeV}$ to $\text{70 GeV}$, the termination point also shifts to larger values. Moreover, the termination remains gradual rather than an abrupt cut-off, suggesting that the gradual termination indeed results from the transverse momentum cut.
@@ -319,7 +319,7 @@
                 \multirow{2}{*}{500}  & $M_1$        & 244     & 0       & 2438     & 24380     & 200k       \\
                                       & $M_2$        & 28      & 0       & 276      & 2760      & 184k       \\ \hline
                 \multirow{2}{*}{1000} & $M_1$        & 5       & 0       & 49       & 492       & 26k        \\
-                                      & $M_2$        & 1       & 0       & 8        & 75        & 25k       
+                                      & $M_2$        & 1       & 0       & 8        & 75        & 25k
             \end{tabular}
         \end{table}
 
@@ -340,7 +340,7 @@
             \end{tabular}
         \end{table}
 
-        Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size} provides the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. For the $\text{500 GeV}$ case, the ``0 times,'', ``1 times,'' and ``10 times'' samples yield similar results, while ``100 times'' sample exhibits better performance. This suggests that the CWoLa DNN can extract meaningful information from the ``100 times'' sample. In the case of $\text{1000 GeV}$, we can obtain better results when the signal sample size increases. The performance of 10 times and 100 times is similar. It seems that the training performance is saturated. 
+        Table~\ref{tab:cwola_hunting_DNN_results_wo_pt_m_enlarge_signal_size} provides the results of the CWoLa DNN training without $p_{\text{T}}$ and $m$ features. For the $\text{500 GeV}$ case, the ``0 times,'', ``1 times,'' and ``10 times'' samples yield similar results, while ``100 times'' sample exhibits better performance. This suggests that the CWoLa DNN can extract meaningful information from the ``100 times'' sample. In the case of $\text{1000 GeV}$, we can obtain better results when the signal sample size increases. The performance of 10 times and 100 times is similar. It seems that the training performance is saturated.
 
         Additional samples within this size range are generated to understand further the behavior between 10 times and 100 times samples for the $\text{500 GeV}$ case, and the DNN is trained on these samples.
 
@@ -386,15 +386,15 @@
             \caption{The performance of CWoLa DNN training as a function of the signal size. The unit of sample size is the size of the ``1 times'' case. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
             \label{fig:cwola_hunting_DNN_results_wo_pt_m_various_signal_size_deeper_model_1000GeV}
         \end{figure}
-    % subsection training_with_deeper_model (end)   
-% section cwola_hunting (end)       
+    % subsection training_with_deeper_model (end)
+% section cwola_hunting (end)
 \section{Physical data augmentation}% (fold)
 \label{sec:physical_data_augmentation}
     The physical augmentations are inspired by Reference~\cite{Dillon:2023zac}, which considers the rotation and smearing augmentations. These augmentations reflect both the symmetries in the physical event and the experimental resolution of the detector.
     \subsection{Original training data}% (fold)
     \label{sub:original_training_data}
         The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
-        
+
         The training samples consist of 50k signal events and 50k background events and the testing samples consist of 5k signal events and 5k background events.
 
         The Higgs candidates are reconstructed by the $\text{min-}\Delta R$ pairing method. The input features are similar to the previous case (Table~\ref{tab:DNN_variables}), but the $b$-tagging information is excluded.
@@ -456,7 +456,7 @@
     % subsection physical_augmentation (end)
     \subsection{Training results}% (fold)
     \label{sub:training_results_physical_augmentation}
-    
+
         Table~\ref{tab:original_sample_training_results} presents the DNN classification training results of the original sample. Table~\ref{tab:augmentation_sample_training_results} are the training results of the augmented samples. For each type of augmentation, they all can improve the ACC by about 4\%. The differences among the various augmentation are not significant. The 10-times augmentation has the best results, but the difference between the 5-times and 10-times augmentation is tiny. It seems that the performance of this classifier is saturated.
         \begin{table}[htpb]
             \centering
@@ -465,7 +465,7 @@
             \begin{tabular}{c|c}
                 & Original \\ \hline
             ACC & $0.845 \pm 0.015$    \\
-            AUC & $0.917 \pm 0.005$    
+            AUC & $0.917 \pm 0.005$
             \end{tabular}
         \end{table}
         \begin{table}[htpb]
@@ -481,9 +481,9 @@
                 \multirow{2}{*}{+ 10 times} & ACC & $0.889 \pm 0.001$ & $0.889 \pm 0.002$ & $0.892 \pm 0.002$    & $0.892 \pm 0.002$ \\
                                             & AUC & $0.956 \pm 0.001$ & $0.956 \pm 0.001$ & $0.958 \pm 0.001$    & $0.958 \pm 0.000$
             \end{tabular}
-        \end{table} 
-        
-        
+        \end{table}
+
+
     % subsection training_results_physical_augmentation (end)
 
     \subsection{Deeper model}% (fold)
@@ -501,8 +501,8 @@
             \end{tabular}
         \end{table}
 
-        Table~\ref{tab:augmentation_training_results_deeper_model} are the training results with a deeper DNN model. Models are only trained on the ``All augmentation'' sample because from Table~\ref{tab:augmentation_sample_training_results} we found that four augmentation methods yielded similar results. The results show that the augmented sample can improve ACC to 89\%, even from the ``+ 3 times'' case and this accuracy value is similar to the previous test. These findings suggest that the classifier may have reached a saturation point and point out the difficulty of further improving accuracy on this test sample. 
-    % subsection deeper_model (end) 
+        Table~\ref{tab:augmentation_training_results_deeper_model} are the training results with a deeper DNN model. Models are only trained on the ``All augmentation'' sample because from Table~\ref{tab:augmentation_sample_training_results} we found that four augmentation methods yielded similar results. The results show that the augmented sample can improve ACC to 89\%, even from the ``+ 3 times'' case and this accuracy value is similar to the previous test. These findings suggest that the classifier may have reached a saturation point and point out the difficulty of further improving accuracy on this test sample.
+    % subsection deeper_model (end)
 % section physical_data_augmentation (end)
 \section{Hidden Valley model}% (fold)
 \label{sec:hidden_valley_model}
@@ -521,11 +521,11 @@
                 $\Lambda_{\text{D}}$       & 10 GeV      & HiddenValley:Lambda = 10.0              \\
                 $m_{\pi_{\text{D}}}$       & 10 GeV      & 4900x1:m0 = 10.0; x=11,21,31,22,32,33   \\
                 $m_{\rho_{\text{D}}}$      & 26.944 GeV  & 4900x3:m0 = 26.944; x=11,21,31,22,32,33 \\
-                $m_{q,\text{constituent}}$ & 10.3306 GeV & 490010x:m0 = 10.3306; x=1,2,3          
+                $m_{q,\text{constituent}}$ & 10.3306 GeV & 490010x:m0 = 10.3306; x=1,2,3
             \end{tabular}
         \end{table}
 
-        The background sample is the SM QCD di-jet. This process is generated at $\sqrt{s} = \text{13 TeV}$. Following are the \verb|MadGraph| scripts for generating background samples:   
+        The background sample is the SM QCD di-jet. This process is generated at $\sqrt{s} = \text{13 TeV}$. Following are the \verb|MadGraph| scripts for generating background samples:
         \begin{verbatim}
             generate p p > j j
             output ppjj
@@ -547,7 +547,7 @@
             set run_card etaj 2.2
             set run_card mmjj 3000
 
-            done    
+            done
         \end{verbatim}
     % subsection sample_generation (end)
     \subsection{Problem for generating signal sample}% (fold)
@@ -564,7 +564,7 @@
         \end{verbatim}
 
         Solution: This problem arises from the \verb|Pythia| version. At first, \verb|Pythia 8.306| is used to generate signal samples. Some features are not included in this version. We should use \verb|Pythia 8.307| at least. More details between 8.306 and 8.307 can be found in this \href{https://pythia.org/history/}{page}.
-    % subsection problem_for_generating_signal_sample (end) 
+    % subsection problem_for_generating_signal_sample (end)
     \subsection{Sample selection}% (fold)
     \label{sub:sample_selection}
         The selection cuts after the \verb|Delphes| simulation:
@@ -572,7 +572,7 @@
             \item $n_j$ cut: The number of jets should be greater than or equal to 2.
             \item $p_{\text{T}}$ cut: The transverse momentum of two highest $p_{\text{T}}$ jets should greater $\text{750 GeV}$.
             \item $\eta$ cut: The $\eta$ range of two highest  $p_{\text{T}}$ jets are require $\abs{\eta} < 2$.
-            \item Signal region: Total invariant mass of two leading jets $m_{jj}$ belonging to $[4700,5500]$. 
+            \item Signal region: Total invariant mass of two leading jets $m_{jj}$ belonging to $[4700,5500]$.
             \item Sideband region: Total invariant mass of two leading jets $m_{jj}$ belonging to $[4300,4700] \cup [5500,5900]$.
         \end{itemize}
 
@@ -588,7 +588,7 @@
             $p_{\text{T}}$ cut & 90901   & 0.91      & 57832      & 0.58      \\
             $\eta$ cut         & 89800   & 0.90      & 55523      & 0.56      \\ \hline
             SR region          & 55844   & 0.56      & 1991       & 0.02      \\
-            SB region          & 16079   & 0.16      & 3090       & 0.03     
+            SB region          & 16079   & 0.16      & 3090       & 0.03
             \end{tabular}
         \end{table}
 
@@ -606,7 +606,7 @@
 
         \begin{figure}[htpb]
             \centering
-            
+
             \subfloat[My plot]{
                 \includegraphics[width=0.45\textwidth]{HVmodel_mjj_distribution.pdf}
             }
@@ -616,7 +616,7 @@
             \caption{The total invriant mass $m_{jj}$ distribution of signal and background samples. In my plot, the signal region is between the red dashed lines. The sideband region is between the green dashed lines and excludes the signal region.}
             \label{fig:HVmodel_mjj_distribution}
         \end{figure}
-    % subsection sample_selection (end) 
+    % subsection sample_selection (end)
     \subsection{Jet image}% (fold)
     \label{sub:jet_image}
         We can construct the jet image from the event passing the selection cuts described in Section~\ref{sub:sample_selection}. The jet image is constructed for each jet separately so that we would obtain two for each event. They are treated as two channels of a picture. The following steps construct the jet image:
@@ -627,7 +627,7 @@
             \item Pixelating in $\eta \in [-1,1],\ \phi \in [-1,1]$ box, with $75\times 75$ pixels.
         \end{enumerate}
 
-        Figure~\ref{fig:HVmodel_jet_image_one_event} is the jet images of a single event. Figure~\ref{fig:HVmodel_jet_image_average} is the average jet image. 
+        Figure~\ref{fig:HVmodel_jet_image_one_event} is the jet images of a single event. Figure~\ref{fig:HVmodel_jet_image_average} is the average jet image.
 
         \begin{figure}[htpb]
             \centering
@@ -667,10 +667,10 @@
                 Signal region   & 138          & 19k             \\
                 Sideband region & 40           & 29k
             \end{tabular}
-        \end{table} 
+        \end{table}
 
         The pure testing sample consists of 10k signal events and 10k background events selected from the signal region.
-    % subsection datasets (end) 
+    % subsection datasets (end)
     \subsection{Training CNN}% (fold)
     \label{sub:training_cnn}
         The CNN model structure is summarized in Figure~\ref{fig:cnn_model_structure}. The internal node uses the rectified leaner unit (ReLU) as the activation function. The loss function is Categorical cross-entropy, and we use the Adam optimizer to optimize the loss function.
@@ -680,7 +680,7 @@
             \caption{For first and second Conv2D layers, the kernel sizes are $5 \times 5$. For third and fourth Conv2D layers, the kernel sizes are $3 \times 3$.}
             \label{fig:cnn_model_structure}
         \end{figure}
-    % subsection training_cnn (end) 
+    % subsection training_cnn (end)
     \subsection{Hidden Valley model training results}% (fold)
     \label{sub:hidden_valley_model_training_results}
         The CNN is trained on samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Figure~\ref{fig:cwola_hunting_cnn_acc} presents the training results. These numbers are evaluated from the pure samples. The CNN cannot learn useful information for the case with a sensitivity $S / \sqrt{B} \le  5$, so the ACC is 0.5. After this region, the accuracy demonstrates a significant improvement. It seems that the CNN model surpasses a certain threshold.
@@ -690,24 +690,24 @@
             \includegraphics[width=0.55\textwidth]{HVmodel_CWoLa_CNN.pdf}
             \caption{The performance of CWoLa CNN training as a function of the sensitivity. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. For sensitivity less than 5, the error bar is too small to see.}
             \label{fig:cwola_hunting_cnn_acc}
-        \end{figure}    
+        \end{figure}
     % subsection hidden_valley_model_training_results (end)
     \subsection{Data process procedure}% (fold)
     \label{sub:data_process_procedure}
         \begin{enumerate}
             \item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
-            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. The file contains the information listed below 
+            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. The file contains the information listed below
                 \begin{itemize}
                     \item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
                     \item Total invariant mass $m_{jj}$.
-                    \item Type of event: 1 for signal, 0 for background.    
+                    \item Type of event: 1 for signal, 0 for background.
                 \end{itemize}
-            \item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:datasets}, we can compute the size of datasets.   
+            \item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:datasets}, we can compute the size of datasets.
             \item Apply data augmentation in \verb|HDF5| format. Following Section~\ref{sub:data_augmentation}.
             \item Generate the jet image from \verb|HDF5| data.
         \end{enumerate}
         Note the preprocessing is done in step 5. If we do the preprocessing many times, the rounding errors would break the jet image.
-    % subsection data_process_procedure (end)   
+    % subsection data_process_procedure (end)
     \subsection{Data augmentation}% (fold)
     \label{sub:data_augmentation}
         To reduce the threshold, the data augmentation technique is tested. Similar to the Section~\ref{sub:physical_augmentation}, we apply the $\eta-\phi$ smearing on our training sample. Specifically, the $\left( \eta,\phi \right) $ coordinate of jet constituents are resampled according to a Normal distribution centered on the original coordinate and with a standard deviation inversely proportional to the $p_{\text{T}}$
@@ -739,7 +739,7 @@
             \caption{The average jet images before and after the $\eta-\phi$ smearing augmentation.}
             \label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
         \end{figure}
-        
+
         We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique suppresses the threshold and improves training performance.
 
         \begin{figure}[htpb]
@@ -769,7 +769,7 @@
             \caption{The average jet images of the $\eta-\phi$ smearing augmentation with different times.}
             \label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image_aug_1_3}
         \end{figure}
-    % subsection data_augmentation (end)    
+    % subsection data_augmentation (end)
     \subsection{Enlarge the training sample size}% (fold)
     \label{sub:enlarge_the_training_sample_size}
         To validate the correctness of the data augmentation results, we generated larger samples by scaling the luminosity. To compare the results with ``+1 times'' augmentation, we scale the luminosity to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$. It is important to note that the number of signal events is not equal for ``+1 times'' and ``luminosity $\times 2$'' at the same sensitivity because the number of signal events is computed from $S / \sqrt{B}$ for a given $B$, resulting in the number of ``+1 times'' signal sample is greater by a factor of $\sqrt{2}$. Table~\ref{tab:training_sample_size_cwola_hunting_hv_aug_1_x2_luminosity} is an example. For a fair comparison, where the sizes of signal and background events are the same, we should compare the ``+1 times'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity.
@@ -778,15 +778,15 @@
             \centering
             \caption{The training sample size for the original, ``+1 times'' and ``luminosity $\times 2$'' mixed sample. We set sensitivity $S / \sqrt{B} = 1$ in the signal region and evaluate the number of events in the signal region.}
             \label{tab:training_sample_size_cwola_hunting_hv_aug_1_x2_luminosity}
-            
+
             \begin{tabular}{c|cc|cc|cc}
                                 & \multicolumn{2}{c|}{Original}& \multicolumn{2}{c|}{+1 times}& \multicolumn{2}{c}{luminosity $\times 2$} \\
                 Mixed sample    & Signal      & Background     & Signal      & Background     & Signal            & Background            \\ \hline
                 Signal region   & 138         & 19k            & 276         & 38k            & 194               & 38k                   \\
-                Sideband region & 40          & 29k            & 80          & 58k            & 56                & 58k                  
+                Sideband region & 40          & 29k            & 80          & 58k            & 56                & 58k
             \end{tabular}
         \end{table}
-        
+
         Figure~\ref{fig:cwola_hunting_cnn_acc_x2_luminosity} presents the training results with larger samples. The results of ``luminosity $\times 2$'' is better than the original sample, but still worse than the ``+1 times'' case. Even considering the $\sqrt{2}$ scale factor, the corresponding points' performance is still worse. There may be something wrong with the data processing or training codes.
         \begin{figure}[htpb]
             \centering
@@ -950,7 +950,7 @@
     \label{sub:train_on_only_augmented_sample}
         We train the CWoLa CNN with only augmented datasets to diagnose augmented samples. The training samples are generated from the original dataset and only the augmented part is kept for training. We test ``1 augmentation'' and ``2 augmentation'' cases. They consist of pure augmented samples. Their sizes are 1 time and 2 times the original dataset.
 
-        Figure~\ref{fig:cwola_cnn_training_performance_only_aug_1} shows the ACC curve and ACC distribution with the ``1 augmentation'' case. The ACC of the ``1 augmentation'' sample is better than the ``original'' one at $S / \sqrt{B}=7$, but they perform similarly on other sensitivities. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_only_aug_1} is the sensitivity improvement. The threshold of the ``1 augmentation'' sample is lower than the ``original'' one, but they exhibit similar performance on other sensitivities. These results are consistent with the ACC curve. The difference at $S / \sqrt{B}=7$ may come from the training fluctuation. 
+        Figure~\ref{fig:cwola_cnn_training_performance_only_aug_1} shows the ACC curve and ACC distribution with the ``1 augmentation'' case. The ACC of the ``1 augmentation'' sample is better than the ``original'' one at $S / \sqrt{B}=7$, but they perform similarly on other sensitivities. Figure~\ref{fig:sensitivity_improvement_bkg_eff_01_only_aug_1} is the sensitivity improvement. The threshold of the ``1 augmentation'' sample is lower than the ``original'' one, but they exhibit similar performance on other sensitivities. These results are consistent with the ACC curve. The difference at $S / \sqrt{B}=7$ may come from the training fluctuation.
         \begin{figure}[htpb]
             \centering
             \subfloat[]{
@@ -1049,7 +1049,7 @@
     % subsection change_the_smearing_scale (end)
     \subsection{Duplicate training sample}% (fold)
     \label{sub:duplicate_training_sample}
-        To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This dataset is called ``+1 copy without shuffle.'' Figure~\ref{fig:average_jet_image_0_to_n_n_to_2n} is the average jet image of the first $n$-th sample and $n+1$-th to the final sample. These two images are the same. 
+        To compare the results with Section~\ref{subs:_1_copy_sample}, we generate a sample by duplicating the original without further shuffle. Therefore, the first $n$-th sample and $n+1$-th to the final sample should be the same. This dataset is called ``+1 copy without shuffle.'' Figure~\ref{fig:average_jet_image_0_to_n_n_to_2n} is the average jet image of the first $n$-th sample and $n+1$-th to the final sample. These two images are the same.
         \begin{figure}[htpb]
             \centering
             \subfloat[$1 \sim n$]{
@@ -1108,7 +1108,7 @@
         % subsubsection remove_shuffle_in_training_code (end)
         \subsubsection{Half original + copy}% (fold)
         \label{subs:half_original_copy}
-            To make sure the better training results come from adding copy samples and not from the sample size, we use half the original sample and duplicate it. This dataset is called `` half +1 copy'' and has the same size as the original sample. 
+            To make sure the better training results come from adding copy samples and not from the sample size, we use half the original sample and duplicate it. This dataset is called `` half +1 copy'' and has the same size as the original sample.
 
             Figure~\ref{fig:cwola_cnn_training_performance_half_copy_1} is the ACC curve and ACC distribution. The training results of ``half +1 copy'' are better than the original training sample in the low sensitivity region, while in the high sensitivity region, ``half +1 copy'' has the worse results. For the ``half +1 copy'' case, the training ACC is overfitting when $S / \sqrt{B} \ge 6$.
             \begin{figure}[htpb]
@@ -1130,8 +1130,8 @@
                 \caption{The sensitivities before and after the CWoLa CNN selection. The threshold is chosen from $\varepsilon_{\text{b}} = 10\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_bkg_eff_01_half_copy_1}
             \end{figure}
-        % subsubsection half_original_copy (end)        
-    % subsection duplicate_training_sample (end)    
+        % subsubsection half_original_copy (end)
+    % subsection duplicate_training_sample (end)
     \subsection{Another testing dataset}% (fold)
     \label{sub:another_testing_dataset}
         To rule out the problem in testing samples, I generate more signal and background samples and prepare another testing dataset. The testing results of old and new testing samples are shown in Figure~\ref{fig:acc_curve_two_testing_sample}. All cases perform similarly on two testing datasets. Note that because we only save the best model, we only present the ACC with the best training model for each case.
@@ -1139,26 +1139,26 @@
             \centering
             \subfloat[Original]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_new_testing_sample.pdf}
-            } 
+            }
             \subfloat[+1 time augmatation]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_aug_1_new_testing_sample.pdf}
-            } 
+            }
             \subfloat[Luminosity $\times 2$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_x2_new_testing_sample.pdf}
             } \\
             \subfloat[+1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_new_testing_sample.pdf}
-            } 
+            }
             \subfloat[1 time augmatation]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_only_aug_1_new_testing_sample.pdf}
-            } 
+            }
             \subfloat[half + 1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_half_copy_1_new_testing_sample.pdf}
-            } 
+            }
             \caption{The accuracy curves of two different testing sets. We present the accuracy of the best training model. In all cases, they have similar performance.}
             \label{fig:acc_curve_two_testing_sample}
         \end{figure}
-    % subsection another_testing_dataset (end)      
+    % subsection another_testing_dataset (end)
     \subsection{Original + \texorpdfstring{$x$}{x} Copy}% (fold)
     \label{sub:original_x_copy}
         The training datasets with different ratios of duplicated samples are generated. The training dataset consists of the original sample and $x$ copy sample, where ratio $x=$ 0.25, 0.50, 0.75. Figure~\ref{fig:cwola_cnn_training_performance_copy_ratio} is the ACC curve and ACC distribution. The training results of dataset adding copy samples are better than the original training sample in the low sensitivity region. The training results differ for $x = 0.50, 0.75$ when $S / \sqrt{B} \ge 6$. From the ACC scatter plot, the model seems to be over-training in this region.
@@ -1174,14 +1174,14 @@
             \label{fig:cwola_cnn_training_performance_copy_ratio}
         \end{figure}
 
-        Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+0.50 \sim +1$ copy samples have similar thresholds lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training. 
+        Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_ratio} is the sensitivity improvement. For $\varepsilon_{\text{b}} = 10\%$, the $+0.50 \sim +1$ copy samples have similar thresholds lower than the original training sample. Still, the sensitivity improvement is smaller than the original dataset in the high-sensitivity region. When the background efficiency is lower, the $+ 0.50$ copy and $+ 0.75$ copy samples perform better than other cases, even though they are over-training.
         \begin{figure}[htpb]
             \centering
             \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_ratio.pdf}
             \caption{The sensitivities before and after the CWoLa CNN selection. The thresholds are chosen from $\varepsilon_{\text{b}} = 10\%, 1\%, 0.1\%$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_bkg_eff_copy_ratio}
         \end{figure}
-    % subsection original_x_copy (end)  
+    % subsection original_x_copy (end)
     \subsection{Remove rectification}% (fold)
     \label{sub:remove_rectification}
         For a properly constructed classifier, its accuracies should be greater than 50\% or it just mislabels the signal and background events.    Thus, a couple of codes are used for swapping labels. However, if the dataset causes a larger standard deviation, the swapping procedure might make a fake improvement. To investigate the impact of the ``rectification'', we remove the code that changes labels and train the CWoLa CNN again. We test on the original, ``luminosity $\times 2$'' and ``+1 copy'' datasets. The relabeling process before evaluating the ACC and sensitivity improvement is commented out.
@@ -1191,13 +1191,13 @@
             \centering
             \subfloat[Original]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_no_swap.pdf}
-            } 
+            }
             \subfloat[Luminosity $\times 2$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_x2_no_swap.pdf}
-            } 
+            }
             \subfloat[+1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_no_swap.pdf}
-            } 
+            }
             \caption{The accuracy curves with and without the rectification procedure. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
             \label{fig:acc_curve_w_wo_swap_label}
         \end{figure}
@@ -1205,13 +1205,13 @@
             \centering
             \subfloat[Original]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_no_swap.pdf}
-            } 
+            }
             \subfloat[Luminosity $\times 2$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_x2_no_swap.pdf}
-            } 
+            }
             \subfloat[+1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_no_swap.pdf}
-            } 
+            }
             \caption{Scatter plots for training ACC and true ACC with and without the rectification procedure. The slope of the grey dashed line is 1, representing the same training and true ACC.}
             \label{fig:acc_scatter_w_wo_swap_label}
         \end{figure}
@@ -1224,7 +1224,7 @@
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_bkg_eff_no_swap}
         \end{figure}
-    % subsection remove_rectification (end) 
+    % subsection remove_rectification (end)
     \subsection{Compare with Zong-En's results}% (fold)
     \label{sub:compare_with_zong_en_s_results}
         Figure~\ref{fig:sensitivity_improvement_bkg_eff_copy_1_ZN_testing} is Zong-En's results with duplicated samples. The performance of original samples and duplicated samples is consistent.
@@ -1252,13 +1252,13 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_ZN_model.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_ZN_model.pdf}
-                } 
+                }
                 \subfloat[Original v.s. Copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_ZN_model.pdf}
-                } 
+                }
                 \caption{The accuracy curves with different model structures. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
                 \label{fig:acc_curve_ZN_model}
             \end{figure}
@@ -1266,13 +1266,13 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_ZN_model.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_ZN_model.pdf}
-                } 
+                }
                 \subfloat[Original v.s. Copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_ZN_model.pdf}
-                } 
+                }
                 \caption{Scatter plots for training ACC and true ACC with different model structures. The slope of the grey dashed line is 1, representing the same training and true ACC.}
                 \label{fig:acc_scatter_ZN_model}
             \end{figure}
@@ -1294,13 +1294,13 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_patience_30.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_patience_30.pdf}
-                } 
+                }
                 \subfloat[Original v.s. Copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_patience_30.pdf}
-                } 
+                }
                 \caption{The accuracy curves with different early stopping patience. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. Note that we only present the result of one-time training for the ``patience 30'' case.}
                 \label{fig:acc_curve_patience_30}
             \end{figure}
@@ -1308,25 +1308,25 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_patience_30.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_patience_30.pdf}
-                } 
+                }
                 \subfloat[Original v.s. Copy]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_patience_30.pdf}
-                } 
+                }
                 \caption{Scatter plots for training ACC and true ACC with different early stopping patience. The slope of the grey dashed line is 1, representing the same training and true ACC.}
                 \label{fig:acc_scatter_patience_30}
             \end{figure}
 
-            Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30} is the sensitivity improvement. The training results of ``patience 10'' and ``patience 30'' are similar. This is consistent with the training accuracy. 
+            Figure~\ref{fig:sensitivity_improvement_bkg_eff_patience_30} is the sensitivity improvement. The training results of ``patience 10'' and ``patience 30'' are similar. This is consistent with the training accuracy.
             \begin{figure}[htpb]
                 \centering
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_patience_30.pdf}
                 \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. Note that we only present the result of one-time training for ``patience 30''.}
                 \label{fig:sensitivity_improvement_bkg_eff_patience_30}
             \end{figure}
-        % subsubsection early_stopping_patience (end)       
+        % subsubsection early_stopping_patience (end)
         \subsubsection{Tensorflow version}% (fold)
         \label{subs:tensorflow_version}
             I use Tensorflow 2.11.1 and Zong-En uses Tensorflow 2.0.0. The difference in version may cause some unexpected issues.
@@ -1349,7 +1349,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_tf_250.pdf}
                 \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_bkg_eff_tf_250}
-            \end{figure} 
+            \end{figure}
 
             I should have tested my training codes on version 2.0.0, but an error still can not be resolved.
 
@@ -1357,10 +1357,10 @@
             \begin{verbatim}
                 ...
                 The tensor cannot be accessed here:
-                it is defined in another function or code block. 
+                it is defined in another function or code block.
                 ...
             \end{verbatim}
-        % subsubsection tensorflow_version (end)        
+        % subsubsection tensorflow_version (end)
     % subsection compare_with_zong_en_s_results (end)
     \subsection{Tensorflow Model compile}% (fold)
     \label{sub:tensorflow_model_compile}
@@ -1387,13 +1387,13 @@
             \centering
             \subfloat[Original]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_res_75_25.pdf}
-            } 
+            }
             \subfloat[+1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_copy_1_res_75_25.pdf}
-            } 
+            }
             \subfloat[Original v.s. Copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_CWoLa_CNN_origin_copy_1_res_75_25.pdf}
-            } 
+            }
             \caption{The accuracy curves with resolution $25\times 25$. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case.}
             \label{fig:acc_curve_resolution_25}
         \end{figure}
@@ -1401,13 +1401,13 @@
             \centering
             \subfloat[Original]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_res_75_25.pdf}
-            } 
+            }
             \subfloat[+1 time copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_copy_1_res_75_25.pdf}
-            } 
+            }
             \subfloat[Original v.s. Copy]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_training_true_acc_origin_copy_1_res_25.pdf}
-            } 
+            }
             \caption{Scatter plots for training ACC and true ACC with resolution $25\times 25$. The slope of the grey dashed line is 1, representing the same training and true ACC.}
             \label{fig:acc_scatter_resolution_25}
         \end{figure}
@@ -1425,10 +1425,10 @@
             \centering
             \subfloat[My testing]{
                 \includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_origin_copy_1_res_25.pdf}
-            } 
+            }
             \subfloat[Zong-En's testing]{
                 \includegraphics[width=0.45\textwidth]{HVmodel_sensitivity_improvement_bkg_eff_copy_1_ZN_testing.pdf}
-            } 
+            }
             \caption{The significance before and after the CWoLa CNN selection. The solid lines are the new results with duplicated samples, and the dashed lines are the previous results. The slope of the dashed grey line is $1$, representing the same performance before and after the selection.}
             \label{fig:sensitivity_improvement_bkg_eff_copy_1_our_ZN_testing}
         \end{figure}
@@ -1439,21 +1439,21 @@
         \label{subs:loss_and_accuracy_across_training}
             Figure~\ref{fig:loss_acc_across_training_SB_3_res_75} and \ref{fig:loss_acc_across_training_SB_3_res_25} are the loss and accuracy values across training. The training and validation values are evaluated on mixed-label samples, while the testing values are assessed on true-label samples. Thus, the difference between these curves may not be meaningful. The training time of the ``+1 copy'' dataset is longer than the original samples.
 
-            Since the sample size imbalance in signal and sideband regions (Table~\ref{tab:training_sample_size_cwola_hunting_hv}), the accuracy values of the training and validation curve are close to 0.6 but not 0.5. 
+            Since the sample size imbalance in signal and sideband regions (Table~\ref{tab:training_sample_size_cwola_hunting_hv}), the accuracy values of the training and validation curve are close to 0.6 but not 0.5.
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_origin_SB_3_res_75.pdf}
-                } 
+                }
                 \subfloat[Original]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_origin_SB_3_res_75.pdf}
-                } \\ 
+                } \\
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_copy_1_SB_3_res_75.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_copy_1_SB_3_res_75.pdf}
-                } 
+                }
                 \caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $75\times 75$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
                 \label{fig:loss_acc_across_training_SB_3_res_75}
             \end{figure}
@@ -1462,20 +1462,20 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_origin_SB_3_res_25.pdf}
-                } 
+                }
                 \subfloat[Original]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_origin_SB_3_res_25.pdf}
-                } \\ 
+                } \\
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_loss_curve_copy_1_SB_3_res_25.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.45\textwidth]{HVmodel_acc_curve_copy_1_SB_3_res_25.pdf}
-                } 
+                }
                 \caption{The loss and accuracy values across training. The model is trained on the sensitivity $S / \sqrt{B} = 3.0$ dataset with resolution $25\times 25$. Loss value is evaluated from binary cross-entropy. Accuracy is evaluated with a threshold of 0.5 for training and validation. The testing accuracy is the best accuracy with threshold scanning.}
                 \label{fig:loss_acc_across_training_SB_3_res_25}
             \end{figure}
-        % subsubsection loss_and_accuracy_across_training (end) 
+        % subsubsection loss_and_accuracy_across_training (end)
         \subsubsection{ROC curve}% (fold)
         \label{subs:roc_curve}
             Figure~\ref{fig:roc_curve_SB_3_5_7} is ROC curves with different datasets. Here, we plot the ROC curve of the best training model. Resolution $25\times 25$ models perform better for sensitivity $S / \sqrt{B} = 3.0$. The curve of the ``+1 copy, $75\times 75$'' dataset has weird performance, it does not work as a well-training classifier. The model might overfit the training dataset.
@@ -1483,13 +1483,13 @@
                 \centering
                 \subfloat[]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_3_res_75_25.pdf}
-                } 
+                }
                 \subfloat[]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_5_res_75_25.pdf}
-                } 
+                }
                 \subfloat[]{
                     \includegraphics[width=0.31\textwidth]{HVmodel_roc_curve_origin_copy_1_SB_7_res_75_25.pdf}
-                } 
+                }
                 \caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
                 \label{fig:roc_curve_SB_3_5_7}
             \end{figure}
@@ -1499,10 +1499,10 @@
                 \centering
                 \subfloat[]{
                     \includegraphics[width=0.48\textwidth]{HVmodel_roc_curve_origin_copy_1_res_25.pdf}
-                } 
+                }
                 \subfloat[]{
                     \includegraphics[width=0.48\textwidth]{HVmodel_roc_curve_origin_copy_1_res_75.pdf}
-                } 
+                }
                 \caption{The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$. In those plots, the ROC curve is evaluated from the best model.}
                 \label{fig:roc_curve_res_25_75}
             \end{figure}
@@ -1514,10 +1514,10 @@
                 \centering
                 \subfloat[Original]{
                     \includegraphics[width=0.48\textwidth]{HVmodel_signal_score_origin_SB_3_res_75.pdf}
-                } 
+                }
                 \subfloat[+1 time copy]{
                     \includegraphics[width=0.48\textwidth]{HVmodel_signal_score_copy_1_SB_3_res_75.pdf}
-                } 
+                }
                 \caption{The signal score distribution of the model trained on original and duplicated datasets. The sensitivity $S / \sqrt{B} = 3$. The signal score is evaluated from the best model. The input events are the signal and background events in the signal region.}
                 \label{fig:signal_score_SB_3}
             \end{figure}
@@ -1531,31 +1531,31 @@
                 \centering
                 \subfloat[Epoch 1]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep1.pdf}
-                } 
+                }
                 \subfloat[Epoch 6]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep6.pdf}
-                } 
+                }
                 \subfloat[Epoch 11]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep11.pdf}
-                } \\ 
+                } \\
                 \subfloat[Epoch 16]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep16.pdf}
-                } 
+                }
                 \subfloat[Epoch 21]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep21.pdf}
-                } 
+                }
                 \subfloat[Epoch 26]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep26.pdf}
-                } \\ 
+                } \\
                 \subfloat[Epoch 31]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep31.pdf}
-                } 
+                }
                 \subfloat[Epoch 36]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep36.pdf}
-                } 
+                }
                 \subfloat[Epoch 41]{
                     \includegraphics[width=0.31\textwidth]{../CNN/figures/HVmodel_roc_curve_ep41.pdf}
-                } \\ 
+                } \\
                 \caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the duplicated dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
                 \label{fig:roc_curve_training_process_copy_1}
             \end{figure}
@@ -1590,7 +1590,7 @@
                 \caption{These ROC curves are plotted from true label samples in the signal region. The model is trained on the original dataset with sensitivity $S / \sqrt{B} = 3$. The loss value is the validation loss in the training process. The grey dashed lines represent $\varepsilon_{\text{b}}=10 \%, 1 \%, 0.1\%$.}
                 \label{fig:roc_curve_training_process_origin}
             \end{figure}
-        % subsubsection roc_curve_in_training_process (end)     
+        % subsubsection roc_curve_in_training_process (end)
     % subsection other_plots (end)
     \subsection{Label in .npy file}% (fold)
     \label{sub:label_in_npy_file}
@@ -1599,10 +1599,10 @@
             \centering
             \subfloat[Leading jet]{
                 \includegraphics[width=0.48\textwidth]{HVmodel_leading_jet_pt_distribution_at_npy.pdf}
-            } 
+            }
             \subfloat[Sub-leading jet]{
                 \includegraphics[width=0.48\textwidth]{HVmodel_sub-leading_jet_pt_distribution_at_npy.pdf}
-            } 
+            }
             \caption{The $p_{\text{T}}$ distributions for original and duplicated datasets. The $p_{\text{T}}$ is the sum of the transverse momentum in each pixel. The differences of each bin in the corresponding region are all equal to zero. Therefore, they have the same distribution.}
             \label{fig:pt_distribution_at_npy}
         \end{figure}
@@ -1623,7 +1623,7 @@
             \caption{The average jet images in signal and sideband region. The jet images are similar for original and duplicated datasets. The difference between two jet images in the corresponding region is exactly zero. Therefore, they have the same distribution.}
             \label{fig:average_jet_image_smearing_scale}
         \end{figure}
-    % subsection label_in_npy_file (end)        
+    % subsection label_in_npy_file (end)
     \subsection{More testing on new model structure}% (fold)
     \label{sub:more_testing_on_new_model_structure}
         Because we have modified the neural network model structure and the resolution of jet images, we would like to test the ``+1 augmentation'' and ``luminosity $\times 2$'' datasets with these new settings. Then, we can make similar plots as Figure~\ref{fig:cwola_cnn_training_performance_copy_1} and \ref{fig:sensitivity_improvement_bkg_eff_01_copy_1}.
@@ -1735,7 +1735,7 @@
             \caption{(a) The performance of CWoLa CNN training with different samples. The error bar is the standard deviation of 10 times training. The grey band is the error bar of the ``without signal'' case. (b) Scatter plot for training ACC and true ACC. The slope of the grey dashed line is 1, representing the same training and true ACC.}
             \label{fig:acc_curve_split_validation_first}
         \end{figure}
-        
+
         Figure~\ref{fig:sensitivity_improvement_split_validation_first} is the sensitivity improvement. The results are consistent with the training accuracy. The original and duplicated datasets perform similarly.
         \begin{figure}[htpb]
             \centering
@@ -1748,11 +1748,11 @@
     \label{sub:new_data_process_flow}
         \begin{enumerate}
             \item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
-            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is modified to $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below 
+            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is modified to $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below
                 \begin{itemize}
                     \item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
                     \item Total invariant mass $m_{jj}$.
-                    \item Type of event: 1 for signal, 0 for background.    
+                    \item Type of event: 1 for signal, 0 for background.
                 \end{itemize}
             \item Make mixed sample in \verb|HDF5| format. Following Section~\ref{sub:datasets}, we can compute the size of datasets. 80\% for training set, 20\% for validation set.
             \item (Optional) Apply data augmentation in \verb|HDF5| format training dataset. Following Section~\ref{sub:data_augmentation}.
@@ -1791,7 +1791,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_aug_1_split_val_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_aug_1_split_val_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_copy_1_aug_1_split_val_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_new_workflow}
@@ -1801,14 +1801,14 @@
     \label{sub:enlarge_the_data_size_with_more_simulated_samples}
         We enlarge the training data size with more simulated samples to identify the upper limit of augmented datasets. More specificaly, the luminosity is scaled to $\mathcal{L} = 139 \times 2 \text{ fb}^{-1}$.
 
-        Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2_split_val} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests there is room for improvement in training performance with augmented samples. Note that if we want to compare the model trained on a similar signal sample size, we should compare the ``+1 augmentation'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity, similar to Section~\ref{sub:enlarge_the_training_sample_size}. 
+        Figure~\ref{fig:sensitivity_improvement_origin_aug_1_x2_split_val} shows the sensitivity improvement. The ``luminosity $\times 2$'' datasets perform slightly better than the original dataset. As the background efficiency decreases, the improvement becomes more pronounced. This suggests there is room for improvement in training performance with augmented samples. Note that if we want to compare the model trained on a similar signal sample size, we should compare the ``+1 augmentation'' results with the point on the ``luminosity $\times 2$'' curve corresponding to $\sqrt{2}$ times the sensitivity, similar to Section~\ref{sub:enlarge_the_training_sample_size}.
         \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $75\times 75$]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_aug_1_x2_split_val_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_aug_1_x2_split_val}
@@ -1825,7 +1825,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_aug_1_std_01_02_05_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_aug_1_std_01_02_05_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_aug_1_std_01_02_05_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. Here, the ``+1'' means ``+1 augmentation'' datasets.}
             \label{fig:sensitivity_improvement_aug_1_smearing_scale}
@@ -1859,7 +1859,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_x2_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_x2_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_x2_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_pt_aug_1}
@@ -1876,7 +1876,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_aug_1_3_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_aug_1_3_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_aug_1_3_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_eta_phi_aug_1_3}
@@ -1889,7 +1889,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_3_5_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_3_5_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_aug_1_3_5_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_pt_aug_1_3_5}
@@ -1906,7 +1906,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_1_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_1_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_1_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_eta_phi_pt_aug_1}
@@ -1917,7 +1917,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_3_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_3_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_aug_3_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_eta_phi_pt_aug_3}
@@ -1925,7 +1925,7 @@
     % subsection combine_eta_phi_and_pt_smearing (end)
     \subsection{Jet rotation}% (fold)
     \label{sub:jet_rotation}
-        One another augmentation approach is the jet rotation. This method rotates each jet with a random angle to enlarge the diversity of training datasets. 
+        One another augmentation approach is the jet rotation. This method rotates each jet with a random angle to enlarge the diversity of training datasets.
 
         The data process flow is different from Section~\ref{sub:new_data_process_flow}. The details are listed below:
         \begin{enumerate}
@@ -1956,7 +1956,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_1_3_5_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_jet_aug_1_3_5}
@@ -1972,26 +1972,26 @@
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Resolution: $25\times 25$]{
-                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_25.pdf} 
+                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_25.pdf}
                 } \\
                 \subfloat[Resolution: $75\times 75$]{
                     \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_SB_1_3_res_75.pdf}
-                } 
+                }
                 \caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_origin_jet_aug_SB_1_3}
             \end{figure}
-        % subsubsection jet_rotation (end)  
+        % subsubsection jet_rotation (end)
         \subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing}% (fold)
         \label{subs:pt_smearing}
             Figure~\ref{fig:sensitivity_improvement_origin_pt_aug_SB_1_3} shows the sensitivity improvement with $p_\text{T}$ smearing datasets. For resolution $25\times 25$, the training performance is saturated around +5 $p_{\text{T}}$ smearing. For resolution $75\times 75$, the training performance is saturated around +15 $p_{\text{T}}$ smearing.
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Resolution: $25\times 25$]{
-                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_aug_SB_1_3_res_25.pdf} 
+                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_aug_SB_1_3_res_25.pdf}
                 } \\
                 \subfloat[Resolution: $75\times 75$]{
                     \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_aug_SB_1_3_res_75.pdf}
-                } 
+                }
                 \caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_origin_pt_aug_SB_1_3}
             \end{figure}
@@ -2002,22 +2002,22 @@
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Resolution: $25\times 25$]{
-                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_SB_1_3_res_25.pdf} 
+                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_SB_1_3_res_25.pdf}
                 } \\
                 \subfloat[Resolution: $75\times 75$]{
                     \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_SB_1_3_res_75.pdf}
-                } 
+                }
                 \caption{The sensitivities after the CWoLa CNN selection. Here, $1.0$ and $3.0$ are the sensitivities before selection. The dashed lines are the sensitivities before CNN selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_origin_pt_jet_aug_SB_1_3}
             \end{figure}
         % subsubsection pt_smearing_jet_rotation (end)
         \subsubsection{Summary}% (fold)
         \label{subs:summary}
-            Figure~\ref{fig:sensitivity_improvement_summary_aug_SB_3} shows the sensitivity improvement with different augmentation approaches. The ``$p_{\text{T}}$ smearing + jet rotation'' has the best performance. For resolution $75\times 75$, the combining method performs much better than other methods.
+            Figure~\ref{fig:sensitivity_improvement_summary_aug_SB_3} shows the sensitivity improvement with different augmentation approaches. The ``$p_{\text{T}}$ smearing + jet rotation'' performs best. For resolution $75\times 75$, the combining method performs much better than other methods.
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Resolution: $25\times 25$]{
-                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_SB_3_res_25.pdf} 
+                    \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_SB_3_res_25.pdf}
                 } \\
                 \subfloat[Resolution: $75\times 75$]{
                     \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_summary_aug_SB_3_res_75.pdf}
@@ -2025,20 +2025,20 @@
                 \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training.}
                 \label{fig:sensitivity_improvement_summary_aug_SB_3}
             \end{figure}
-        % subsubsection summary (end)   
+        % subsubsection summary (end)
     % subsection augmented_sample_size (end)
     \subsection{Combine \texorpdfstring{$p_{\mathrm{T}}$}{pT} smearing and jet rotation}% (fold)
     \label{sub:combine_pt_smearing_and_jet_rotation}
         We combine the $p_{\text{T}}$ smearing and jet rotation, to investigate whether the combining augmentation can further improve training results. We apply $p_{\text{T}}$ smearing first, then apply jet rotation, because the $p_{\text{T}}$-weighted center is needed for jet rotation.
 
-        Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_3} shows the sensitivity improvement. All augmentation approaches can improve the training results. The jet rotation is a little better than the $p_{\text{T}}$ smearing. There seems to be no difference between the ``$p_{\text{T}}$ smearing'' and ``$p_{\text{T}}$ smearing + jet rotation''.
+        Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_3} shows the sensitivity improvement. All augmentation approaches can improve the training results. The jet rotation is slightly better than the $p_{\text{T}}$ smearing. There seems to be no difference between the ``$p_{\text{T}}$ smearing'' and ``$p_{\text{T}}$ smearing + jet rotation''.
         \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $75\times 75$]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_jet_aug_3_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_jet_aug_3_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_jet_aug_3_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_pt_jet_aug_3}
@@ -2053,7 +2053,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_ZN_res_75.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_ZN_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_ZN_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_jet_aug_3_ZN}
@@ -2072,9 +2072,9 @@
     % subsection compare_training_results_with_zong_en (end)
     \subsection{Fluctuation from different datasets}% (fold)
     \label{sub:fluctuation_from_different_datasets}
-        To explore the fluctuation of different experiments, i.e., the fluctuation of varying training datasets, we prepare a datasets pool and randomly select the events from the pool to make training datasets. 
+        To explore the fluctuation of different experiments, i.e., the fluctuation of varying training datasets, we prepare a datasets pool and randomly select the events from the pool to make training datasets.
 
-        The size of the dataset pool in each category is presented in Table~\ref{tab:dataset_pool_sample_size}. Compared to the training datasets (Table~\ref{tab:training_sample_size_cwola_hunting_hv_new_SB}), the background size of the pool is 5 times the training sample size ($\sim$ 20k). 
+        The size of the dataset pool in each category is presented in Table~\ref{tab:dataset_pool_sample_size}. Compared to the training datasets (Table~\ref{tab:training_sample_size_cwola_hunting_hv_new_SB}), the background size of the pool is 5 times the training sample size ($\sim$ 20k).
         \begin{table}[htpb]
             \centering
             \caption{The number of events for the dataset pool.}
@@ -2123,10 +2123,10 @@
             \item \verb|learning_rate|: $[10^{-5}, 10^{-2}]$
             \item \verb|n_CNN_layers_tot|: $[2, 4]$
             \item \verb|n_CNN_layers_1|: $[1, \verb|n_CNN_layers_tot|]$
-            \item \verb|n_CNN_filters|: $[16, 32, 64, 128, 256]$ 
+            \item \verb|n_CNN_filters|: $[16, 32, 64, 128, 256]$
             \item \verb|CNN_kernel_size|: $[2, 6]$
             \item \verb|n_dense_layers|: $[1, 5]$
-            \item \verb|dense_hidden_dim|: $[16, 32, 64, 128, 256]$     
+            \item \verb|dense_hidden_dim|: $[16, 32, 64, 128, 256]$
         \end{itemize}
         Test 100 trials and find the parameters set that can minimize the loss value of the testing dataset with true labels.
 
@@ -2136,10 +2136,10 @@
             \item \verb|learning_rate|: $2.54 \times 10^{-3}$
             \item \verb|n_CNN_layers_tot|: $2$
             \item \verb|n_CNN_layers_1|: $1$
-            \item \verb|n_CNN_filters|: $64$ 
+            \item \verb|n_CNN_filters|: $64$
             \item \verb|CNN_kernel_size|: $6$
             \item \verb|n_dense_layers|: $5$
-            \item \verb|dense_hidden_dim|: $128$    
+            \item \verb|dense_hidden_dim|: $128$
         \end{itemize}
 
         Test this parameter set on all sensitivities. Figure~\ref{fig:sensitivity_improvement_best_hp_res_25} shows the sensitivity improvement. The training could be improved with this hyperparameter set for original datasets. However, for +5 jet rotation, the performance is similar. The fluctuation of training results could not be reduced for both cases.
@@ -2214,7 +2214,7 @@
     % subsection sculpting_effect (end)
     \subsection{Jet rotation range}% (fold)
     \label{sub:jet_rotation_range}
-        To investigate how the jet rotation improves the training, we modify the rotation angle range. For previous training, the range is $\pm 180^\circ$. The small and large ranges are tested. Similarly, the rotation angle is uniformly sampled from the rotation range.
+        We modify the rotation angle range to investigate how the jet rotation improves the training. For previous training, the range is $\pm 180^\circ$. The small and large ranges are tested. Similarly, the rotation angle is uniformly sampled from the rotation range.
 
         Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180} shows the sensitivity improvement of jet rotation datasets with different rotation ranges. For ranges $\pm 1^\circ$ and $\pm 5^\circ$, the sensitivity improvement is close to the original case, since there is no difference in jet images if the rotation angle is tiny. For ranges $\pm 45^\circ$ and  $\pm 90^\circ$, their training performance is similar and significantly better than the original case. The dataset with the largest rotation range $\pm 180^\circ$ can achieve the lowest training threshold even at the high sensitivity range the performance is not so good.
         \begin{figure}[htpb]
@@ -2223,7 +2223,7 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_5_range_180_5_1_res_25.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$. Rotation range: $\pm 180^\circ, \pm 90^\circ, \pm 45^\circ$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_5_range_180_90_45_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_5_range_180_90_45_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_jet_aug_5_range_1_5_45_90_180}
@@ -2232,7 +2232,7 @@
         \label{subs:fixed_rotation_angles}
             Instead of using the angle randomly sampled from the rotation range, we specify the rotation angles by hand.
 
-            We test $\pm 5^\circ$ rotation. More specifically, the training dataset contains original events, events rotated by $5^\circ$, and events rotated by $-5^\circ$. Therefore, the training sample size is 3 times to original datasets. Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5} shows the sensitivity improvement of jet rotation datasets with fixed angles. The sensitivity improvement is close to the original case since there is no difference in jet images if the rotation angle is very small. Or lower background efficiency, there is a little improvement at the high sensitivity range.
+            We test $\pm 5^\circ$ rotation. More specifically, the training dataset contains original events, events rotated by $5^\circ$, and events rotated by $-5^\circ$. Therefore, the training sample size is 3 times the original datasets. Figure~\ref{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5} shows the sensitivity improvement of jet rotation datasets with fixed angles. The sensitivity improvement is close to the original case since there is no difference in jet images if the rotation angle is tiny. Or lower background efficiency, there is a little improvement at the high sensitivity range.
         \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $25\times 25$. Rotation angles: $-5^\circ, 5^\circ$]{
@@ -2241,25 +2241,25 @@
             \caption{The sensitivities before and after the CWoLa CNN selection. The rotation angle $\theta = -5^\circ, 5^\circ$. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training.}
             \label{fig:sensitivity_improvement_origin_jet_aug_angles_-5_5}
         \end{figure}
-        % subsubsection fixed_rotation_angles (end) 
+        % subsubsection fixed_rotation_angles (end)
     % subsection jet_rotation_range (end)
     \subsection{Re-sampling before training}% (fold)
     \label{sub:re_sampling_before_training}
         We randomly select events before each training to incorporate the fluctuation of different datasets. The sample process flow is modified as follows to implement the re-sampling:
         \begin{enumerate}
             \item Generate the sample file in \verb|.root| format. Following Section~\ref{sub:sample_generation}.
-            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below 
+            \item Apply the selection cuts described in Section~\ref{sub:sample_selection} and save the event passing the cuts in \verb|HDF5| format. Note that the sideband region is $[4400,4700] \cup [5500,5800] \text{ GeV}$. The file contains the information listed below
                 \begin{itemize}
                     \item The $\left( p_{\text{T}}, \eta, \phi \right) $ of leading and sub-leading jet constituents.
                     \item Total invariant mass $m_{jj}$.
-                    \item Type of event: 1 for signal, 0 for background.    
+                    \item Type of event: 1 for signal, 0 for background.
                 \end{itemize}
             \item Samples are separated in 4 \verb|HDF5| files: signal in signal region, signal in sideband region, background in signal region, and background in sideband region.
             \item Process the sample at \verb|HDF5| level. Preprocess or apply data augmentation. Note that all processing should be done in this step except the pixelization. Results are saved in a directory that contains 4 \verb|HDF5| files. Events with the same index in each directory correspond to the identical original event.
             \item Pixelize each event to generate the jet image from \verb|HDF5| data and save in \verb|.npy| file.
             \item This step is executed at the head of each training. Following Section~\ref{sub:datasets}, we can compute the size of datasets. 80\% for training set, 20\% for validation set. The events with specific indices are chosen to make mixed samples. These indices are obtained from the given random number seed and sensitivity.
 
-                For example, for the ``+3 jet rotation'' dataset, we select the events from the following directories: 
+                For example, for the ``+3 jet rotation'' dataset, we select the events from the following directories:
                 \begin{itemize}
                     \item \verb|<path-to-origin>/|
                     \item \verb|<path-to-jet_aug>/01/|
@@ -2289,11 +2289,11 @@
     \label{sub:eta_phi_pt_smearing_jet_rotation}
         We combine the $\eta-\phi$, $p_{\text{T}}$ smearing and jet rotation, to investigate whether the combining augmentation can further improve training results. We apply $\eta-\phi$ and $p_{\text{T}}$ smearing first, then apply jet rotation, because the $p_{\text{T}}$-weighted center is needed for jet rotation.
 
-        Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5} shows the sensitivity improvement. All augmentation approaches can improve the training results. There seems to be no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are a little better than the jet rotation. 
+        Figure~\ref{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5} shows the sensitivity improvement. All augmentation approaches can improve the training results. There seems to be no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are a little better than the jet rotation.
         \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5_res_25.pdf}
             } \\
             \subfloat[Resolution: $25\times 25$]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_eta_phi_pt_jet_aug_5_res_25.pdf}
@@ -2302,7 +2302,7 @@
             \label{fig:sensitivity_improvement_origin_eta_phi_pt_jet_aug_3_5}
         \end{figure}
 
-        Figure~\ref{fig:sensitivity_improvement_summary_aug_3_to_33_SB_3} shows the sensitivity improvement with different augmentation approaches. Even though we enlarge the augmented sample size, there is still no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are much better than the ``jet rotation'' augmentation at the large size range. For all augmentation approaches, the sensitivity improvement is saturated after +10 times augmentation.
+        Figure~\ref{fig:sensitivity_improvement_summary_aug_3_to_33_SB_3} shows the sensitivity improvement with different augmentation approaches. Even though we enlarge the augmented sample size, there is still no difference between the ``$p_{\text{T}}$ smearing + jet rotation'' and ``$\eta-\phi$ $p_{\text{T}}$ smearing + jet rotation''. These two methods are much better than the ``jet rotation'' augmentation at the large size range. The sensitivity improvement is saturated after +10 times augmentation for all augmentation approaches.
         \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $25\times 25$]{
@@ -2318,7 +2318,7 @@
 
         Figure~\ref{fig:event_score_train_SR_SB_res_25} shows the event score distribution of SR and SB regions. We consider original, +3 jet rotation, and +3 $p_{\text{T}}$ smearing + jet rotation datasets. All distributions are normalized so that the area of each histogram is 1. The ratio represents the SR value divided by the SB value.
 
-        The SR and SB distribution look similar. Due to the small signal sample size, the signal distributions have larger fluctuations. If we examine the distribution closely, the SR distribution appears slightly shifted to the right, but the difference is minimal. Thus we could say, across all cases, no significant difference exists between SR and SB regions, which indicates there is no sculpting effect. 
+        The SR and SB distribution look similar. Due to the small signal sample size, the signal distributions have larger fluctuations. If we examine the distribution closely, the SR distribution appears slightly shifted to the right, but the difference is minimal. Thus, no significant difference exists between SR and SB regions across all cases, indicating no sculpting effect.
         \begin{figure}[htpb]
             \centering
             \subfloat[Original, $S / \sqrt{B} = 0$]{
@@ -2347,16 +2347,16 @@
             }
             \subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 7$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_SR_SB_SB_7_res_25.pdf}
-            } 
+            }
             \caption{The event score distribution of training samples. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
             \label{fig:event_score_train_SR_SB_res_25}
         \end{figure}
     % subsection check_about_sculpting (end)
     \subsection{Threshold value}% (fold)
     \label{sub:threshold_value}
-        In previous exercises, we determine threshold values using another testing dataset. This dataset comprises 10k signal and 10k background events in the signal region. In a real application, the CWoLa classifier would be applied back to the training datasets. We would then use the threshold values or sensitivity improvements obtained from the testing sets to compute how many signal and background events remain after applying the cut. We expect the sensitivity improvement from the testing set to be similar to that of the training set. 
+        In previous exercises, we determine threshold values using another testing dataset. This dataset comprises 10k signal and 10k background events in the signal region. In a real application, the CWoLa classifier would be applied back to the training datasets. We would then use the threshold values or sensitivity improvements obtained from the testing sets to compute how many signal and background events remain after applying the cut. We expect the sensitivity improvement from the testing set to be similar to the training set's.
 
-        As a sanity check, we should examine whether the distributions of the training and testing datasets are similar. If they have identical distributions, then the threshold values and sensitivity improvements will also be identical.
+        As a sanity check, we should examine whether the training and testing dataset distributions are similar. The threshold values and sensitivity improvements will be identical if they have the same distributions.
 
         Figure~\ref{fig:event_score_train_test_SR_res_25} shows the event score distributions of the training and testing datasets. We consider original, +3 jet rotation, and +3 $p_{\text{T}}$ smearing + jet rotation datasets. All distributions are normalized so that the area of each histogram is 1. The ratio represents the training value divided by the testing value.
 
@@ -2389,18 +2389,18 @@
             }
             \subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 7$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_train_test_SR_SB_7_res_25.pdf}
-            } 
+            }
             \caption{The event score distribution of training and testing datasets. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
             \label{fig:event_score_train_test_SR_res_25}
         \end{figure}
     % subsection threshold_value (end)
     \subsection{Sculpting effect}% (fold)
     \label{sub:sculpting_effect_2}
-        Figure~\ref{fig:event_score_train_SR_SB_res_25} shows that the event score distribution of the SR samples is slightly shifted to the right, which may cause a fake bump in the no-signal case. To determine if the shifting effect is due to overfitting on training datasets, we plot the event score distribution of the testing dataset. 
+        Figure~\ref{fig:event_score_train_SR_SB_res_25} shows that the event score distribution of the SR samples is slightly shifted to the right, which may cause a fake bump in the no-signal case. To determine if the shifting effect is due to overfitting on training datasets, we plot the event score distribution of the testing dataset.
 
         Figure~\ref{fig:event_score_train_test_SR_SB_res_25} is the event score distribution for the testing dataset, which was not used in training. The ratio represents the SR value divided by the SB value, normalized by the ratio of total events in the SR and SB regions. The grey dashed line, equal to 1, indicates the same shape in both the SR and SB regions. The band is the standard deviation of the ratio, evaluated from the equation:
         \begin{equation}
-            \sigma = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{\left( \frac{\sigma_{N_{\text{SR}}}}{N_{\text{SR}}} \right)^2 + \left( \frac{\sigma_{N_{\text{SB}}}}{N_{\text{SB}}} \right)^2} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{ \frac{1}{N_{\text{SR}}} + \frac{1}{N_{\text{SB}}} }  
+            \sigma_{\text{SR/SB}} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{\left( \frac{\sigma_{N_{\text{SR}}}}{N_{\text{SR}}} \right)^2 + \left( \frac{\sigma_{N_{\text{SB}}}}{N_{\text{SB}}} \right)^2} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{ \frac{1}{N_{\text{SR}}} + \frac{1}{N_{\text{SB}}} }
         \end{equation}
         where $N_{\text{SR}}$ is the number of events in the signal region and $\sigma_{N_{\text{SR}}} = \sqrt{N_{\text{SR}}}$ is the standard deviation of $N_{\text{SR}}$. Similarly, $N_{\text{SB}}$ and $\sigma_{N_{\text{SB}}}$ are the corresponding values for the sideband region.
 
@@ -2429,41 +2429,41 @@
             \label{fig:event_score_train_test_SR_SB_res_25}
         \end{figure}
 
-        We evaluate the background passing efficiency in the SR and SB regions to describe the sculpting effect. If the sculpting effect does not exist, we expect the background efficiencies in the SR and SB regions to be the same. However, the sculpting effect makes the background efficiency in the SR to be higher than in the SB, creating a fake bump. To estimate the sensitivity of this fake bump, we use the following formula
+        We evaluate the background passing efficiency in the SR and SB regions to describe the sculpting effect. If the sculpting effect does not exist, we expect the background efficiencies in the SR and SB regions to be the same. However, the sculpting effect makes the background efficiency in the SR higher than in the SB, creating a fake bump. To estimate the sensitivity of this fake bump, we use the following formula
         \begin{equation}
-            \sigma = \frac{B\times \left( \epsilon_{\text{SR}} - \epsilon_{\text{SB}} \right)}{\sqrt{B \epsilon_{\text{SB}}}}
+            \sigma = \frac{B\times \left( \epsilon_{\text{SR}} - \epsilon_{\text{SB}} \right)}{\sqrt{B \epsilon_{\text{SB}}}}, \quad \mathrm{std}\left( \sigma \right) = \sqrt{\frac{B}{\epsilon_{\text{SB}}}} \mathrm{std}\left( \epsilon_{\text{SR}} \right) = \sqrt{\frac{B}{\epsilon_{\text{SB}}}} \sqrt{\frac{\epsilon_{\text{SR}}(1-\epsilon_{\text{SR}})}{N_{\text{SR}}}}
         \end{equation}
-        where $\epsilon_{\text{SR}}, \epsilon_{\text{SB}}$ are the background efficiencies in SR and SB regions, respectively, and $B$ is the number of background events in the signal region.
+        where $\epsilon_{\text{SR}}, \epsilon_{\text{SB}}$ are the background efficiencies in SR and SB regions, respectively, $B$ is the number of background events in the signal region, and $N_{\text{SR}}$ is the number of background events using to compute $\epsilon_{\text{SR}}$.
 
-        Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity} shows the background efficiency in the SR and SB regions. The background sample size $B = 18,922$. The fake sensitivity of training samples is greater than that of testing samples in all cases. This suggests that the sculpting effect partially arises from the overfitting of training samples. Data augmentation appears to make the situation worse, the fake sensitivity is higher than the original case.
+        Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity} shows the background efficiency in the SR and SB regions. The background sample size $B = 18,922$. The fake sensitivity of training samples is greater than that of testing samples in all cases. This suggests that the sculpting effect partially arises from the overfitting of training samples.
         \begin{table}[htpb]
             \centering
             \caption{The background efficiencies and fake bump sensitivities.}
             \label{tab:background_efficiency_in_SR_SB_and_fake_sensitivity}
             \begin{tabular}{c|ccc|ccc}
-                                                   & \multicolumn{3}{c|}{Training sample}                       & \multicolumn{3}{c}{Testing sample}                         \\
-            Model                                  & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$ & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$ \\ \hline
-            \multirow{3}{*}{Original}              & 10.0 \%                & 12.4 \%                & 10.4     & 10.0 \%                & 10.7 \%                & 3.1      \\
-                                                   & 1.00 \%                & 2.02 \%                & 14.1     & 1.00 \%                & 1.72 \%                & 9.9      \\
-                                                   & 0.10 \%                & 0.22 \%                & 5.4      & 0.10 \%                & 0.06 \%                & $-1.7$   \\ \hline
-            \multirow{3}{*}{+3 Jet rotation}       & 10.0 \%                & 14.2 \%                & 18.3     & 10.0 \%                & 11.2 \%                & 5.4      \\
-                                                   & 1.00 \%                & 2.68 \%                & 23.1     & 1.00 \%                & 2.16 \%                & 16.0     \\
-                                                   & 0.10 \%                & 0.11 \%                & 0.5      & 0.10 \%                & 0.03 \%                & $-3.0$   \\ \hline
-            \multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0 \%                & 13.2 \%                & 13.9     & 10.0 \%                & 11.5 \%                & 6.5      \\
-                                                   & 1.00 \%                & 2.12 \%                & 15.4     & 1.00 \%                & 1.63 \%                & 8.7      \\
-                                                   & 0.10 \%                & 0.20 \%                & 4.4      & 0.10 \%                & 0.11 \%                & 0.4     
+                                                   & \multicolumn{3}{c|}{Training sample}                             & \multicolumn{3}{c}{Testing sample}                               \\
+            Model                                  & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$       & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$       \\ \hline
+            \multirow{3}{*}{Original}              & 10.0 \%                & 12.4 \%                & $10.3 \pm 1.2$ & 10.0 \%                & 10.7 \%                & $3.1 \pm 1.3$  \\
+                                                   & 1.00 \%                & 2.02 \%                & $14.1 \pm 1.6$ & 1.00 \%                & 1.71 \%                & $9.8 \pm 1.8$  \\
+                                                   & 0.10 \%                & 0.22 \%                & $5.4 \pm 1.7$  & 0.10 \%                & 0.06 \%                & $-1.7 \pm 1.1$ \\ \hline
+            \multirow{3}{*}{+3 Jet rotation}       & 10.0 \%                & 14.2 \%                & $18.3 \pm 0.6$ & 10.0 \%                & 11.2 \%                & $5.1 \pm 1.4$  \\
+                                                   & 1.00 \%                & 2.68 \%                & $23.1 \pm 0.9$ & 1.00 \%                & 2.16 \%                & $16.0 \pm 2.0$ \\
+                                                   & 0.10 \%                & 0.11 \%                & $0.5 \pm 0.6$  & 0.10 \%                & 0.03 \%                & $-3.0 \pm 0.8$ \\ \hline
+            \multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0 \%                & 13.2 \%                & $13.9 \pm 0.6$ & 10.0 \%                & 11.5 \%                & $6.5 \pm 1.4$  \\
+                                                   & 1.00 \%                & 2.11 \%                & $15.3 \pm 0.8$ & 1.00 \%                & 1.63 \%                & $8.7 \pm 1.7$  \\
+                                                   & 0.10 \%                & 0.20 \%                & $4.4 \pm 0.8$  & 0.10 \%                & 0.11 \%                & $0.4 \pm 1.4$ 
             \end{tabular}
         \end{table}
     % subsection sculpting_effect_2 (end)
     \subsection{Remove rotation and flipping preprocessing}% (fold)
     \label{sub:remove_rotation_and_flipping_preprocessing}
-        To explore how the jet rotation improves the training, we modify the preprocessing steps mentioned in Section~\ref{sub:jet_image}. We remove the rotation and flipping and only keep the $p_\text{T}$ centralization for training datasets in this section. However, we keep all current preprocessing procedures for testing samples. 
-        
+        To explore how the jet rotation improves the training, we modify the preprocessing steps mentioned in Section~\ref{sub:jet_image}. We remove the rotation and flipping and only keep the $p_\text{T}$ centralization for training datasets in this section. However, we keep all current preprocessing procedures for testing samples.
+
         Figure~\ref{fig:sensitivity_improvement_origin_pt_center_x1_x5} shows the sensitivity improvement of different preprocessing procedures. For $\mathcal{L} = \text{139 fb}^{-1}$, the datasets without the rotation and flipping preprocessing perform worse. However, the $p_{\text{T}}$ centralization datasets perform similarly or slightly better for $\mathcal{L} =  139 \times 5 \text{ fb}^{-1}$. If we enlarge the training sample size by increasing the luminosity, the learning threshold would become lower. The ``$p_{\text{T}}$ centralization with $5$ times luminosity'' can perform better than the ``original with 1 times luminosity'' at the low sensitivity region, even if we only apply the network on all preprocessing samples. This gives a reason why the jet rotation can improve performance.
-        \begin{figure}[htpb] 
+        \begin{figure}[htpb]
             \centering
             \subfloat[Resolution: $25\times 25$]{
-                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_centralization_x1_x5_res_25.pdf} 
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_centralization_x1_x5_res_25.pdf}
             }
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training. Here $\times n$ means the luminosity is equal to $139 \times n \text{ fb}^{-1}$.}
             \label{fig:sensitivity_improvement_origin_pt_center_x1_x5}
@@ -2473,5 +2473,5 @@
 
 \bibliographystyle{ieeetr}
 \bibliography{reference}
-        
-\end{document} 
+
+\end{document}
