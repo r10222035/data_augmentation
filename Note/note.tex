@@ -2399,7 +2399,7 @@
         Figure~\ref{fig:event_score_train_SR_SB_res_25} shows that the event score distribution of the SR samples is slightly shifted to the right, which may cause a fake bump in the no-signal case. To determine if the shifting effect is due to overfitting on training datasets, we plot the event score distribution of the testing dataset.
 
         Figure~\ref{fig:event_score_train_test_SR_SB_res_25} is the event score distribution for the testing dataset, which was not used in training. The ratio represents the SR value divided by the SB value, normalized by the ratio of total events in the SR and SB regions. The grey dashed line, equal to 1, indicates the same shape in both the SR and SB regions. The band is the standard deviation of the ratio, evaluated from the equation:
-        \begin{equation}
+        \begin{equation}\label{eq:distribution_ratio_uncertainty}
             \sigma_{\text{SR/SB}} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{\left( \frac{\sigma_{N_{\text{SR}}}}{N_{\text{SR}}} \right)^2 + \left( \frac{\sigma_{N_{\text{SB}}}}{N_{\text{SB}}} \right)^2} = \frac{N_{\text{SR}}}{N_{\text{SB}}} \sqrt{ \frac{1}{N_{\text{SR}}} + \frac{1}{N_{\text{SB}}} }
         \end{equation}
         where $N_{\text{SR}}$ is the number of events in the signal region and $\sigma_{N_{\text{SR}}} = \sqrt{N_{\text{SR}}}$ is the standard deviation of $N_{\text{SR}}$. Similarly, $N_{\text{SB}}$ and $\sigma_{N_{\text{SB}}}$ are the corresponding values for the sideband region.
@@ -2425,7 +2425,7 @@
             \subfloat[+3 $p_{\text{T}}$-jet, $S / \sqrt{B} = 0$]{
                 \includegraphics[width=0.31\textwidth]{HVmodel_event_score_pt_jet_aug_3_test_SB_0_res_25.pdf}
             } \\
-            \caption{The event score distribution of training samples. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
+            \caption{The event score distribution of training samples with resolution $25\times 25$. Here $p_{\text{T}}$-jet means the $p_{\text{T}}$ smearing + jet rotation augmentation.}
             \label{fig:event_score_train_test_SR_SB_res_25}
         \end{figure}
 
@@ -2435,23 +2435,41 @@
         \end{equation}
         where $\epsilon_{\text{SR}}, \epsilon_{\text{SB}}$ are the background efficiencies in SR and SB regions, respectively, $B$ is the number of background events in the signal region, and $N_{\text{SR}}$ is the number of background events using to compute $\epsilon_{\text{SR}}$.
 
-        Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity} shows the background efficiency in the SR and SB regions. The background sample size $B = 18,922$. The fake sensitivity of training samples is greater than that of testing samples in all cases. This suggests that the sculpting effect partially arises from the overfitting of training samples.
+        Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_25} and \ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_75} show the background efficiency in the SR and SB regions. The number of background events $B = 18,922$. The fake sensitivity of training samples is greater than that of testing samples in all cases. This suggests that the sculpting effect partially arises from the overfitting of training samples.
         \begin{table}[htpb]
             \centering
-            \caption{The background efficiencies and fake bump sensitivities.}
-            \label{tab:background_efficiency_in_SR_SB_and_fake_sensitivity}
+            \caption{The background efficiencies and fake bump sensitivities with resolution $25\times 25$ datasets.}
+            \label{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_25}
             \begin{tabular}{c|ccc|ccc}
-                                                   & \multicolumn{3}{c|}{Training sample}                             & \multicolumn{3}{c}{Testing sample}                               \\
+                                       & \multicolumn{3}{c|}{Training sample}                             & \multicolumn{3}{c}{Testing sample}                               \\
             Model                                  & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$       & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$       \\ \hline
-            \multirow{3}{*}{Original}              & 10.0 \%                & 12.4 \%                & $10.3 \pm 1.2$ & 10.0 \%                & 10.7 \%                & $3.1 \pm 1.3$  \\
-                                                   & 1.00 \%                & 2.02 \%                & $14.1 \pm 1.6$ & 1.00 \%                & 1.71 \%                & $9.8 \pm 1.8$  \\
-                                                   & 0.10 \%                & 0.22 \%                & $5.4 \pm 1.7$  & 0.10 \%                & 0.06 \%                & $-1.7 \pm 1.1$ \\ \hline
-            \multirow{3}{*}{+3 Jet rotation}       & 10.0 \%                & 14.2 \%                & $18.3 \pm 0.6$ & 10.0 \%                & 11.2 \%                & $5.1 \pm 1.4$  \\
-                                                   & 1.00 \%                & 2.68 \%                & $23.1 \pm 0.9$ & 1.00 \%                & 2.16 \%                & $16.0 \pm 2.0$ \\
-                                                   & 0.10 \%                & 0.11 \%                & $0.5 \pm 0.6$  & 0.10 \%                & 0.03 \%                & $-3.0 \pm 0.8$ \\ \hline
-            \multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0 \%                & 13.2 \%                & $13.9 \pm 0.6$ & 10.0 \%                & 11.5 \%                & $6.5 \pm 1.4$  \\
-                                                   & 1.00 \%                & 2.11 \%                & $15.3 \pm 0.8$ & 1.00 \%                & 1.63 \%                & $8.7 \pm 1.7$  \\
-                                                   & 0.10 \%                & 0.20 \%                & $4.4 \pm 0.8$  & 0.10 \%                & 0.11 \%                & $0.4 \pm 1.4$ 
+            \multirow{3}{*}{Original}              & 10.0\%                 & 12.4\%                 & $10.3 \pm 1.2$ & 10.0\%                 & 10.7\%                 & $3.1 \pm 1.3$  \\
+                                                   & 1.00\%                 & 2.02\%                 & $14.1 \pm 1.6$ & 1.00\%                 & 1.71\%                 & $9.8 \pm 1.8$  \\
+                                                   & 0.10\%                 & 0.22\%                 & $5.4 \pm 1.7$  & 0.10\%                 & 0.06\%                 & $-1.7 \pm 1.1$ \\ \hline
+            \multirow{3}{*}{+3 Jet rotation}       & 10.0\%                 & 14.2\%                 & $18.3 \pm 0.6$ & 10.0\%                 & 11.2\%                 & $5.1 \pm 1.4$  \\
+                                                   & 1.00\%                 & 2.68\%                 & $23.1 \pm 0.9$ & 1.00\%                 & 2.16\%                 & $16.0 \pm 2.0$ \\
+                                                   & 0.10\%                 & 0.11\%                 & $0.5 \pm 0.6$  & 0.10\%                 & 0.03\%                 & $-3.0 \pm 0.8$ \\ \hline
+            \multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0\%                 & 13.2\%                 & $13.9 \pm 0.6$ & 10.0\%                 & 11.5\%                 & $6.5 \pm 1.4$  \\
+                                                   & 1.00\%                 & 2.11\%                 & $15.3 \pm 0.8$ & 1.00\%                 & 1.63\%                 & $8.7 \pm 1.7$  \\
+                                                   & 0.10\%                 & 0.20\%                 & $4.4 \pm 0.8$  & 0.10\%                 & 0.11\%                 & $0.4 \pm 1.4$ 
+            \end{tabular}
+        \end{table}
+        \begin{table}[htpb]
+            \centering
+            \caption{The background efficiencies and fake bump sensitivities with resolution $75\times 75$ datasets.}
+            \label{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_75}
+            \begin{tabular}{c|ccc|ccc}
+                                       & \multicolumn{3}{c|}{Training sample}                             & \multicolumn{3}{c}{Testing sample}                              \\
+            Model                                  & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$       & $\epsilon_{\text{SB}}$ & $\epsilon_{\text{SR}}$ & $\sigma$      \\ \hline
+            \multirow{3}{*}{Original}              & 10.0\%                 & 12.8\%                 & $12.2 \pm 1.2$ & 10.0\%                 & 10.6\%                 & $2.7 \pm 1.3$ \\
+                                                   & 1.00\%                 & 2.17\%                 & $16.1 \pm 1.6$ & 1.00\%                 & 1.62\%                 & $8.5 \pm 1.7$ \\
+                                                   & 0.10\%                 & 0.52\%                 & $18.4 \pm 2.5$ & 0.10\%                 & 0.16\%                 & $2.6 \pm 1.7$ \\ \hline
+            \multirow{3}{*}{+3 Jet rotation}       & 10.0\%                 & 13.8\%                 & $16.4 \pm 0.6$ & 10.0\%                 & 10.7\%                 & $2.9 \pm 1.3$ \\
+                                                   & 1.00\%                 & 2.18\%                 & $16.3 \pm 0.8$ & 1.00\%                 & 1.39\%                 & $5.4 \pm 1.6$ \\
+                                                   & 0.10\%                 & 0.40\%                 & $13.2 \pm 1.1$ & 0.10\%                 & 0.20\%                 & $4.3 \pm 1.9$ \\ \hline
+            \multirow{3}{*}{+3 $p_{\text{T}}$-jet} & 10.0\%                 & 14.1\%                 & $18.0 \pm 0.6$ & 10.0\%                 & 11.3\%                 & $5.7 \pm 1.4$ \\
+                                                   & 1.00\%                 & 2.20\%                 & $16.6 \pm 0.8$ & 1.00\%                 & 1.42\%                 & $5.8 \pm 1.6$ \\
+                                                   & 0.10\%                 & 0.32\%                 & $9.7 \pm 1.0$  & 0.10\%                 & 0.17\%                 & $3.0 \pm 1.8$
             \end{tabular}
         \end{table}
     % subsection sculpting_effect_2 (end)
@@ -2469,6 +2487,42 @@
             \label{fig:sensitivity_improvement_origin_pt_center_x1_x5}
         \end{figure}
     % subsection remove_rotation_and_flipping_preprocessing (end)
+    \subsection{Invariant mass distribution}% (fold)
+    \label{sub:invariant_mass_distribution}
+        We plot the invariant mass $m_{jj}$ distribution before and after the CNN cut to determine whether the sculpting effect exists. We also plot the background passing rate as a function of invariant mass $m_{jj}$ to investigate the performance of CWoLa CNN on different mass regions.
+
+        Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train} and \ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test} show $m_{jj}$ distributions and background passing rates for training and testing datasets. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line is equal to the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}. We prepare another testing dataset to plot the $m_{jj}$ distribution here. These samples all pass the $\eta$ cut mentioned in Section~\ref{sub:sample_selection}.
+
+        The $m_{jj}$ distributions look smooth for the $\varepsilon_{\text{SB}} = 10\%$ case. However, there are obvious sculpting effects for lower background efficiency cases. These results are consistent with Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_25}. The background passing rate increases along with the invariant $m_{jj}$. CNN cuts the low mass region.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_origin_SB_0_train.pdf}
+            } \\
+            \subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_jet_aug_3_SB_0_train.pdf}
+            } \\
+            \subfloat[+3 $p_{\text{T}}$ smearing + jet rotation, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_pt_jet_aug_3_SB_0_train.pdf}
+            }
+            \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+            \label{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}
+        \end{figure}
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_origin_SB_0_test.pdf}
+            } \\
+            \subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_jet_aug_3_SB_0_test.pdf}
+            } \\
+            \subfloat[+3 $p_{\text{T}}$ smearing + jet rotation, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_pt_jet_aug_3_SB_0_test.pdf}
+            }
+            \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+            \label{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test}
+        \end{figure}
+    % subsection invariant_mass_distribution (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
