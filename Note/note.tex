@@ -2523,6 +2523,51 @@
             \label{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test}
         \end{figure}
     % subsection invariant_mass_distribution (end)
+    \subsection{Background subtraction}% (fold)
+    \label{sub:background_subtraction}
+        Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train} and \ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test} show the sculpting effect. We can not simply use the background passing rate in the sideband region to estimate the background passing rate in the signal region.
+
+        We would use the background subtraction method:
+        \begin{enumerate}
+            \item Prepare the real and simulated datasets. In real applications, the real dataset comes from experiments, which could contain the signal and background events. The simulated dataset comes from simulation, which only contains background events in the signal region.
+            \item Train a CWoLa classifier with the real dataset.
+            \item Use the simulated dataset to determine the background passing rate and the corresponding threshold.
+            \item Apply the CWoLa classifier with the same threshold on the real dataset in the signal region. Then we can obtain the number of events passing the CWoLa cut. This value is the sum of the signal and background events.
+            \item Evaluate the difference between the number of events to estimate the number of signal events and compute the sensitivity after the CWoLa cut.
+        \end{enumerate}
+        We assume the real background is similar to the simulated background and the network performance of the real and simulated events is similar. 
+
+        Figure~\ref{fig:sensitivity_improvement_true_label_background_subtraction} shows the sensitivity improvement evaluated by different methods. The ``true label'' is our previous method, where we use another testing dataset in the signal region to evaluate the sensitivity improvement. The background subtraction and the previous method give similar results for $\varepsilon_{\text{b}} = 1.0 \%, 0.1 \%$. There is much difference for $\varepsilon_{\text{b}} = 10 \%$. Even if we consider the no-signal case the sensitivity is close to 5 after the CWoLa cut. 
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_true_label.pdf}
+            } \\
+            \subfloat[+3 jet rotation]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_3_bkg_subtraction_true_label.pdf}
+            } \\
+            \subfloat[+3 $p_{\text{T}}$ smearing + jet rotation]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_bkg_subtraction_true_label.pdf}
+            }
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_true_label_background_subtraction}
+        \end{figure}
+        Figure~\ref{fig:sensitivity_improvement_background_subtraction} shows the sensitivity improvement evaluated by the background subtraction method. The augmented datasets perform better with lower background efficiencies. 
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_pt_jet_aug_3_bkg_subtraction.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_subtraction}
+        \end{figure}
+
+        Figure~\ref{fig:train_background_passing_rate} shows the background efficiencies of training datasets. The passing rate of training sets is consistently higher than testing sets. This satisfied our expectations, the neural network would prefer to choose the training samples.
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_jet_aug_3_pt_jet_aug_3.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:train_background_passing_rate}
+        \end{figure}
+    % subsection background_subtraction (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
