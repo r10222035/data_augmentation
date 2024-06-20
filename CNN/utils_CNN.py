@@ -139,4 +139,4 @@ def get_fpr_thresholds(y_true, y_scores):
 def get_threshold_from_fpr(fpr, th, passing_rate=0.01):
     # th 由小到大，fpr 由大到小
     passing_rate_idx = (fpr > passing_rate).sum()
-    return th[passing_rate_idx]
+    return th[passing_rate_idx] if passing_rate_idx < len(th) else th[-1]

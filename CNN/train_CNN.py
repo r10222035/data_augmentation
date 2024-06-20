@@ -4,7 +4,6 @@
 # python train_CNN.py config_files/config_01.json
 
 import os
-import re
 import sys
 import json
 import shutil
@@ -88,30 +87,6 @@ class CNN(tf.keras.Model):
         self.bn1 = tf.keras.layers.BatchNormalization()
 
         self.bn2 = tf.keras.layers.BatchNormalization()
-
-        # create sub-network
-        # self.sub_network = tf.keras.Sequential()
-
-        # kernel = (parameters['CNN_kernel_size'], parameters['CNN_kernel_size'])
-
-        # for i in range(parameters['n_CNN_layers_tot']):
-        #     if i < parameters['n_CNN_layers_1']:
-        #         n_filters = parameters['n_CNN_filters']
-        #     else:
-        #         n_filters = parameters['n_CNN_filters'] * 2
-
-        #     if i == 0:
-        #         self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
-        #     else:
-        #         self.sub_network.add(tf.keras.layers.MaxPool2D((2, 2)))
-        #         self.sub_network.add(tf.keras.layers.Conv2D(n_filters, kernel, padding='same', activation='relu'))
-
-        # self.sub_network.add(tf.keras.layers.Flatten())
-
-        # for _ in range(parameters['n_dense_layers']):
-        #     self.sub_network.add(tf.keras.layers.Dense(parameters['dense_hidden_dim'], activation='relu'))
-
-        # self.sub_network.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 
         self.sub_network = tf.keras.Sequential([
             tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
@@ -220,10 +195,10 @@ def main():
     r_train, r_val = 0.8, 0.2
     n_SR_S, n_SR_B, n_SB_S, n_SB_B = utils.compute_nevent_in_SR_SB(sensitivity=sensitivity, L=luminosity)
 
-    train_nevents = int(n_SR_S * r_train), int(n_SB_S * r_train), int(n_SR_B * r_train), int(n_SB_B * r_train)
+    train_nevents = (np.array([n_SR_S, n_SB_S, n_SR_B, n_SB_B]) * r_train).astype(int)
     X_train, y_train = create_mix_sample_from(train_npy_paths, train_nevents, seed=seed)
 
-    val_nevents = int(n_SR_S * r_val), int(n_SB_S * r_val), int(n_SR_B * r_val), int(n_SB_B * r_val)
+    val_nevents = (np.array([n_SR_S, n_SB_S, n_SR_B, n_SB_B]) * r_val).astype(int)
     X_val, y_val = create_mix_sample_from(val_npy_paths, val_nevents, seed=seed)
 
     train_size = get_sample_size(y_train)
@@ -232,7 +207,7 @@ def main():
     with tf.device('CPU'):
         train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
         train_dataset = train_dataset.shuffle(buffer_size=len(y_train)).batch(BATCH_SIZE)
-        del X_train, y_train
+        # del X_train, y_train
 
         valid_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val))
         valid_dataset = valid_dataset.batch(BATCH_SIZE)
@@ -294,12 +269,42 @@ def main():
     true_label_ACC = get_highest_accuracy(y_test, y_pred)
     true_label_AUC = roc_auc_score(y_test, y_pred)
 
-    background_efficiencies = [0.1, 0.01, 0.001]
+    background_efficiencies = np.array([0.1, 0.01, 0.001])
     scale_factors = get_sensitivity_scale_factor(save_model_name, background_efficiencies, true_label_path)
+
+    # Background subtraction
+    X_test_B = X_test[y_test == 0]
+    y_test_B = y_test[y_test == 0]
+    origin_npy_paths = ['../Sample/HVmodel/data/origin/25x25']
+    origin_val_npy_paths = ['../Sample/HVmodel/data/origin/25x25/val']
+    X_train_SR, y_train_SR, _, _ = utils.get_SR_SB_sample_from_npy(origin_npy_paths, train_nevents, seed=seed)
+    X_val, y_val, _, _ = utils.get_SR_SB_sample_from_npy(origin_val_npy_paths, val_nevents, seed=seed)
+    X_train_SR = np.concatenate([X_train_SR, X_val])
+    y_train_SR = np.concatenate([y_train_SR, y_val])
+
+    y_prob_test = loaded_model.predict(X_test_B, batch_size=BATCH_SIZE)
+    y_prob_train = loaded_model.predict(X_train_SR, batch_size=BATCH_SIZE)
+
+    fpr, thresholds = utils.get_fpr_thresholds(y_test_B, y_prob_test)
+
+    train_SR_S_pass, train_SR_B_pass, test_SR_B_pass = [], [], []
+    for eff_test in background_efficiencies:
+        threshold = utils.get_threshold_from_fpr(fpr, thresholds, eff_test)
+
+        y_prob_train_S = y_prob_train[y_train_SR == 1]
+        y_prob_train_B = y_prob_train[y_train_SR == 0]
+
+        sig_pass = (y_prob_train_S > threshold).sum() / len(y_prob_train_S) * n_SR_S if n_SR_S > 0 else 0
+        bkg_pass = (y_prob_train_B > threshold).sum() / len(y_prob_train_B) * n_SR_B if n_SR_B > 0 else 0
+        train_SR_S_pass.append(sig_pass)
+        train_SR_B_pass.append(bkg_pass)
+
+        test_bkg_pass = (y_prob_test > threshold).sum() / len(y_prob_test) * n_SR_B
+        test_SR_B_pass.append(test_bkg_pass)
 
     # Write results
     now = datetime.datetime.now()
-    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results-3.csv'
+    file_name = 'CWoLa_Hunting_Hidden_Valley_training_results-4.csv'
     data_dict = {
                 'Train signal size': [train_size[0]],
                 'Train background size': [train_size[1]],
@@ -316,6 +321,15 @@ def main():
                 'TPR/FPR^0.5: FPR=0.1': [scale_factors[0]],
                 'TPR/FPR^0.5: FPR=0.01': [scale_factors[1]],
                 'TPR/FPR^0.5: FPR=0.001': [scale_factors[2]],
+                'Train SR signal pass: Test FPR=0.1': [train_SR_S_pass[0]],
+                'Train SR signal pass: Test FPR=0.01': [train_SR_S_pass[1]],
+                'Train SR signal pass: Test FPR=0.001': [train_SR_S_pass[2]],
+                'Train SR background pass: Test FPR=0.1': [train_SR_B_pass[0]],
+                'Train SR background pass: Test FPR=0.01': [train_SR_B_pass[1]],
+                'Train SR background pass: Test FPR=0.001': [train_SR_B_pass[2]],
+                'Test SR background pass: Test FPR=0.1': [test_SR_B_pass[0]],
+                'Test SR background pass: Test FPR=0.01': [test_SR_B_pass[1]],
+                'Test SR background pass: Test FPR=0.001': [test_SR_B_pass[2]],
                 'Training epochs': [len(history.history['loss']) + 1],
                 'time': [now],
                 }
