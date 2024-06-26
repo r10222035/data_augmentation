@@ -91,15 +91,22 @@ class CNN(tf.keras.Model):
         self.sub_network = tf.keras.Sequential([
             tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
             tf.keras.layers.MaxPool2D((2, 2)),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(1, activation='sigmoid'),
         ])
 
