@@ -2491,9 +2491,9 @@
     \label{sub:invariant_mass_distribution}
         We plot the invariant mass $m_{jj}$ distribution before and after the CNN cut to determine whether the sculpting effect exists. We also plot the background passing rate as a function of invariant mass $m_{jj}$ to investigate the performance of CWoLa CNN on different mass regions.
 
-        Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train} and \ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test} show $m_{jj}$ distributions and background passing rates for training and testing datasets. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line is equal to the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}. We prepare another testing dataset to plot the $m_{jj}$ distribution here. These samples all pass the $\eta$ cut mentioned in Section~\ref{sub:sample_selection}.
+        Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train} and \ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test} show $m_{jj}$ distributions and background passing rates for training and testing datasets. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}. We prepare another testing dataset to plot the $m_{jj}$ distribution here. These samples all pass the $\eta$ cut mentioned in Section~\ref{sub:sample_selection}.
 
-        The $m_{jj}$ distributions look smooth for the $\varepsilon_{\text{SB}} = 10\%$ case. However, there are obvious sculpting effects for lower background efficiency cases. These results are consistent with Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_25}. The background passing rate increases along with the invariant $m_{jj}$. CNN cuts the low mass region.
+        The $m_{jj}$ distributions look smooth for the $\varepsilon_{\text{SB}} = 10\%$ case. However, there are obvious sculpting effects for lower background efficiency cases. These results are consistent with Table~\ref{tab:background_efficiency_in_SR_SB_and_fake_sensitivity_res_25}. The background passing rate increases with the invariant $m_{jj}$. CNN cuts the low mass region.
         \begin{figure}[htpb]
             \centering
             \subfloat[Original, $S / \sqrt{B} = 0$]{
@@ -2564,10 +2564,71 @@
         \begin{figure}[htpb]
             \centering
             \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_jet_aug_3_pt_jet_aug_3.pdf}
-            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \caption{The training background efficiency of CWoLa CNN selection. The dashed grey line is $1$ representing the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:train_background_passing_rate}
         \end{figure}
     % subsection background_subtraction (end)
+    \subsection{Mitigate the over-fitting on training dataset}% (fold)
+    \label{sub:mitigate_the_over_fitting_on_training_dataset}
+        Figure~\ref{fig:train_background_passing_rate} shows the over-fitting issue on the training samples. This would lead to a fake sensitivity. We test the Dropout and L2 regularization techniques to mitigate the over-fitting issue.
+
+        First, the Dropout technique is only applied on DNN layers, but there is no difference in the training results. Thus, the Dropout is always applied on all layers with the same dropout rate. Figure~\ref{fig:sensitivity_improvement_background_pass_rate_dropout_25_35_50} shows the training results of different dropout rates. For dropout rates $0.25$ and $0.35$, they can mitigate the over-fitting issue and perform similarly. The training would fail for the dropout rate of $0.50$.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_dp_25_35_50.pdf}
+            } \\
+            \subfloat[+3 jet rotation]{
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_dp_25_35_50.pdf}
+            }
+            \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_pass_rate_dropout_25_35_50}
+        \end{figure}
+
+        In the following training, we set the dropout rate to 0.35. Figure~\ref{fig:sensitivity_improvement_background_pass_rate_dropout_35_CNN_l2} shows the training results with L2 regularization. Here, the L2 regularization is only applied on CNN layers. When we used it on all layers the training would fail. It seems that L2 regularization can not further reduce the over-fitting issue.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_dp_35_CNN_l2_0001.pdf}
+            } \\
+            \subfloat[+3 jet rotation]{
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_dp_35_CNN_l2_0001.pdf}
+            }
+            \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_pass_rate_dropout_35_CNN_l2}
+        \end{figure}
+
+        Figure~\ref{fig:sensitivity_improvement_background_subtraction_dropout_0_35} shows the sensitivity improvement with the Dropout technique. We use the background subtraction to evaluate the sensitivity.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Original]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_dp_35.pdf}
+            } \\
+            \subfloat[+3 jet rotation]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_jet_aug_3_bkg_subtraction_dp_35.pdf}
+            } \\
+            \subfloat[+3 $p_{\text{T}}$ smearing + jet rotation]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_bkg_subtraction_dp_35.pdf}
+            }
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_subtraction_dropout_0_35}
+        \end{figure}
+        Figure~\ref{fig:sensitivity_improvement_background_subtraction_dropout_35} shows the sensitivity improvement with different training dataset sets. The augmented datasets perform better and have smaller fluctuations. 
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_jet_aug_3_pt_jet_aug_3_bkg_subtraction_dp_35.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_subtraction_dropout_35}
+        \end{figure}
+
+        Figure~\ref{fig:train_background_passing_rate_dropout_35} shows the background efficiencies of training datasets. The passing rate of training sets is consistently higher than that of testing sets but lower than Figure~\ref{fig:train_background_passing_rate}. 
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_jet_aug_3_pt_jet_aug_3_dp_35.pdf}
+            \caption{The training background efficiency of CWoLa CNN selection. The dashed grey line is $1$ representing the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:train_background_passing_rate_dropout_35}
+        \end{figure}
+    % subsection mitigate_the_over_fitting_on_training_dataset (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
