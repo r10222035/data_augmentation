@@ -113,6 +113,52 @@ def get_SR_SB_sample_from_npy(npy_dirs: list, nevents: tuple, seed=0):
     return data_SR, label_SR, data_SB, label_SB
 
 
+def create_mix_sample_from_npy(npy_dirs: list, nevents: tuple, seed=0):
+    # npy_dirs: list of npy directories
+    # nevents: tuple of (n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB)
+
+    npy_dir0 = Path(npy_dirs[0])
+
+    data_sig_SR = np.load(npy_dir0 / 'sig_in_SR-data.npy')
+    data_sig_SB = np.load(npy_dir0 / 'sig_in_SB-data.npy')
+    data_bkg_SR = np.load(npy_dir0 / 'bkg_in_SR-data.npy')
+    data_bkg_SB = np.load(npy_dir0 / 'bkg_in_SB-data.npy')
+
+    data = np.array([]).reshape(0, *data_sig_SR.shape[1:])
+    label = np.array([]).reshape(0)
+
+    n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB = nevents
+
+    np.random.seed(seed)
+    idx_sig_SR = np.random.choice(data_sig_SR.shape[0], n_sig_SR, replace=False)
+    idx_sig_SB = np.random.choice(data_sig_SB.shape[0], n_sig_SB, replace=False)
+    idx_bkg_SR = np.random.choice(data_bkg_SR.shape[0], n_bkg_SR, replace=False)
+    idx_bkg_SB = np.random.choice(data_bkg_SB.shape[0], n_bkg_SB, replace=False)
+
+    print(f'Preparing dataset from {npy_dirs}')
+    for npy_dir in npy_dirs:
+        npy_dir = Path(npy_dir)
+
+        data_sig_SR = np.load(npy_dir / 'sig_in_SR-data.npy')
+        data_sig_SB = np.load(npy_dir / 'sig_in_SB-data.npy')
+        data_bkg_SR = np.load(npy_dir / 'bkg_in_SR-data.npy')
+        data_bkg_SB = np.load(npy_dir / 'bkg_in_SB-data.npy')
+
+        new_data = np.concatenate([
+            data_sig_SR[idx_sig_SR],
+            data_bkg_SR[idx_bkg_SR],
+            data_sig_SB[idx_sig_SB],
+            data_bkg_SB[idx_bkg_SB]
+        ], axis=0)
+        data = np.concatenate([data, new_data], axis=0)
+
+        new_label = np.zeros(sum(nevents))
+        new_label[:n_sig_SR + n_bkg_SR] = 1
+        label = np.concatenate([label, new_label])
+
+    return data, label
+
+
 def get_fpr_thresholds(y_true, y_scores):
     # get the false positive rate and corresponding threshold values
 
