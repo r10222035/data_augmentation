@@ -19,56 +19,6 @@ from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
-def create_mix_sample_from(npy_dirs: list, nevents: tuple, seed=0):
-    # npy_dirs: list of npy directories
-    # nevents: tuple of (n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB)
-    data = None
-    label = None
-
-    data_sig_SR = np.load(os.path.join(npy_dirs[0], 'sig_in_SR-data.npy'))
-    data_sig_SB = np.load(os.path.join(npy_dirs[0], 'sig_in_SB-data.npy'))
-    data_bkg_SR = np.load(os.path.join(npy_dirs[0], 'bkg_in_SR-data.npy'))
-    data_bkg_SB = np.load(os.path.join(npy_dirs[0], 'bkg_in_SB-data.npy'))
-
-    n_sig_SR, n_sig_SB, n_bkg_SR, n_bkg_SB = nevents
-
-    np.random.seed(seed)
-    idx_sig_SR = np.random.choice(data_sig_SR.shape[0], n_sig_SR, replace=False)
-    idx_sig_SB = np.random.choice(data_sig_SB.shape[0], n_sig_SB, replace=False)
-    idx_bkg_SR = np.random.choice(data_bkg_SR.shape[0], n_bkg_SR, replace=False)
-    idx_bkg_SB = np.random.choice(data_bkg_SB.shape[0], n_bkg_SB, replace=False)
-
-    print(f'Preparing dataset from {npy_dirs}')
-    for npy_dir in npy_dirs:
-
-        data_sig_SR = np.load(os.path.join(npy_dir, 'sig_in_SR-data.npy'))
-        data_sig_SB = np.load(os.path.join(npy_dir, 'sig_in_SB-data.npy'))
-        data_bkg_SR = np.load(os.path.join(npy_dir, 'bkg_in_SR-data.npy'))
-        data_bkg_SB = np.load(os.path.join(npy_dir, 'bkg_in_SB-data.npy'))
-
-        new_data = np.concatenate([
-            data_sig_SR[idx_sig_SR],
-            data_bkg_SR[idx_bkg_SR],
-            data_sig_SB[idx_sig_SB],
-            data_bkg_SB[idx_bkg_SB]
-        ], axis=0)
-
-        if data is None:
-            data = new_data
-        else:
-            data = np.concatenate([data, new_data], axis=0)
-
-        new_label = np.zeros(sum(nevents))
-        new_label[:n_sig_SR + n_bkg_SR] = 1
-
-        if label is None:
-            label = new_label
-        else:
-            label = np.concatenate([label, new_label])
-
-    return data, label
-
-
 def get_sample_size(y):
     if len(y.shape) == 1:
         ns = (y == 1).sum()
@@ -89,24 +39,24 @@ class CNN(tf.keras.Model):
         self.bn2 = tf.keras.layers.BatchNormalization()
 
         self.sub_network = tf.keras.Sequential([
-            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu', kernel_regularizer=tf.keras.regularizers.l1(0.0001)),
             tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.35),
-            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu'),
+            # tf.keras.layers.Dropout(0.35),
+            tf.keras.layers.Conv2D(64, (5, 5), padding='same', activation='relu', kernel_regularizer=tf.keras.regularizers.l1(0.0001)),
             tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.35),
-            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
+            # tf.keras.layers.Dropout(0.35),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu', kernel_regularizer=tf.keras.regularizers.l1(0.0001)),
             tf.keras.layers.MaxPool2D((2, 2)),
-            tf.keras.layers.Dropout(0.35),
-            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu'),
-            tf.keras.layers.Dropout(0.35),
+            # tf.keras.layers.Dropout(0.35),
+            tf.keras.layers.Conv2D(128, (3, 3), padding='same', activation='relu', kernel_regularizer=tf.keras.regularizers.l1(0.0001)),
+            # tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Flatten(),
             tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dropout(0.35),
+            # tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dropout(0.35),
+            # tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(128, activation='relu'),
-            tf.keras.layers.Dropout(0.35),
+            # tf.keras.layers.Dropout(0.35),
             tf.keras.layers.Dense(1, activation='sigmoid'),
         ])
 
@@ -203,10 +153,10 @@ def main():
     n_SR_S, n_SR_B, n_SB_S, n_SB_B = utils.compute_nevent_in_SR_SB(sensitivity=sensitivity, L=luminosity)
 
     train_nevents = (np.array([n_SR_S, n_SB_S, n_SR_B, n_SB_B]) * r_train).astype(int)
-    X_train, y_train = create_mix_sample_from(train_npy_paths, train_nevents, seed=seed)
+    X_train, y_train = utils.create_mix_sample_from_npy(train_npy_paths, train_nevents, seed=seed)
 
     val_nevents = (np.array([n_SR_S, n_SB_S, n_SR_B, n_SB_B]) * r_val).astype(int)
-    X_val, y_val = create_mix_sample_from(val_npy_paths, val_nevents, seed=seed)
+    X_val, y_val = utils.create_mix_sample_from_npy(val_npy_paths, val_nevents, seed=seed)
 
     train_size = get_sample_size(y_train)
     val_size = get_sample_size(y_val)
