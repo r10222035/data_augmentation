@@ -2588,10 +2588,10 @@
         In the following training, we set the dropout rate to 0.35. Figure~\ref{fig:sensitivity_improvement_background_pass_rate_dropout_35_CNN_l2} shows the training results with L2 regularization. Here, the L2 regularization is only applied on CNN layers. When we used it on all layers the training would fail. It seems that L2 regularization can not further reduce the over-fitting issue.
         \begin{figure}[htpb]
             \centering
-            \subfloat[Original]{
+            \subfloat[Sensitivity improvement]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_dp_35_CNN_l2_0001.pdf}
             } \\
-            \subfloat[+3 jet rotation]{
+            \subfloat[Training background efficiency]{
             \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_dp_35_CNN_l2_0001.pdf}
             }
             \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
@@ -2629,6 +2629,63 @@
             \label{fig:train_background_passing_rate_dropout_35}
         \end{figure}
     % subsection mitigate_the_over_fitting_on_training_dataset (end)
+	\subsection{K-fold Cross-Validation}% (fold)
+	\label{sub:k_fold_cross_validation}
+		K-fold cross-validation is a technique used to evaluate the performance of a machine-learning model. The k-fold method divides the dataset into $k$ equally sized subsets, or ``folds.'' For each fold, treat one fold as the test set and the remaining $k - 1$ folds as the training set. After completing the training for all $k$ folds, calculate the average performance metric. This average provides a more robust estimate of the model's performance than a single train-test split.
+
+		We set $k=5$ for our CWoLa training. After completing the training for all $k$ folds, we evaluate the average event scores as the final output.
+
+		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_k_fold} shows the training results with the k-fold technique. The training performance with and without the k-fold technique are similar. The k-fold technique only reduces the training fluctuation.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_5_fold.pdf}
+            } \\
+            \subfloat[Training background efficiency]{
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_5_fold.pdf}
+            }
+            \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_pass_rate_k_fold}
+        \end{figure}
+	% subsection k_fold_cross_validation (end)
+	\subsection{L1 regularization}% (fold)
+	\label{sub:l1_regularization}
+		L1 regularization is a technique to prevent overfitting by adding a penalty term to the loss function. L1 regularization adds the absolute values of the coefficients (weights) to the loss function:
+		\begin{equation}
+			\text{Loss} = \text{Original Loss} + \lambda \sum_{i} \abs{w_i}
+		\end{equation}
+		where $w_i$ are the model's coefficients and $\lambda$ is a hyperparameter that controls the strength of the penalty term.
+
+		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_l1} shows the training results with the L1 regularization technique. The ``CNN L1: 0.0001'' means the L1 regularization is applied on all parameters in the CNN layers with $\lambda = 0.0001$. The ``CNN L1: 0.0001'' can mitigate the overfitting, while the ``DNN L1: 0.0001'' worsens the situation.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_l1_00001.pdf}
+            } \\
+            \subfloat[Training background efficiency]{
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_l1_00001.pdf}
+            }
+            \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_pass_rate_l1}
+        \end{figure}
+	% subsection l1_regularization (end)
+	\subsection{Asymptotic behaviour of no-signal neural network}% (fold)
+	\label{sub:asymptotic_behaviour_of_no_signal_neural_network}
+		We enlarged the training sample size to identify whether the more augmented samples would improve the situation. In Section~\ref{sub:augmented_sample_size}, we found the sensitivity improvement increases with the training sample size. However, we didn't perform the same exercise on no-signal case. We train the CNN on larger datasets without signal events.
+		
+		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10} shows the training results with different sample sizes on the no-signal network. The Dropout technique is applied on all layers with a dropout rate 0.35. It seems that the training results are independent of the augmented sample size.
+		\begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_to_10_SB_0_dp_35_res_25.pdf}
+            } \\
+            \subfloat[Training background efficiency]{
+            \includegraphics[width=0.97\textwidth]{HVmodel_train_B_passing_rate_origin_pt_jet_aug_3_to_10_SB_0_dp_35_res_25.pdf}
+            }
+            \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10}
+        \end{figure}
+	% subsection asymptotic_behaviour_of_no_signal_neural_network (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
