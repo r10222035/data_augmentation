@@ -2511,13 +2511,13 @@
         \begin{figure}[htpb]
             \centering
             \subfloat[Original, $S / \sqrt{B} = 0$]{
-                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_origin_SB_0_test.pdf}
+                \includegraphics[width=0.96\textwidth]{mjj_distribution_CNN_cut_origin_SB_0_test.pdf}
             } \\
             \subfloat[+3 jet rotation, $S / \sqrt{B} = 0$]{
-                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_jet_aug_3_SB_0_test.pdf}
+                \includegraphics[width=0.96\textwidth]{mjj_distribution_CNN_cut_jet_aug_3_SB_0_test.pdf}
             } \\
             \subfloat[+3 $p_{\text{T}}$ smearing + jet rotation, $S / \sqrt{B} = 0$]{
-                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_pt_jet_aug_3_SB_0_test.pdf}
+                \includegraphics[width=0.96\textwidth]{mjj_distribution_CNN_cut_pt_jet_aug_3_SB_0_test.pdf}
             }
             \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
             \label{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_test}
@@ -2686,6 +2686,34 @@
             \label{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10}
         \end{figure}
 	% subsection asymptotic_behaviour_of_no_signal_neural_network (end)
+	\subsection{Change the training dataset}% (fold)
+	\label{sub:change_the_training_dataset}
+		I used ZN's data pool for training to make sure I could reproduce similar results with these datasets. First, I split ZN's pool into training and validation sets, then resample from these two datasets in each training. The testing samples are the same as my previous tests.
+
+		Figure~\ref{fig:sensitivity_improvement_ZN_pool} shows the training results with ZN's data pool. The mean value of the ZN pool at sensitivity 0 is 2.00 which is lower than the 4.27 of the FY pool.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_ZN_pool.pdf}
+            }
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_ZN_pool}
+        \end{figure}
+
+		To examine whether I accidentally choose very bad training data from the FY pool, I perform 100 training with 100 different random seeds.
+
+		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_l1} shows the training results with 100 times training. The mean value of 100 times training at sensitivity 0 is 3.91 which is close to the previous results.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_100_random_seed.pdf}
+            }
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 100 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_100_random_seed}
+        \end{figure}
+
+		There could be something wrong with my testing dataset. Therefore, I would prepare another testing dataset and perform the same training with the new testing samples.
+	% subsection change_the_training_dataset (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
