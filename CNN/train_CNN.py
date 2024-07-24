@@ -232,8 +232,8 @@ def main():
     # Background subtraction
     X_test_B = X_test[y_test == 0]
     y_test_B = y_test[y_test == 0]
-    origin_npy_paths = ['../Sample/HVmodel/data/origin/25x25']
-    origin_val_npy_paths = ['../Sample/HVmodel/data/origin/25x25/val']
+    origin_npy_paths = [train_npy_paths[0]]
+    origin_val_npy_paths = [val_npy_paths[0]]
     X_train_SR, y_train_SR, _, _ = utils.get_SR_SB_sample_from_npy(origin_npy_paths, train_nevents, seed=seed)
     X_val, y_val, _, _ = utils.get_SR_SB_sample_from_npy(origin_val_npy_paths, val_nevents, seed=seed)
     X_train_SR = np.concatenate([X_train_SR, X_val])
