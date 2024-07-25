@@ -137,7 +137,7 @@
         \begin{figure}[htpb]
             \centering
             \includegraphics[width=0.65\textwidth]{CWoLa_SPANet_no_pair.pdf}
-            \caption{The AUC of CWoLa SPANet training as a function of the signal fraction $f_1$. For simplicity, we set signal fraction $f_2$ equal to $1 - f_1$. Here, SPANet is trained on the classification task only.}
+            \caption{The AUC of CWoLa SPANet training as a function of the signal fraction $f_1$. For simplicity, we set signal fraction $f_2$ equal to $1 - f_1$. Here, SPANet is trained only on the classification task.}
             \label{fig:CWoLa_SPANet_without_pairing}
         \end{figure}
     % subsection result (end)
@@ -2702,7 +2702,7 @@
 
 		To examine whether I accidentally choose very bad training data from the FY pool, I perform 100 training with 100 different random seeds.
 
-		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_l1} shows the training results with 100 times training. The mean value of 100 times training at sensitivity 0 is 3.91 which is close to the previous results.
+		Figure~\ref{fig:sensitivity_improvement_100_random_seed} shows the training results with 100 times training. The mean value of 100 times training at sensitivity 0 is 3.91 which is close to the previous results.
         \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
@@ -2714,6 +2714,28 @@
 
 		There could be something wrong with my testing dataset. Therefore, I would prepare another testing dataset and perform the same training with the new testing samples.
 	% subsection change_the_training_dataset (end)
+    \subsection{Another testing dataset}% (fold)
+    \label{sub:another_testing_dataset}
+        The same testing dataset is used in previous exercises. To make sure whether I accidentally chose a bad testing dataset, I prepared other testing sets and performed the same training with the new testing samples.
+
+		There are three testing datasets. Testing set 1 is the old dataset with 10k signals and 10k background events. Testing set 2 is a new dataset with 10k signals and 10k background events. Testing set 3 is another new dataset with 20k signals and 20k background events.
+
+        Figure~\ref{fig:sensitivity_improvement_new_testing_data} shows the training results with different testing datasets. We focus on the results at sensitivity 0. The sensitivity improvement is $4.23 \pm 1.04$ for testing set 1, $2.78 \pm 1.06$ for testing set 2, $2.40 \pm 0.81$ for testing set 3. It seems that the sensitivity improvement would depend on the testing datasets.
+        \begin{figure}[htpb]
+            \centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_new_testing_set.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_new_testing_data}
+        \end{figure}
+
+		Figure~\ref{fig:sensitivity_improvement_100_random_seed_new_testing_set} shows the training results with 100 times training and the new testing datasets. The sensitivity improvement is $3.82 \pm 1.23$ for testing set 1, and $2.98 \pm 1.20$ for testing set 2. This shows that different training samples would impact the sensitivity improvement, but roughly speaking the same testing dataset would give similar sensitivity improvement. The most reasonable approach is preparing a larger testing set to reduce the testing fluctuation from different samples.
+        \begin{figure}[htpb]
+            \centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_100_random_seed_new_testing_set.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 100 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_100_random_seed_new_testing_set}
+        \end{figure}
+    % subsection another_testing_dataset (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
