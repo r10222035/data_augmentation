@@ -2736,6 +2736,36 @@
             \label{fig:sensitivity_improvement_100_random_seed_new_testing_set}
         \end{figure}
     % subsection another_testing_dataset (end)
+    \subsection{Enlarge the testing dataset}% (fold)
+    \label{sub:enlarge_the_testing_dataset}
+        In Section~\ref{sub:another_testing_dataset}, we noticed that the sensitivity improvement depends on the testing sets. We prepare a larger testing set to reduce the testing fluctuation from different samples. This new testing set contains 100k signals and 100k background events.
+
+        Figure~\ref{fig:sensitivity_improvement_larger_testing_data} shows the training results with larger testing datasets. We focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $4.23 \pm 1.04$ for testing set 1, $2.63 \pm 0.92$ for 100k + 100k testing set. This value is consistent with testing sets 2 and 3 shown in Figure~\ref{fig:sensitivity_improvement_new_testing_data}.
+        \begin{figure}[htpb]
+            \centering
+			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_larger_testing_set.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_larger_testing_data}
+        \end{figure}
+
+        Figure~\ref{fig:sensitivity_improvement_ZN_pool_larger_testing_data} shows the training results with ZN's data pool. The mean value of the ZN pool at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$ is $0.98 \pm 2.36$ which is lower than the $2.63 \pm 0.92$ of the FY pool.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Sensitivity improvement]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_ZN_pool_larger_testing_set.pdf}
+            }
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_ZN_pool_larger_testing_data}
+        \end{figure}
+
+        Figure~\ref{fig:sensitivity_improvement_background_subtraction_larger_testing_data} shows the sensitivity improvement with different training dataset sets. The augmented datasets perform better. At sensitivity 0, the augmented sets perform similarly to the original datasets.
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_jet_aug_3_bkg_subtraction_larger_testing_set.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
+        \end{figure}
+    % subsection enlarge_the_testing_dataset (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
