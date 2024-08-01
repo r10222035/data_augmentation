@@ -103,7 +103,7 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label
     loaded_model = tf.keras.models.load_model(model_name)
 
     # Compute False positive rate, True positive rate
-    predictions = loaded_model.predict(X_test)
+    predictions = loaded_model.predict(X_test, batch_size=512)
 
     labels = y_test
     y_prob = np.array(predictions)
@@ -200,11 +200,11 @@ def main():
         shutil.copytree(save_model_name, best_model_name, dirs_exist_ok=True)
         print('Save to best model')
     best_model = tf.keras.models.load_model(best_model_name)
-    best_results = best_model.evaluate(valid_dataset)
+    best_results = best_model.evaluate(valid_dataset, batch_size=BATCH_SIZE)
     print(f'Testing Loss = {best_results[0]:.3}, Testing Accuracy = {best_results[1]:.3}')
 
     loaded_model = tf.keras.models.load_model(save_model_name)
-    results = loaded_model.evaluate(valid_dataset)
+    results = loaded_model.evaluate(valid_dataset, batch_size=BATCH_SIZE)
     print(f'Testing Loss = {results[0]:.3}, Testing Accuracy = {results[1]:.3}')
 
     if results[0] < best_results[0]:
@@ -212,17 +212,17 @@ def main():
         print('Save to best model')
 
     # Compute ACC & AUC
-    y_pred = loaded_model.predict(X_val)
+    y_pred = loaded_model.predict(X_val, batch_size=BATCH_SIZE)
     ACC = get_highest_accuracy(y_val, y_pred)
     AUC = roc_auc_score(y_val, y_pred)
 
     # Testing results on true label sample
     X_test, y_test = utils.load_samples(true_label_path)
-    true_label_results = loaded_model.evaluate(x=X_test, y=y_test)
+    true_label_results = loaded_model.evaluate(x=X_test, y=y_test, batch_size=BATCH_SIZE)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
     # Compute ACC & AUC
-    y_pred = loaded_model.predict(X_test)
+    y_pred = loaded_model.predict(X_test, batch_size=BATCH_SIZE)
     true_label_ACC = get_highest_accuracy(y_test, y_pred)
     true_label_AUC = roc_auc_score(y_test, y_pred)
 
