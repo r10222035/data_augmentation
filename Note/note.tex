@@ -150,7 +150,7 @@
     \label{sub:sample_cwola_hunting}
         The signal is the resonant Higgs boson pairs production in the four-$b$ quarks channel. This section produces the Higgs boson pair by the heavy CP-even scalar $H$ with mass $m_H = \text{500 GeV}$ or $m_H = \text{1000 GeV}$. The background consists of QCD multi-jet events. The basic requirement is the ``four-tag cut,'' which requires at least four $b$-tagged $R = 0.4$ anti-$k_t$ jets with $p_\text{T} > \text{40 GeV}$ and $\abs{\eta} < 2.5$. Only the events passing the four-tag cut are used in the following analysis.
 
-        The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ determines the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. Table~\ref{tab:signal_sideband_range} summarizes the signal and sideband regions. These signal and sideband regions are chosen such that the corresponding cross-sections are closed.
+        The CWoLa hunting approach utilizes the signal and sideband regions to create the mixed training sample. The di-Higgs system's total invariant mass $m_{hh}$ determines the signal and sideband region. This quantity is computed from the four $b$-jets with the highest transverse momentum. Figure~\ref{fig:mhh_distribution} presents the $m_{hh}$ distribution of signal and background samples. Table~\ref{tab:signal_sideband_range} summarizes the signal and sideband regions. These signal and sideband regions are chosen so that the corresponding cross-sections are closed.
         \begin{figure}[htpb]
             \centering
             \subfloat[$m_H = \text{500 GeV}$]{
@@ -2766,6 +2766,52 @@
             \label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
         \end{figure}
     % subsection enlarge_the_testing_dataset (end)
+	\subsection{Jet image normalization}% (fold)
+	\label{sub:jet_image_normalization}
+		To mitigate the sculpting effect, we normalize the jet image by the invariant mass $m_{jj}$. This technique could reduce the difference between the SR and SB regions.
+
+		First, compute the total invariant mass $m_{jj}$ for the event passing the pre-selection cuts. Then, use the $m_{jj}$ to normalize the transverse momentum $p_{\text{T}}$ of each jet constituent:
+		\begin{equation}
+			p_{\text{T}}' = p _{\text{T}} \times  \frac{\text{5100 GeV}}{m_{jj}}
+		\end{equation}
+		where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
+
+		Figure~\ref{fig:average_jet_image_origin_pt_normalized_difference} is the original and $p_{\text{T}}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $p_{\text{T}}$ normalized and original cases have a similar distribution, but the values are not the same.
+        \begin{figure}[htpb]
+            \centering
+			\subfloat[$p_{\text{T}}$ normalized]{
+                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized.pdf}
+            }
+            \subfloat[Original]{
+                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
+            } \\ 
+            \subfloat[Difference]{
+                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized_origin_difference.pdf}
+            }
+            \caption{The $p_{\text{T}}$ normalized, original, and their difference average jet images.}
+            \label{fig:average_jet_image_origin_pt_normalized_difference}
+        \end{figure}
+
+		Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
+
+		There are obvious sculpting issues for all the background efficiencies. The $p_{\text{T}}$ normalization makes the situation worse than previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
+        \begin{figure}[htpb]
+            \centering
+			\subfloat[Original, $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
+                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_pt_normalized_origin_SB_0_train.pdf}
+            }
+            \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+            \label{fig:mjj_distribution_pt_normalized_origin_train}
+        \end{figure}
+
+		 Figure~\ref{fig:sensitivity_improvement_background_subtraction_larger_testing_data} shows the sensitivity improvement with $p_{\text{T}}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $p_{\text{T}}$ normalization. 
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_normalied.pdf}
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
+        \end{figure}
+	% subsection jet_image_normalization (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
