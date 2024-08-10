@@ -2768,49 +2768,76 @@
     % subsection enlarge_the_testing_dataset (end)
 	\subsection{Jet image normalization}% (fold)
 	\label{sub:jet_image_normalization}
-		To mitigate the sculpting effect, we normalize the jet image by the invariant mass $m_{jj}$. This technique could reduce the difference between the SR and SB regions.
+		To mitigate the sculpting effect, we normalize the jet image with different methods. These techniques may reduce the differences between the SR and SB regions.
+		\subsubsection{Mass normalization}% (fold)
+		\label{subs:mass_normalization}
+			We normalize the jet image by the invariant mass $m_{jj}$. First, compute the total invariant mass $m_{jj}$ for the event passing the pre-selection cuts. Then, use the $m_{jj}$ to normalize the transverse momentum $p_{\text{T}}$ of each jet constituent:
+			\begin{equation}
+				p_{\text{T}}' = p _{\text{T}} \times  \frac{\text{5100 GeV}}{m_{jj}}
+			\end{equation}
+			where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
 
-		First, compute the total invariant mass $m_{jj}$ for the event passing the pre-selection cuts. Then, use the $m_{jj}$ to normalize the transverse momentum $p_{\text{T}}$ of each jet constituent:
-		\begin{equation}
-			p_{\text{T}}' = p _{\text{T}} \times  \frac{\text{5100 GeV}}{m_{jj}}
-		\end{equation}
-		where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
+			Figure~\ref{fig:average_jet_image_origin_pt_normalized_difference} is the original and $m_{jj}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $m_{jj}$ normalized and original cases have a similar distribution, but the values are not the same.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[$m_{jj}$ normalized]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized.pdf}
+				}
+				\subfloat[Original]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
+				} \\ 
+				\subfloat[Difference]{
+					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized_origin_difference.pdf}
+				}
+				\caption{The $m_{jj}$ normalized, original, and their difference average jet images.}
+				\label{fig:average_jet_image_origin_pt_normalized_difference}
+			\end{figure}
 
-		Figure~\ref{fig:average_jet_image_origin_pt_normalized_difference} is the original and $p_{\text{T}}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $p_{\text{T}}$ normalized and original cases have a similar distribution, but the values are not the same.
-        \begin{figure}[htpb]
-            \centering
-			\subfloat[$p_{\text{T}}$ normalized]{
-                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized.pdf}
-            }
-            \subfloat[Original]{
-                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
-            } \\ 
-            \subfloat[Difference]{
-                \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized_origin_difference.pdf}
-            }
-            \caption{The $p_{\text{T}}$ normalized, original, and their difference average jet images.}
-            \label{fig:average_jet_image_origin_pt_normalized_difference}
-        \end{figure}
+			Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
 
-		Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
+			There are obvious sculpting issues for all the background efficiencies. The $m_{jj}$ normalization makes the situation worse than the previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original, $m_{jj}$ normalized, $S / \sqrt{B} = 0$]{
+					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_mjj_normalized_origin_SB_0_train.pdf}
+				}
+				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+				\label{fig:mjj_distribution_pt_normalized_origin_train}
+			\end{figure}
 
-		There are obvious sculpting issues for all the background efficiencies. The $p_{\text{T}}$ normalization makes the situation worse than previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
-        \begin{figure}[htpb]
-            \centering
-			\subfloat[Original, $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
-                \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_pt_normalized_origin_SB_0_train.pdf}
-            }
-            \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
-            \label{fig:mjj_distribution_pt_normalized_origin_train}
-        \end{figure}
+			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized} shows the sensitivity improvement with $m_{jj}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $m_{jj}$ normalization. 
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_mjj_normalied.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+				\label{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized}
+			\end{figure}
+		% subsubsection mass_normalization (end)	
+		\subsubsection{SRSB normalization}% (fold)
+		\label{subs:srsb_normalization}
+			We evaluate the mean and standard deviation of the jet images in SR and SB regions and standardize these images so that the mean value and the standard deviation of jet images in SR and SB would be the same.
 
-		 Figure~\ref{fig:sensitivity_improvement_background_subtraction_larger_testing_data} shows the sensitivity improvement with $p_{\text{T}}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $p_{\text{T}}$ normalization. 
-        \begin{figure}[htpb]
-            \centering
-            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pt_normalied.pdf}
-            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-            \label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
-        \end{figure}
+			When we obtain the training and validation sets, we compute the mean and standard deviation of the transverse momentum. Here, we consider all pixels in the leading and sub-leading jet images in the SR or SB region and standardize the jet images in the SR and SB regions separately. For the testing dataset, we use the numbers obtained from the SR samples to standardize it.
+
+			Figure~\ref{fig:mjj_distribution_srsb_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the SRSB normalization could mitigate the sculpting issues for all background efficiencies.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original, SRSB normalized, $S / \sqrt{B} = 0$]{
+					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_SRSB_normalized_origin_SB_0_train.pdf}
+				}
+				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+				\label{fig:mjj_distribution_srsb_normalized_origin_train}
+			\end{figure}
+
+			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_larger_testing_data} shows the sensitivity improvement with the SRSB normalization technique. The original method and SRSB normalization perform similarly in the low-sensitivity region. However, SRSB normalization performs worse in the high-sensitivity region. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for the original method and $2.50 \pm 1.24$ for SRSB normalization. 
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_SRSB_normalied.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+				\label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
+			\end{figure}
+		% subsubsection srsb_normalization (end)	
+		
 	% subsection jet_image_normalization (end)
 % section hidden_valley_model (end)
 
