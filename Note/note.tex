@@ -740,7 +740,7 @@
             \label{fig:eta_phi_smearing_phi_jet_constituent_average_jet_image}
         \end{figure}
 
-        We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, apply the data augmentation to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique suppresses the threshold and improves training performance.
+        We generate samples with sensitivity $S / \sqrt{B}$ ranging from 1 to 10. Then, the data augmentation will be applied to make larger samples. These samples are used for CNN training. Figure~\ref{fig:cwola_hunting_cnn_acc_data_augmetation} presents the training results. These numbers are evaluated from the pure samples. The ACC is better than previous results (blue curve in Figure~\ref{fig:cwola_hunting_cnn_acc}) for the ``+1 times'' curve for all sensitivities. The data augmentation technique suppresses the threshold and improves training performance.
 
         \begin{figure}[htpb]
             \centering
@@ -1526,7 +1526,7 @@
         \label{subs:roc_curve_in_training_process}
             We found that the training processes are very different for original and duplicated datasets in Figure~\ref{fig:loss_acc_across_training_SB_3_res_25}. We plot the ROC curve across the training process to investigate more information in the training process.
 
-            Figure~\ref{fig:roc_curve_training_process_copy_1} is ROC curves at different epochs for duplicated datasets. The ROC curves before Epoch 11 satisfied our normal expectations, but the shape became weird after Epoch 16. Even if the shape or AUC value worsens, the loss value decreases. The training process does not stop at a reasonable stage. It seems that the problem comes from the over-training issue.
+            Figure~\ref{fig:roc_curve_training_process_copy_1} is ROC curves at different epochs for duplicated datasets. The ROC curves before Epoch 11 satisfied our normal expectations, but the shape became weird after Epoch 16. Even if the shape or AUC value worsens, the loss value decreases. The training process does not stop at a reasonable stage. It seems that the problem is caused by overtraining.
             \begin{figure}[htpb]
                 \centering
                 \subfloat[Epoch 1]{
@@ -2781,13 +2781,13 @@
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[$m_{jj}$ normalized]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized.pdf}
+					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized.pdf}
 				}
 				\subfloat[Original]{
 					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
 				} \\ 
 				\subfloat[Difference]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_pt_normalized_origin_difference.pdf}
+					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized_origin_difference.pdf}
 				}
 				\caption{The $m_{jj}$ normalized, original, and their difference average jet images.}
 				\label{fig:average_jet_image_origin_pt_normalized_difference}
@@ -2829,15 +2829,39 @@
 				\label{fig:mjj_distribution_srsb_normalized_origin_train}
 			\end{figure}
 
-			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_larger_testing_data} shows the sensitivity improvement with the SRSB normalization technique. The original method and SRSB normalization perform similarly in the low-sensitivity region. However, SRSB normalization performs worse in the high-sensitivity region. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for the original method and $2.50 \pm 1.24$ for SRSB normalization. 
+			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized} shows the sensitivity improvement with the SRSB normalization technique. The original method and SRSB normalization perform similarly in the low-sensitivity region. However, SRSB normalization performs worse in the high-sensitivity region. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for the original method and $2.50 \pm 1.24$ for SRSB normalization. 
 			\begin{figure}[htpb]
 				\centering
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_SRSB_normalied.pdf}
 				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-				\label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
+				\label{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized}
 			\end{figure}
-		% subsubsection srsb_normalization (end)	
-		
+		% subsubsection srsb_normalization (end)
+		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization}% (fold)
+		\label{subs:pt_normalization}
+			The $p_{\text{T}}$ normalization standardize the transverse momentum $p_{\text{T}}$ of jet images. Thus, the mean is 1 and the standard deviation is zero for jet images. There are two different ways. One is standardizing each jet image individually which would remove the differences between the leading and sub-leading jets. We call this method as ``image $p_{\text{T}}$ normalization.'' Another way is standardizing the jet images by the mean and standard deviation of the event which is called ``event $p_{\text{T}}$ normalization. This method can keep the differences between the leading and sub-leading jets but remove the differences between various events.
+
+			Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the $p_{\text{T}}$ normalization could mitigate the sculpting issues for all background efficiencies.
+			\begin{figure}[htpb]
+				\centering
+				\subfloat[Original, image $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
+					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_image_pT_normalized_origin_SB_0_train.pdf}
+				} \\
+				\subfloat[Original, event $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
+					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_event_pT_normalized_origin_SB_0_train.pdf}
+				}
+				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+				\label{fig:mjj_distribution_pt_normalized_origin_train}
+			\end{figure}
+
+			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized} shows the sensitivity improvement with the $p_{\text{T}}$ normalization technique. The ``image $p_{\text{T}}$ normalization'' almost fails on training and can not distinguish signal and background events. Thus, this method is not a good way to mitigate the sculpting effect. The ``event $p_{\text{T}}$ normalization'' performs worse than the original method. The training thresholds are higher than the original cases.
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pT_normalied.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+				\label{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}
+			\end{figure}
+		% subsubsection pt_normalization (end)
 	% subsection jet_image_normalization (end)
 % section hidden_valley_model (end)
 
