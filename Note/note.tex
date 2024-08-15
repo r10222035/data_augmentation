@@ -2777,7 +2777,7 @@
 			\end{equation}
 			where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
 
-			Figure~\ref{fig:average_jet_image_origin_pt_normalized_difference} is the original and $m_{jj}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $m_{jj}$ normalized and original cases have a similar distribution, but the values are not the same.
+			Figure~\ref{fig:average_jet_image_origin_mjj_normalized_difference} is the original and $m_{jj}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $m_{jj}$ normalized and original cases have a similar distribution, but the values are not the same.
 			\begin{figure}[htpb]
 				\centering
 				\subfloat[$m_{jj}$ normalized]{
@@ -2790,10 +2790,10 @@
 					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized_origin_difference.pdf}
 				}
 				\caption{The $m_{jj}$ normalized, original, and their difference average jet images.}
-				\label{fig:average_jet_image_origin_pt_normalized_difference}
+				\label{fig:average_jet_image_origin_mjj_normalized_difference}
 			\end{figure}
 
-			Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
+			Figure~\ref{fig:mjj_distribution_mjj_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
 
 			There are obvious sculpting issues for all the background efficiencies. The $m_{jj}$ normalization makes the situation worse than the previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
 			\begin{figure}[htpb]
@@ -2802,7 +2802,7 @@
 					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_mjj_normalized_origin_SB_0_train.pdf}
 				}
 				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
-				\label{fig:mjj_distribution_pt_normalized_origin_train}
+				\label{fig:mjj_distribution_mjj_normalized_origin_train}
 			\end{figure}
 
 			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized} shows the sensitivity improvement with $m_{jj}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $m_{jj}$ normalization. 
@@ -2839,7 +2839,7 @@
 		% subsubsection srsb_normalization (end)
 		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization}% (fold)
 		\label{subs:pt_normalization}
-			The $p_{\text{T}}$ normalization standardize the transverse momentum $p_{\text{T}}$ of jet images. Thus, the mean is 1 and the standard deviation is zero for jet images. There are two different ways. One is standardizing each jet image individually which would remove the differences between the leading and sub-leading jets. We call this method as ``image $p_{\text{T}}$ normalization.'' Another way is standardizing the jet images by the mean and standard deviation of the event which is called ``event $p_{\text{T}}$ normalization. This method can keep the differences between the leading and sub-leading jets but remove the differences between various events.
+			The $p_{\text{T}}$ normalization standardize the transverse momentum $p_{\text{T}}$ of jet images. Thus, the mean is 1 and the standard deviation is zero for jet images. There are two different ways. One is standardizing each jet image individually which would remove the $p_{\text{T}}$ differences between the leading and sub-leading jets. We call this method as ``image $p_{\text{T}}$ normalization.'' Another way is standardizing the jet images by the mean and standard deviation of the event which is called ``event $p_{\text{T}}$ normalization. This method can keep the differences between the leading and sub-leading jets but remove the differences between various events.
 
 			Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the $p_{\text{T}}$ normalization could mitigate the sculpting issues for all background efficiencies.
 			\begin{figure}[htpb]
@@ -2854,12 +2854,20 @@
 				\label{fig:mjj_distribution_pt_normalized_origin_train}
 			\end{figure}
 
-			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized} shows the sensitivity improvement with the $p_{\text{T}}$ normalization technique. The ``image $p_{\text{T}}$ normalization'' almost fails on training and can not distinguish signal and background events. Thus, this method is not a good way to mitigate the sculpting effect. The ``event $p_{\text{T}}$ normalization'' performs worse than the original method. The training thresholds are higher than the original cases.
+			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized} shows the sensitivity improvement with the $p_{\text{T}}$ normalization technique. The ``image $p_{\text{T}}$ normalization'' almost fails on training and can not distinguish signal and background events. Thus, this method is not a good way to train and mitigate the sculpting effect. The ``event $p_{\text{T}}$ normalization'' performs worse than the original method. The training thresholds are higher than the original cases.
 			\begin{figure}[htpb]
 				\centering
 				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pT_normalied.pdf}
 				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
 				\label{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}
+			\end{figure}
+
+			Figure~\ref{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3} shows the sensitivity improvement of the ``event $p_{\text{T}}$ normalization'' with different training sets. Both data augmentation methods perform similarly and can improve the training performance. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$, the sensitivity improvement is similar for three different datasets. 
+			\begin{figure}[htpb]
+				\centering
+				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_origin_jet_aug_3_pt_jet_aug_3.pdf}
+				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+				\label{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3}
 			\end{figure}
 		% subsubsection pt_normalization (end)
 	% subsection jet_image_normalization (end)
