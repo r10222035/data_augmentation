@@ -119,7 +119,7 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label
 
 def pt_normlization(X):
     # input shape: (n, res, res, 2)
-    return (X - X.mean(axis=(1, 2), keepdims=True)) / X.std(axis=(1, 2), keepdims=True)
+    return (X - X.mean(axis=(1, 2, 3), keepdims=True)) / X.std(axis=(1, 2, 3), keepdims=True)
 
 
 def main():
