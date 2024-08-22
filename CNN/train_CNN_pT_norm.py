@@ -99,7 +99,7 @@ def get_tpr_from_fpr(passing_rate, fpr, tpr):
 def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label_path):
 
     X_test, y_test = utils.load_samples(true_label_path)
-
+    X_test = pt_normalization(X_test)
     loaded_model = tf.keras.models.load_model(model_name)
 
     # Compute False positive rate, True positive rate
@@ -117,9 +117,14 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label
     return np.array(signal_efficiencies) / np.array(background_efficiencies)**0.5
 
 
-def pt_normlization(X):
+def pt_normalization(X):
     # input shape: (n, res, res, 2)
-    return (X - X.mean(axis=(1, 2, 3), keepdims=True)) / X.std(axis=(1, 2, 3), keepdims=True)
+    mean = np.mean(X, axis=(1, 2), keepdims=True)
+    std = np.std(X, axis=(1, 2), keepdims=True)
+    epsilon = 1e-8
+    std = np.where(std < epsilon, epsilon, std)
+    return (X - mean) / std
+    # return (X - X.mean(axis=(1, 2, 3), keepdims=True)) / X.std(axis=(1, 2, 3), keepdims=True)
 
 
 def main():
@@ -167,8 +172,8 @@ def main():
     val_size = get_sample_size(y_val)
 
     # normalize the datasets
-    X_train = pt_normlization(X_train)
-    X_val = pt_normlization(X_val)
+    X_train = pt_normalization(X_train)
+    X_val = pt_normalization(X_val)
 
     with tf.device('CPU'):
         train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
@@ -227,7 +232,7 @@ def main():
     # Testing results on true label sample
     X_test, y_test = utils.load_samples(true_label_path)
     # normalize the testing set
-    X_test = pt_normlization(X_test)
+    X_test = pt_normalization(X_test)
     true_label_results = loaded_model.evaluate(x=X_test, y=y_test, batch_size=BATCH_SIZE)
     print(f'True label: Testing Loss = {true_label_results[0]:.3}, Testing Accuracy = {true_label_results[1]:.3}')
 
@@ -249,8 +254,8 @@ def main():
     X_train_SR = np.concatenate([X_train_SR, X_val])
     y_train_SR = np.concatenate([y_train_SR, y_val])
 
-    # use the mean and std of the training set to normalize the testing set
-    X_train_SR = pt_normlization(X_train_SR)
+    # normalize the datasets
+    X_train_SR = pt_normalization(X_train_SR)
 
     y_prob_test = loaded_model.predict(X_test_B, batch_size=BATCH_SIZE)
     y_prob_train = loaded_model.predict(X_train_SR, batch_size=BATCH_SIZE)
