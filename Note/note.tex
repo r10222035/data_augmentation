@@ -2629,13 +2629,13 @@
             \label{fig:train_background_passing_rate_dropout_35}
         \end{figure}
     % subsection mitigate_the_over_fitting_on_training_dataset (end)
-	\subsection{K-fold Cross-Validation}% (fold)
-	\label{sub:k_fold_cross_validation}
-		K-fold cross-validation is a technique used to evaluate the performance of a machine-learning model. The k-fold method divides the dataset into $k$ equally sized subsets, or ``folds.'' For each fold, treat one fold as the test set and the remaining $k - 1$ folds as the training set. After completing the training for all $k$ folds, calculate the average performance metric. This average provides a more robust estimate of the model's performance than a single train-test split.
+    \subsection{K-fold Cross-Validation}% (fold)
+    \label{sub:k_fold_cross_validation}
+        K-fold cross-validation is a technique used to evaluate the performance of a machine-learning model. The k-fold method divides the dataset into $k$ equally sized subsets, or ``folds.'' For each fold, treat one fold as the test set and the remaining $k - 1$ folds as the training set. After completing the training for all $k$ folds, calculate the average performance metric. This average provides a more robust estimate of the model's performance than a single train-test split.
 
-		We set $k=5$ for our CWoLa training. After completing the training for all $k$ folds, we evaluate the average event scores as the final output.
+        We set $k=5$ for our CWoLa training. After completing the training for all $k$ folds, we evaluate the average event scores as the final output.
 
-		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_k_fold} shows the training results with the k-fold technique. The training performance with and without the k-fold technique are similar. The k-fold technique only reduces the training fluctuation.
+        Figure~\ref{fig:sensitivity_improvement_background_pass_rate_k_fold} shows the training results with the k-fold technique. The training performance with and without the k-fold technique are similar. The k-fold technique only reduces the training fluctuation.
         \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
@@ -2647,16 +2647,16 @@
             \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_background_pass_rate_k_fold}
         \end{figure}
-	% subsection k_fold_cross_validation (end)
-	\subsection{L1 regularization}% (fold)
-	\label{sub:l1_regularization}
-		L1 regularization is a technique to prevent overfitting by adding a penalty term to the loss function. L1 regularization adds the absolute values of the coefficients (weights) to the loss function:
-		\begin{equation}
-			\text{Loss} = \text{Original Loss} + \lambda \sum_{i} \abs{w_i}
-		\end{equation}
-		where $w_i$ are the model's coefficients and $\lambda$ is a hyperparameter that controls the strength of the penalty term.
+    % subsection k_fold_cross_validation (end)
+    \subsection{L1 regularization}% (fold)
+    \label{sub:l1_regularization}
+        L1 regularization is a technique to prevent overfitting by adding a penalty term to the loss function. L1 regularization adds the absolute values of the coefficients (weights) to the loss function:
+        \begin{equation}
+            \text{Loss} = \text{Original Loss} + \lambda \sum_{i} \abs{w_i}
+        \end{equation}
+        where $w_i$ are the model's coefficients and $\lambda$ is a hyperparameter that controls the strength of the penalty term.
 
-		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_l1} shows the training results with the L1 regularization technique. The ``CNN L1: 0.0001'' means the L1 regularization is applied on all parameters in the CNN layers with $\lambda = 0.0001$. The ``CNN L1: 0.0001'' can mitigate the overfitting, while the ``DNN L1: 0.0001'' worsens the situation.
+        Figure~\ref{fig:sensitivity_improvement_background_pass_rate_l1} shows the training results with the L1 regularization technique. The ``CNN L1: 0.0001'' means the L1 regularization is applied on all parameters in the CNN layers with $\lambda = 0.0001$. The ``CNN L1: 0.0001'' can mitigate the overfitting, while the ``DNN L1: 0.0001'' worsens the situation.
         \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
@@ -2668,13 +2668,13 @@
             \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_background_pass_rate_l1}
         \end{figure}
-	% subsection l1_regularization (end)
-	\subsection{Asymptotic behaviour of no-signal neural network}% (fold)
-	\label{sub:asymptotic_behaviour_of_no_signal_neural_network}
-		We enlarged the training sample size to identify whether the more augmented samples would improve the situation. In Section~\ref{sub:augmented_sample_size}, we found the sensitivity improvement increases with the training sample size. However, we didn't perform the same exercise on no-signal case. We train the CNN on larger datasets without signal events.
-		
-		Figure~\ref{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10} shows the training results with different sample sizes on the no-signal network. The Dropout technique is applied on all layers with a dropout rate 0.35. It seems that the training results are independent of the augmented sample size.
-		\begin{figure}[htpb]
+    % subsection l1_regularization (end)
+    \subsection{Asymptotic behaviour of no-signal neural network}% (fold)
+    \label{sub:asymptotic_behaviour_of_no_signal_neural_network}
+        We enlarged the training sample size to identify whether the more augmented samples would improve the situation. In Section~\ref{sub:augmented_sample_size}, we found the sensitivity improvement increases with the training sample size. However, we didn't perform the same exercise on no-signal case. We train the CNN on larger datasets without signal events.
+        
+        Figure~\ref{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10} shows the training results with different sample sizes on the no-signal network. The Dropout technique is applied on all layers with a dropout rate 0.35. It seems that the training results are independent of the augmented sample size.
+        \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_pt_jet_aug_3_to_10_SB_0_dp_35_res_25.pdf}
@@ -2685,12 +2685,12 @@
             \caption{(a) The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. (b) The training background efficiencies of CWoLa CNN selection. The dashed grey line represents the testing background efficiency. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_background_pass_rate_aug_3_to_10}
         \end{figure}
-	% subsection asymptotic_behaviour_of_no_signal_neural_network (end)
-	\subsection{Change the training dataset}% (fold)
-	\label{sub:change_the_training_dataset}
-		I used ZN's data pool for training to make sure I could reproduce similar results with these datasets. First, I split ZN's pool into training and validation sets, then resample from these two datasets in each training. The testing samples are the same as my previous tests.
+    % subsection asymptotic_behaviour_of_no_signal_neural_network (end)
+    \subsection{Change the training dataset}% (fold)
+    \label{sub:change_the_training_dataset}
+        I used ZN's data pool for training to make sure I could reproduce similar results with these datasets. First, I split ZN's pool into training and validation sets, then resample from these two datasets in each training. The testing samples are the same as my previous tests.
 
-		Figure~\ref{fig:sensitivity_improvement_ZN_pool} shows the training results with ZN's data pool. The mean value of the ZN pool at sensitivity 0 is 2.00 which is lower than the 4.27 of the FY pool.
+        Figure~\ref{fig:sensitivity_improvement_ZN_pool} shows the training results with ZN's data pool. The mean value of the ZN pool at sensitivity 0 is 2.00 which is lower than the 4.27 of the FY pool.
         \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
@@ -2700,9 +2700,9 @@
             \label{fig:sensitivity_improvement_ZN_pool}
         \end{figure}
 
-		To examine whether I accidentally choose very bad training data from the FY pool, I perform 100 training with 100 different random seeds.
+        To examine whether I accidentally choose very bad training data from the FY pool, I perform 100 training with 100 different random seeds.
 
-		Figure~\ref{fig:sensitivity_improvement_100_random_seed} shows the training results with 100 times training. The mean value of 100 times training at sensitivity 0 is 3.91 which is close to the previous results.
+        Figure~\ref{fig:sensitivity_improvement_100_random_seed} shows the training results with 100 times training. The mean value of 100 times training at sensitivity 0 is 3.91 which is close to the previous results.
         \begin{figure}[htpb]
             \centering
             \subfloat[Sensitivity improvement]{
@@ -2712,26 +2712,26 @@
             \label{fig:sensitivity_improvement_100_random_seed}
         \end{figure}
 
-		There could be something wrong with my testing dataset. Therefore, I would prepare another testing dataset and perform the same training with the new testing samples.
-	% subsection change_the_training_dataset (end)
+        There could be something wrong with my testing dataset. Therefore, I would prepare another testing dataset and perform the same training with the new testing samples.
+    % subsection change_the_training_dataset (end)
     \subsection{Another testing dataset}% (fold)
     \label{sub:another_testing_dataset}
         The same testing dataset is used in previous exercises. To make sure whether I accidentally chose a bad testing dataset, I prepared other testing sets and performed the same training with the new testing samples.
 
-		There are three testing datasets. Testing set 1 is the old dataset with 10k signals and 10k background events. Testing set 2 is a new dataset with 10k signals and 10k background events. Testing set 3 is another new dataset with 20k signals and 20k background events.
+        There are three testing datasets. Testing set 1 is the old dataset with 10k signals and 10k background events. Testing set 2 is a new dataset with 10k signals and 10k background events. Testing set 3 is another new dataset with 20k signals and 20k background events.
 
         Figure~\ref{fig:sensitivity_improvement_new_testing_data} shows the training results with different testing datasets. We focus on the results at sensitivity 0. The sensitivity improvement is $4.23 \pm 1.04$ for testing set 1, $2.78 \pm 1.06$ for testing set 2, $2.40 \pm 0.81$ for testing set 3. It seems that the sensitivity improvement would depend on the testing datasets.
         \begin{figure}[htpb]
             \centering
-			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_new_testing_set.pdf}
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_new_testing_set.pdf}
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_new_testing_data}
         \end{figure}
 
-		Figure~\ref{fig:sensitivity_improvement_100_random_seed_new_testing_set} shows the training results with 100 times training and the new testing datasets. The sensitivity improvement is $3.82 \pm 1.23$ for testing set 1, and $2.98 \pm 1.20$ for testing set 2. This shows that different training samples would impact the sensitivity improvement, but roughly speaking the same testing dataset would give similar sensitivity improvement. The most reasonable approach is preparing a larger testing set to reduce the testing fluctuation from different samples.
+        Figure~\ref{fig:sensitivity_improvement_100_random_seed_new_testing_set} shows the training results with 100 times training and the new testing datasets. The sensitivity improvement is $3.82 \pm 1.23$ for testing set 1, and $2.98 \pm 1.20$ for testing set 2. This shows that different training samples would impact the sensitivity improvement, but roughly speaking the same testing dataset would give similar sensitivity improvement. The most reasonable approach is preparing a larger testing set to reduce the testing fluctuation from different samples.
         \begin{figure}[htpb]
             \centering
-			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_100_random_seed_new_testing_set.pdf}
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_100_random_seed_new_testing_set.pdf}
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 100 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_100_random_seed_new_testing_set}
         \end{figure}
@@ -2743,7 +2743,7 @@
         Figure~\ref{fig:sensitivity_improvement_larger_testing_data} shows the training results with larger testing datasets. We focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $4.23 \pm 1.04$ for testing set 1, $2.63 \pm 0.92$ for 100k + 100k testing set. This value is consistent with testing sets 2 and 3 shown in Figure~\ref{fig:sensitivity_improvement_new_testing_data}.
         \begin{figure}[htpb]
             \centering
-			\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_larger_testing_set.pdf}
+            \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_bkg_subtraction_larger_testing_set.pdf}
             \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_larger_testing_data}
         \end{figure}
@@ -2766,111 +2766,133 @@
             \label{fig:sensitivity_improvement_background_subtraction_larger_testing_data}
         \end{figure}
     % subsection enlarge_the_testing_dataset (end)
-	\subsection{Jet image normalization}% (fold)
-	\label{sub:jet_image_normalization}
-		To mitigate the sculpting effect, we normalize the jet image with different methods. These techniques may reduce the differences between the SR and SB regions.
-		\subsubsection{Mass normalization}% (fold)
-		\label{subs:mass_normalization}
-			We normalize the jet image by the invariant mass $m_{jj}$. First, compute the total invariant mass $m_{jj}$ for the event passing the pre-selection cuts. Then, use the $m_{jj}$ to normalize the transverse momentum $p_{\text{T}}$ of each jet constituent:
-			\begin{equation}
-				p_{\text{T}}' = p _{\text{T}} \times  \frac{\text{5100 GeV}}{m_{jj}}
-			\end{equation}
-			where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
+    \subsection{Jet image normalization}% (fold)
+    \label{sub:jet_image_normalization}
+        To mitigate the sculpting effect, we normalize the jet image with different methods. These techniques may reduce the differences between the SR and SB regions.
+        \subsubsection{Mass normalization}% (fold)
+        \label{subs:mass_normalization}
+            We normalize the jet image by the invariant mass $m_{jj}$. First, compute the total invariant mass $m_{jj}$ for the event passing the pre-selection cuts. Then, use the $m_{jj}$ to normalize the transverse momentum $p_{\text{T}}$ of each jet constituent:
+            \begin{equation}
+                p_{\text{T}}' = p _{\text{T}} \times  \frac{\text{5100 GeV}}{m_{jj}}
+            \end{equation}
+            where $p_{\text{T}}'$ is the normalized transverse momentum of the jet constituent, and the value $5100 \text{ GeV}$ is the center of the signal region. The following steps are the same as the previous procedure, i.e., perform the preprocessing and apply the data augmentation.
 
-			Figure~\ref{fig:average_jet_image_origin_mjj_normalized_difference} is the original and $m_{jj}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $m_{jj}$ normalized and original cases have a similar distribution, but the values are not the same.
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[$m_{jj}$ normalized]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized.pdf}
-				}
-				\subfloat[Original]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
-				} \\ 
-				\subfloat[Difference]{
-					\includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized_origin_difference.pdf}
-				}
-				\caption{The $m_{jj}$ normalized, original, and their difference average jet images.}
-				\label{fig:average_jet_image_origin_mjj_normalized_difference}
-			\end{figure}
+            Figure~\ref{fig:average_jet_image_origin_mjj_normalized_difference} is the original and $m_{jj}$ normalized jet images. Here, we show the jet images of background events in the SB region. The $m_{jj}$ normalized and original cases have a similar distribution, but the values are not the same.
+            \begin{figure}[htpb]
+                \centering
+                \subfloat[$m_{jj}$ normalized]{
+                    \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized.pdf}
+                }
+                \subfloat[Original]{
+                    \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_origin.pdf}
+                } \\ 
+                \subfloat[Difference]{
+                    \includegraphics[width=0.45\textwidth]{HVmodel_jet_image_average_bkg_in_SB_mjj_normalized_origin_difference.pdf}
+                }
+                \caption{The $m_{jj}$ normalized, original, and their difference average jet images.}
+                \label{fig:average_jet_image_origin_mjj_normalized_difference}
+            \end{figure}
 
-			Figure~\ref{fig:mjj_distribution_mjj_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
+            Figure~\ref{fig:mjj_distribution_mjj_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. The number of events is normalized by the cross-section. The $\varepsilon_{\text{b}}$ is the number of events after the CNN cut divided by the value before the CNN cut. The grey dashed line equals the background passing rate at the sideband region. The band is the standard deviation of the $\varepsilon_{\text{b}}$, evaluated from the Equation~\ref{eq:distribution_ratio_uncertainty}.
 
-			There are obvious sculpting issues for all the background efficiencies. The $m_{jj}$ normalization makes the situation worse than the previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[Original, $m_{jj}$ normalized, $S / \sqrt{B} = 0$]{
-					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_mjj_normalized_origin_SB_0_train.pdf}
-				}
-				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
-				\label{fig:mjj_distribution_mjj_normalized_origin_train}
-			\end{figure}
+            There are obvious sculpting issues for all the background efficiencies. The $m_{jj}$ normalization makes the situation worse than the previous cases (Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}).
+            \begin{figure}[htpb]
+                \centering
+                \subfloat[Original, $m_{jj}$ normalized, $S / \sqrt{B} = 0$]{
+                    \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_mjj_normalized_origin_SB_0_train.pdf}
+                }
+                \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+                \label{fig:mjj_distribution_mjj_normalized_origin_train}
+            \end{figure}
 
-			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized} shows the sensitivity improvement with $m_{jj}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $m_{jj}$ normalization. 
-			\begin{figure}[htpb]
-				\centering
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_mjj_normalied.pdf}
-				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-				\label{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized}
-			\end{figure}
-		% subsubsection mass_normalization (end)	
-		\subsubsection{SRSB normalization}% (fold)
-		\label{subs:srsb_normalization}
-			We evaluate the mean and standard deviation of the jet images in SR and SB regions and standardize these images so that the mean value and the standard deviation of jet images in SR and SB would be the same.
+             Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized} shows the sensitivity improvement with $m_{jj}$ normalization technique. The training thresholds are much higher than the original cases. However, when we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for original method, $0.71 \pm 1.00$ for $m_{jj}$ normalization. 
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_mjj_normalied.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_background_subtraction_origin_mjj_normalized}
+            \end{figure}
+        % subsubsection mass_normalization (end)    
+        \subsubsection{SRSB normalization}% (fold)
+        \label{subs:srsb_normalization}
+            We evaluate the mean and standard deviation of the jet images in SR and SB regions and standardize these images so that the mean value and the standard deviation of jet images in SR and SB would be the same.
 
-			When we obtain the training and validation sets, we compute the mean and standard deviation of the transverse momentum. Here, we consider all pixels in the leading and sub-leading jet images in the SR or SB region and standardize the jet images in the SR and SB regions separately. For the testing dataset, we use the numbers obtained from the SR samples to standardize it.
+            When we obtain the training and validation sets, we compute the mean and standard deviation of the transverse momentum. Here, we consider all pixels in the leading and sub-leading jet images in the SR or SB region and standardize the jet images in the SR and SB regions separately. For the testing dataset, we use the numbers obtained from the SR samples to standardize it.
 
-			Figure~\ref{fig:mjj_distribution_srsb_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the SRSB normalization could mitigate the sculpting issues for all background efficiencies.
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[Original, SRSB normalized, $S / \sqrt{B} = 0$]{
-					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_SRSB_normalized_origin_SB_0_train.pdf}
-				}
-				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
-				\label{fig:mjj_distribution_srsb_normalized_origin_train}
-			\end{figure}
+            Figure~\ref{fig:mjj_distribution_srsb_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the SRSB normalization could mitigate the sculpting issues for all background efficiencies.
+            \begin{figure}[htpb]
+                \centering
+                \subfloat[Original, SRSB normalized, $S / \sqrt{B} = 0$]{
+                    \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_SRSB_normalized_origin_SB_0_train.pdf}
+                }
+                \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+                \label{fig:mjj_distribution_srsb_normalized_origin_train}
+            \end{figure}
 
-			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized} shows the sensitivity improvement with the SRSB normalization technique. The original method and SRSB normalization perform similarly in the low-sensitivity region. However, SRSB normalization performs worse in the high-sensitivity region. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for the original method and $2.50 \pm 1.24$ for SRSB normalization. 
-			\begin{figure}[htpb]
-				\centering
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_SRSB_normalied.pdf}
-				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-				\label{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized}
-			\end{figure}
-		% subsubsection srsb_normalization (end)
-		\subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization}% (fold)
-		\label{subs:pt_normalization}
-			The $p_{\text{T}}$ normalization standardize the transverse momentum $p_{\text{T}}$ of jet images. Thus, the mean is 1 and the standard deviation is zero for jet images. There are two different ways. One is standardizing each jet image individually which would remove the $p_{\text{T}}$ differences between the leading and sub-leading jets. We call this method as ``image $p_{\text{T}}$ normalization.'' Another way is standardizing the jet images by the mean and standard deviation of the event which is called ``event $p_{\text{T}}$ normalization. This method can keep the differences between the leading and sub-leading jets but remove the differences between various events.
+             Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized} shows the sensitivity improvement with the SRSB normalization technique. The original method and SRSB normalization perform similarly in the low-sensitivity region. However, SRSB normalization performs worse in the high-sensitivity region. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$. The sensitivity improvement is $2.63 \pm 0.92$ for the original method and $2.50 \pm 1.24$ for SRSB normalization. 
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_SRSB_normalied.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_background_subtraction_origin_srsb_normalized}
+            \end{figure}
+        % subsubsection srsb_normalization (end)
+        \subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization}% (fold)
+        \label{subs:pt_normalization}
+            The $p_{\text{T}}$ normalization standardize the transverse momentum $p_{\text{T}}$ of jet images. Thus, the mean is 1 and the standard deviation is zero for jet images. There are two different ways. One is standardizing each jet image individually which would remove the $p_{\text{T}}$ differences between the leading and sub-leading jets. We call this method as ``image $p_{\text{T}}$ normalization.'' Another way is standardizing the jet images by the mean and standard deviation of the event which is called ``event $p_{\text{T}}$ normalization. This method can keep the differences between the leading and sub-leading jets but remove the differences between various events.
 
-			Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the $p_{\text{T}}$ normalization could mitigate the sculpting issues for all background efficiencies.
-			\begin{figure}[htpb]
-				\centering
-				\subfloat[Original, image $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
-					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_image_pT_normalized_origin_SB_0_train.pdf}
-				} \\
-				\subfloat[Original, event $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
-					\includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_event_pT_normalized_origin_SB_0_train.pdf}
-				}
-				\caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
-				\label{fig:mjj_distribution_pt_normalized_origin_train}
-			\end{figure}
+            Figure~\ref{fig:mjj_distribution_pt_normalized_origin_train} shows $m_{jj}$ distributions and background passing rates for the training dataset. Compared with Figure~\ref{fig:mjj_distribution_origin_jet_aug_3_pt_jet_aug_3_train}, the $p_{\text{T}}$ normalization could mitigate the sculpting issues for all background efficiencies.
+            \begin{figure}[htpb]
+                \centering
+                \subfloat[Original, image $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
+                    \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_image_pT_normalized_origin_SB_0_train.pdf}
+                } \\
+                \subfloat[Original, event $p_{\text{T}}$ normalized, $S / \sqrt{B} = 0$]{
+                    \includegraphics[width=0.97\textwidth]{mjj_distribution_CNN_cut_event_pT_normalized_origin_SB_0_train.pdf}
+                }
+                \caption{The $m_{jj}$ distribution before and after the CWoLa CNN selection. The signal region is between the red dotted lines. The sideband region is between the green dotted lines and excludes the signal region. ``B'' stands for the background samples.}
+                \label{fig:mjj_distribution_pt_normalized_origin_train}
+            \end{figure}
 
-			 Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized} shows the sensitivity improvement with the $p_{\text{T}}$ normalization technique. The ``image $p_{\text{T}}$ normalization'' almost fails on training and can not distinguish signal and background events. Thus, this method is not a good way to train and mitigate the sculpting effect. The ``event $p_{\text{T}}$ normalization'' performs worse than the original method. The training thresholds are higher than the original cases.
-			\begin{figure}[htpb]
-				\centering
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pT_normalied.pdf}
-				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-				\label{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}
-			\end{figure}
+             Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized} shows the sensitivity improvement with the $p_{\text{T}}$ normalization technique. The ``image $p_{\text{T}}$ normalization'' almost fails on training and can not distinguish signal and background events. Thus, this method is not a good way to train and mitigate the sculpting effect. The ``event $p_{\text{T}}$ normalization'' performs worse than the original method. The training thresholds are higher than the original cases.
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_pT_normalied.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}
+            \end{figure}
 
-			Figure~\ref{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3} shows the sensitivity improvement of the ``event $p_{\text{T}}$ normalization'' with different training sets. Both data augmentation methods perform similarly and can improve the training performance. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$, the sensitivity improvement is similar for three different datasets. 
-			\begin{figure}[htpb]
-				\centering
-				\includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_origin_jet_aug_3_pt_jet_aug_3.pdf}
-				\caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-				\label{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3}
-			\end{figure}
-		% subsubsection pt_normalization (end)
-	% subsection jet_image_normalization (end)
+            Figure~\ref{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3} shows the sensitivity improvement of the ``event $p_{\text{T}}$ normalization'' with different training sets. Both data augmentation methods perform similarly and can improve the training performance. When we focus on the results at sensitivity 0 with $\varepsilon_{\text{b}} = 10\%$, the sensitivity improvement is similar for three different datasets. 
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_origin_jet_aug_3_pt_jet_aug_3.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3}
+            \end{figure}
+        % subsubsection pt_normalization (end)
+        \subsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization 2}% (fold)
+        \label{sub:pt_normalization_2}
+            Zong-En found the image $p_{\text{T}}$ normalization technique works, which contrasts with my initial results (Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}). To resolve this inconsistency, we need to investigate the potential reasons.
+
+            In my $p_{\text{T}}$ normalization process, I didn't check whether the standard deviation is 0. Division by zero may cause some issues and make the training fail. Thus, I updated my codes. When the standard deviation is too small, it would be replaced by a small number. This is consistent with what Zong-En did. After modifying the code, the training process became stable. It seems that even if a few events with zero standard deviation, it can cause the entire training to fail.
+
+            We exchange our training datasets to investigate the problem of image $p_{\text{T}}$ normalization. I took the samples from Zong-En that he exactly used in the training. We consider two cases: one is Zong-En normalized these samples first, and then I used these samples in training. Another way is I take the original samples from Zong-En and normalize them by myself. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_SB_0_7_ZN_data} is the sensitivity improvement for this exercise. Both cases perform similarly and the training is successful at sensitivity 7. These results mean our normalization step and the following training processes are consistent.
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_SB_0_7_ZN_data_res_25.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_image_pt_normalized_origin_SB_0_7_ZN_data}
+            \end{figure}
+
+            Another test is exchanging our dataset pool. I randomly sample the events from Zong-En's pool and prepare my testing set for training. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_FY_ZN_pool} is the sensitivity improvement for different training pools. Our training results are consistent when using the original method to compute the sensitivity improvement. However, when I applied the background subtraction method, the results were unusual. The code for background subtraction should be rechecked.
+            \begin{figure}[htpb]
+                \centering
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_image_pt_normalized_FY_ZN_pool.pdf}
+                \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+                \label{fig:sensitivity_improvement_image_pt_normalized_origin_FY_ZN_pool}
+            \end{figure}
+        % subsection pt_normalization_2 (end)
+    % subsection jet_image_normalization (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
