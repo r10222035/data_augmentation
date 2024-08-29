@@ -129,7 +129,7 @@ def pt_normalization(X):
 
 def main():
     config_path = sys.argv[1]
-
+    print(f'config_path: {config_path}')
     # Read config file
     with open(config_path, 'r') as f:
         config = json.load(f)
