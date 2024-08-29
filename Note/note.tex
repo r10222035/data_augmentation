@@ -2870,8 +2870,8 @@
                 \label{fig:sensitivity_improvement_background_subtraction_event_pt_normalized_origin_jet_aug_3_pt_jet_aug_3}
             \end{figure}
         % subsubsection pt_normalization (end)
-        \subsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization 2}% (fold)
-        \label{sub:pt_normalization_2}
+        \subsubsection{\texorpdfstring{$p_{\mathrm{T}}$}{pT} normalization 2}% (fold)
+        \label{subs:pt_normalization_2}
             Zong-En found the image $p_{\text{T}}$ normalization technique works, which contrasts with my initial results (Figure~\ref{fig:sensitivity_improvement_background_subtraction_origin_pt_normalized}). To resolve this inconsistency, we need to investigate the potential reasons.
 
             In my $p_{\text{T}}$ normalization process, I didn't check whether the standard deviation is 0. Division by zero may cause some issues and make the training fail. Thus, I updated my codes. When the standard deviation is too small, it would be replaced by a small number. This is consistent with what Zong-En did. After modifying the code, the training process became stable. It seems that even if a few events with zero standard deviation, it can cause the entire training to fail.
@@ -2884,15 +2884,41 @@
                 \label{fig:sensitivity_improvement_image_pt_normalized_origin_SB_0_7_ZN_data}
             \end{figure}
 
-            Another test is exchanging our dataset pool. I randomly sample the events from Zong-En's pool and prepare my testing set for training. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_FY_ZN_pool} is the sensitivity improvement for different training pools. Our training results are consistent when using the original method to compute the sensitivity improvement. However, when I applied the background subtraction method, the results were unusual. The code for background subtraction should be rechecked.
+            Another test is exchanging our dataset pool. I randomly sample the events from Zong-En's pool and prepare my testing set for training. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_FY_ZN_pool} is the sensitivity improvement for different training pools. Our training results are consistent when using the original method to compute the sensitivity improvement. However, the results were unusual when I applied the background subtraction method. The code for background subtraction should be rechecked.
             \begin{figure}[htpb]
                 \centering
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_origin_image_pt_normalized_FY_ZN_pool.pdf}
                 \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
                 \label{fig:sensitivity_improvement_image_pt_normalized_origin_FY_ZN_pool}
             \end{figure}
-        % subsection pt_normalization_2 (end)
+        % subsubsection pt_normalization_2 (end)	
     % subsection jet_image_normalization (end)
+    \subsection{Data augmentation with image normalization}% (fold)
+    \label{sub:data_augmentation_with_image_normalization}
+        We enlarge the training dataset by data augmentation techniques to determine whether the training performance can be improved when we combine the image normalization. We test ``Jet rotation'' and ``$p_{\text{T}}$ smearing + Jet rotation'' augmentation methods.
+
+        Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_5_10_image_norm} presents the sensitivity improvement with the augmented datasets. All augmentation approaches can improve the training results. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. Additionally, the +10 augmentation performs better than the +5 augmentation in both cases. Even though we combine image normalization in the training process, these results are consistent with our expectations.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Image normalization]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_image_pT_normalied_origin_jet_aug_pt_jet_aug_5_10.pdf}
+            } \\
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_origin_pt_jet_aug_5_10_image_norm}
+        \end{figure}
+
+        To examine the training performance across different sample sizes, we prepare varying-sized augmented datasets to identify the point at which performance saturation occurs.
+
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_image_norm} shows the sensitivity improvement with different augmentation approaches. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. The fluctuation is large, but we can observe the mean values become better when enlarging training sample sizes.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Resolution: $25\times 25$]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_image_pT_normalied_aug_3_to_33_SB_3.pdf}
+            } \\
+            \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 3 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_aug_SB_3_image_norm}
+        \end{figure}
+    % subsection data_augmentation_with_image_normalization (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
