@@ -16,7 +16,7 @@ import utils_CNN as utils
 
 from sklearn.metrics import roc_auc_score, roc_curve, accuracy_score
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def get_sample_size(y):
@@ -119,8 +119,8 @@ def get_sensitivity_scale_factor(model_name, background_efficiencies, true_label
 
 def pt_normalization(X):
     # input shape: (n, res, res, 2)
-    mean = np.mean(X, axis=(1, 2), keepdims=True)
-    std = np.std(X, axis=(1, 2), keepdims=True)
+    mean = np.mean(X, axis=(1, 2, 3), keepdims=True)
+    std = np.std(X, axis=(1, 2, 3), keepdims=True)
     epsilon = 1e-8
     std = np.where(std < epsilon, epsilon, std)
     return (X - mean) / std
