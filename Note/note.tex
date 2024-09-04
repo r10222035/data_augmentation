@@ -2912,13 +2912,45 @@
         Figure~\ref{fig:sensitivity_improvement_aug_SB_3_image_norm} shows the sensitivity improvement with different augmentation approaches. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. The fluctuation is large, but we can observe the mean values become better when enlarging training sample sizes.
         \begin{figure}[htpb]
             \centering
-            \subfloat[Resolution: $25\times 25$]{
+            \subfloat[Image normalization]{
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_image_pT_normalied_aug_3_to_33_SB_3.pdf}
             } \\
-            \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 3 times training. We use different datasets for each training.}
+            \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_aug_SB_3_image_norm}
         \end{figure}
     % subsection data_augmentation_with_image_normalization (end)
+    \subsection{Data augmentation with event normalization}% (fold)
+    \label{sub:data_augmentation_with_event_normalization}
+        This section tests data augmentation techniques with the event normalization. We test ``Jet rotation'' and ``$p_{\text{T}}$ smearing + Jet rotation'' augmentation methods.
+
+        Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_5_10_event_norm} presents the sensitivity improvement with the augmented datasets. Similarly, all augmentation approaches can improve the training results. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly while the ``$p_{\text{T}}$ smearing + jet rotation'' has slightly better results. Additionally, the +10 augmentation performs better than the +5 augmentation in both cases. Even though we combine event normalization in the training process, these results are consistent with our expectations.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Event normalization]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_origin_jet_aug_pt_jet_aug_5_10.pdf}
+            } \\
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_origin_pt_jet_aug_5_10_event_norm}
+        \end{figure}
+
+        To examine the training performance across different sample sizes, we prepare varying-sized augmented datasets to identify the point at which performance saturation occurs.
+
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_event_norm} shows the sensitivity improvement with different augmentation approaches. The ``$p_{\text{T}}$ smearing + jet rotation'' generally performs better than the jet rotation. The training performance of the ``$p_{\text{T}}$ smearing + jet rotation'' is saturated after +15 augmentation for sensitivity 3.0. The saturated point of the jet rotation method is undetermined. For sensitivity 4 and 5, all sensitivity improvements are increased with the augmented sample size, except the ``$p_{\text{T}}$ smearing + jet rotation'' with sensitivity 4.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Event normalization, Sensitivity: 3.0]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_3.pdf}
+            } \\
+            \subfloat[Event normalization, Sensitivity: 4.0]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_4.pdf}
+            } \\
+            \subfloat[Event normalization, Sensitivity: 5.0]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_5.pdf}
+            } \\
+            \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_aug_SB_3_event_norm}
+        \end{figure}
+    % subsection data_augmentation_with_event_normalization (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
