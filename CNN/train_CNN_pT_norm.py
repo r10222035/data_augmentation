@@ -156,7 +156,7 @@ def main():
     min_delta = params['min_delta']
     learning_rate = params['learning_rate']
 
-    save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}/'
+    save_model_name = f'./CNN_models/last_model_CWoLa_hunting_{model_name}_{seed}/'
 
     # Sampling dataset
     r_train, r_val = 0.8, 0.2
