@@ -2909,7 +2909,7 @@
 
         To examine the training performance across different sample sizes, we prepare varying-sized augmented datasets to identify the point at which performance saturation occurs.
 
-        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_image_norm} shows the sensitivity improvement with different augmentation approaches. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. The fluctuation is large, but we can observe the mean values become better when enlarging training sample sizes.
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_image_norm} shows the sensitivity improvement with different augmentation approaches. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. The fluctuation is large, but we can observe that the mean values become better when training sample sizes are enlarging.
         \begin{figure}[htpb]
             \centering
             \subfloat[Image normalization]{
@@ -2935,7 +2935,7 @@
 
         To examine the training performance across different sample sizes, we prepare varying-sized augmented datasets to identify the point at which performance saturation occurs.
 
-        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_event_norm} shows the sensitivity improvement with different augmentation approaches. The ``$p_{\text{T}}$ smearing + jet rotation'' generally performs better than the jet rotation. The training performance of the ``$p_{\text{T}}$ smearing + jet rotation'' is saturated after +15 augmentation for sensitivity 3.0. The saturated point of the jet rotation method is undetermined. For sensitivity 4 and 5, all sensitivity improvements are increased with the augmented sample size, except the ``$p_{\text{T}}$ smearing + jet rotation'' with sensitivity 4.
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_4_5_event_norm} shows the sensitivity improvement with different augmented sample sizes. The ``$p_{\text{T}}$ smearing + jet rotation'' generally performs better than the jet rotation. The training performance of the ``$p_{\text{T}}$ smearing + jet rotation'' is saturated after +15 augmentation for sensitivity 3.0. The saturated point of the jet rotation method is undetermined. For sensitivity 4 and 5, all sensitivity improvements are increased with the augmented sample size when the sample sizes are $\le +33$, except the ``$p_{\text{T}}$ smearing + jet rotation'' with sensitivity 4.
         \begin{figure}[htpb]
             \centering
             \subfloat[Event normalization, Sensitivity: 3.0]{
@@ -2948,9 +2948,33 @@
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_5.pdf}
             } \\
             \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
-            \label{fig:sensitivity_improvement_aug_SB_3_event_norm}
+            \label{fig:sensitivity_improvement_aug_SB_3_4_5_event_norm}
         \end{figure}
     % subsection data_augmentation_with_event_normalization (end)
+    \subsection{Event normalization with Dropout}% (fold)
+    \label{sub:event_normalization_with_dropout}
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_image_norm} and \ref{fig:sensitivity_improvement_aug_SB_3_4_5_event_norm} present that the training standard deviation is large compared with the mean value. We want to determine whether the dropout technique can reduce the training fluctuation.
+
+        The dropout layer is added after each original layer with a dropout rate 0.35. Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_10_event_norm_dp_035} presents the sensitivity improvement with and without dropout layers. For the original dataset, the model with dropout performs worse than the model without dropout and the fluctuations are greater than the previous cases. For +10 augmentation, the training performance is better than the previous one in the high-sensitivity region while the training thresholds and the standard deviations are similar to the earlier results.
+        \begin{figure}[htpb]
+            \centering
+            \subfloat[Event normalization]{
+                \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_dp_035_origin_jet_aug_pt_jet_aug_10.pdf}
+            } \\
+            \caption{The sensitivities before and after the CWoLa CNN selection. The slope of the dashed grey line is $1$, representing the same performance before and after the selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_origin_pt_jet_aug_10_event_norm_dp_035}
+        \end{figure}
+
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_event_norm_dp_035} shows the sensitivity improvement with different augmented sample sizes. The training process is ongoing.
+        \begin{figure}[htpb]
+            \centering
+            %\subfloat[Event normalization, Sensitivity: 3.0]{
+                % \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_3.pdf}
+            %} \\
+            \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
+            \label{fig:sensitivity_improvement_aug_SB_3_event_norm_dp_035}
+        \end{figure}
+    % subsection event_normalization_with_dropout (end)
 % section hidden_valley_model (end)
 
 \bibliographystyle{ieeetr}
