@@ -2876,7 +2876,7 @@
 
             In my $p_{\text{T}}$ normalization process, I didn't check whether the standard deviation is 0. Division by zero may cause some issues and make the training fail. Thus, I updated my codes. When the standard deviation is too small, it would be replaced by a small number. This is consistent with what Zong-En did. After modifying the code, the training process became stable. It seems that even if a few events with zero standard deviation, it can cause the entire training to fail.
 
-            We exchange our training datasets to investigate the problem of image $p_{\text{T}}$ normalization. I took the samples from Zong-En that he exactly used in the training. We consider two cases: one is Zong-En normalized these samples first, and then I used these samples in training. Another way is I take the original samples from Zong-En and normalize them by myself. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_SB_0_7_ZN_data} is the sensitivity improvement for this exercise. Both cases perform similarly and the training is successful at sensitivity 7. These results mean our normalization step and the following training processes are consistent.
+            We exchange our training datasets to investigate the problem of image $p_{\text{T}}$ normalization. I took the samples from Zong-En that he exactly used in the training. We consider two cases: one is Zong-En normalized these samples first, and then I used these samples in training. Another way is to take the original samples from Zong-En and normalize them by myself. Figure~\ref{fig:sensitivity_improvement_image_pt_normalized_origin_SB_0_7_ZN_data} is the sensitivity improvement for this exercise. Both cases perform similarly and the training is successful at sensitivity 7. These results mean our normalization step and the following training processes are consistent.
             \begin{figure}[htpb]
                 \centering
                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_SB_0_7_ZN_data_res_25.pdf}
@@ -2895,7 +2895,7 @@
     % subsection jet_image_normalization (end)
     \subsection{Data augmentation with image normalization}% (fold)
     \label{sub:data_augmentation_with_image_normalization}
-        We enlarge the training dataset by data augmentation techniques to determine whether the training performance can be improved when we combine the image normalization. We test ``Jet rotation'' and ``$p_{\text{T}}$ smearing + Jet rotation'' augmentation methods.
+        We enlarge the training dataset using data augmentation techniques to determine whether the training performance can be improved when we combine the image normalization. We test ``Jet rotation'' and ``$p_{\text{T}}$ smearing + Jet rotation'' augmentation methods.
 
         Figure~\ref{fig:sensitivity_improvement_origin_pt_jet_aug_5_10_image_norm} presents the sensitivity improvement with the augmented datasets. All augmentation approaches can improve the training results. The jet rotation and ``$p_{\text{T}}$ smearing + jet rotation'' perform similarly. Additionally, the +10 augmentation performs better than the +5 augmentation in both cases. Even though we combine image normalization in the training process, these results are consistent with our expectations.
         \begin{figure}[htpb]
@@ -2965,12 +2965,15 @@
             \label{fig:sensitivity_improvement_origin_pt_jet_aug_10_event_norm_dp_035}
         \end{figure}
 
-        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_event_norm_dp_035} shows the sensitivity improvement with different augmented sample sizes. The training process is ongoing.
+        Figure~\ref{fig:sensitivity_improvement_aug_SB_3_event_norm_dp_035} shows the sensitivity improvement with different augmented sample sizes. If the augmented sample size is large enough, then the model with dropout could perform better than the previous one.
         \begin{figure}[htpb]
             \centering
-            %\subfloat[Event normalization, Sensitivity: 3.0]{
-                % \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_aug_3_to_33_SB_3.pdf}
-            %} \\
+            \subfloat[Event normalization, Sensitivity: 3.0]{
+                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_dp_035_aug_3_to_33_SB_3.pdf}
+            } \\
+            \subfloat[Event normalization, Sensitivity: 5.0]{
+                 \includegraphics[width=0.97\textwidth]{HVmodel_sensitivity_improvement_event_pT_normalied_dp_035_aug_3_to_33_SB_5.pdf}
+            } \\
             \caption{The sensitivities after the CWoLa CNN selection. Here, $3.0$ is the sensitivity before selection. The dashed line is the sensitivity before CNN selection. The error bar is the standard deviation of 10 times training. We use different datasets for each training.}
             \label{fig:sensitivity_improvement_aug_SB_3_event_norm_dp_035}
         \end{figure}
