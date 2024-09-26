@@ -137,6 +137,7 @@ def main():
     train_npy_paths = config['train_npy_paths']
     val_npy_paths = config['val_npy_paths']
     seed = config['seed']
+    BATCH_SIZE = config['batch_size']
     sensitivity = config['sensitivity']
     luminosity = config['luminosity']
 
@@ -150,7 +151,7 @@ def main():
         params = json.load(f)
 
     # 從參數設定中獲取變數
-    BATCH_SIZE = params['BATCH_SIZE']
+    # BATCH_SIZE = params['BATCH_SIZE']
     EPOCHS = params['EPOCHS']
     patience = params['patience']
     min_delta = params['min_delta']
